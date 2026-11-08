@@ -102,16 +102,16 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
           character.tags.map((tag, idx) => (
             <span
               key={idx}
-              className="px-2 py-0.5 rounded-full bg-[#FFF5F8]/90 text-[#E13F7C] text-[10px] font-bold border border-[#F6A6B8]/40 shadow-2xs backdrop-blur-xs"
-              style={{ fontFamily: "'Cal Sans', sans-serif" }}
+              className="px-2 py-0.5 rounded-full bg-[#FFF5F8]/90 text-[#E13F7C] text-[10px] font-normal border border-[#F6A6B8]/40 shadow-2xs backdrop-blur-xs"
+              style={{ fontFamily: "'Cal Sans', sans-serif", fontWeight: 'normal' }}
             >
               #{tag.replace(/^#/, '')}
             </span>
           ))
         ) : (
           <span
-            className="px-2 py-0.5 rounded-full bg-[#FFF5F8]/90 text-[#E13F7C] text-[10px] font-bold border border-[#F6A6B8]/40 shadow-2xs"
-            style={{ fontFamily: "'Cal Sans', sans-serif" }}
+            className="px-2 py-0.5 rounded-full bg-[#FFF5F8]/90 text-[#E13F7C] text-[10px] font-normal border border-[#F6A6B8]/40 shadow-2xs"
+            style={{ fontFamily: "'Cal Sans', sans-serif", fontWeight: 'normal' }}
           >
             #{character.category || 'CáKhô'}
           </span>
