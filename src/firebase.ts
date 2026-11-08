@@ -274,7 +274,7 @@ export function getDefaultCatTownConfig(): CatTownConfig {
     {
       id: 'fort_04',
       category: 'cat_wisdom',
-      title: 'Lời Khuyên Đại Tiên Mèo',
+      title: 'Lời Khuyên Phù Thủy Mèo',
       prophecy: 'Mèo bảo: Ăn ngoan, ngủ đủ giấc và đừng quên vuốt ve boss mỗi ngày thì đời tự khắc nở hoa.',
       luckyNumber: 9,
       luckyColor: 'Trắng Kem',
