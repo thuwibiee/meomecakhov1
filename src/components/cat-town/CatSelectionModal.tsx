@@ -60,28 +60,15 @@ export const CatSelectionModal: React.FC<CatSelectionModalProps> = ({
         {/* Header Ribbon */}
         <div className="flex items-center justify-between border-b-3 border-[#795653] pb-3 mb-3">
           <div className="flex items-center gap-2">
-            <span
-              className="text-2xl animate-bounce"
-              style={{ fontFamily: 'Tiny5', fontWeight: 'normal' }}
-            >
-              🐱
-            </span>
             <div>
               <h2
                 className="text-base sm:text-lg font-black text-[#D6336C] tracking-wide"
                 style={{ fontFamily: "'Tiny5', 'Press Start 2P', monospace" }}
               >
-                <span>🐾 </span>
                 <span style={{ fontFamily: "'Tiny5 Duo', 'Tiny5', monospace" }}>
                   {isFirstTime ? 'CHÀO MỪNG! HÃY CHỌN BÉ MÈO CỦA BẠN' : 'CHỌN BÉ MÈO ĐỒNG HÀNH'}
                 </span>
               </h2>
-              <p
-                className="text-[11px] sm:text-xs text-[#795653]/80 font-medium"
-                style={{ fontFamily: "'Tiny5', monospace" }}
-              >
-                Chú mèo bạn chọn sẽ xuất hiện xuyên suốt cả 4 khu vực trong thị trấn! 🐾
-              </p>
             </div>
           </div>
 
@@ -103,7 +90,7 @@ export const CatSelectionModal: React.FC<CatSelectionModalProps> = ({
           <div className="text-xs font-black text-[#795653] flex items-center gap-1.5" style={{ fontFamily: "'Tiny5', monospace" }}>
             <div style={{ fontFamily: 'Tiny5' }}><span>✨</span></div>
             <div style={{ fontFamily: 'Tiny5' }}><span>BƯỚC 1:</span></div>
-            <div style={{ fontFamily: 'Tiny5' }}><span>CHỌN MẪU MÈO BẠN THÍCH (8 CHÚ MÈO ĐỘC QUYỀN):</span></div>
+            <div style={{ fontFamily: 'Tiny5', fontWeight: 'bold' }}><span style={{ fontFamily: 'Tiny5', fontWeight: 'bold' }}>CHỌN MẪU MÈO BẠN THÍCH:</span></div>
           </div>
 
           {/* 8 Rounded Square Cat Cards */}
@@ -147,9 +134,6 @@ export const CatSelectionModal: React.FC<CatSelectionModalProps> = ({
                     >
                       {cat.name}
                     </div>
-                    <div className="text-[10px] text-[#D6336C] font-bold mt-0.5 truncate" style={{ fontFamily: "'Tiny5', monospace" }}>
-                      {cat.collar}
-                    </div>
                   </div>
                 </div>
               );
@@ -176,14 +160,6 @@ export const CatSelectionModal: React.FC<CatSelectionModalProps> = ({
                   style={{ fontFamily: "'Cal Sans', 'Tiny5', sans-serif" }}
                 >
                   {selectedCat.breed}
-                </span>
-              </div>
-              <div className="mt-1">
-                <span className="text-[11px] font-bold text-[#795653]/60" style={{ fontFamily: 'Tiny5' }}>
-                  Đặc tính:
-                </span>{' '}
-                <span className="text-[11px] text-[#795653]/85 leading-tight line-clamp-2" style={{ fontFamily: "'Cal Sans', sans-serif" }}>
-                  {selectedCat.description}
                 </span>
               </div>
             </div>
@@ -230,7 +206,7 @@ export const CatSelectionModal: React.FC<CatSelectionModalProps> = ({
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full py-3.5 bg-[#FF8FAB] hover:bg-[#FF7599] disabled:opacity-50 text-white font-black text-sm sm:text-base rounded-2xl border-4 border-[#795653] shadow-[4px_4px_0px_#795653] hover:shadow-[2px_2px_0px_#795653] hover:translate-y-0.5 active:translate-y-1 cursor-pointer flex items-center justify-center gap-2 select-none"
-                style={{ fontFamily: "'Tiny5', 'Press Start 2P', monospace" }}
+                style={{ fontFamily: "'Tiny5 Duo', 'Tiny5', 'Press Start 2P', monospace" }}
               >
                 {isSubmitting ? (
                   <span>ĐANG LƯU BÉ MÈO VÀO THỊ TRẤN...</span>
