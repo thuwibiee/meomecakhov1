@@ -96,10 +96,10 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
         <span style={{ fontFamily: "'Cal Sans', sans-serif", color: '#599bc2' }}>{character.category}</span>
       </div>
 
-      {/* (3.5) Tags nhân vật - Nằm ngay dưới tuổi & category */}
+      {/* (3.5) Full Tags nhân vật - Nằm ngay dưới tuổi & category */}
       <div className="relative z-10 flex flex-wrap gap-1.5 mb-2.5">
         {Array.isArray(character.tags) && character.tags.length > 0 ? (
-          character.tags.slice(0, 4).map((tag, idx) => (
+          character.tags.map((tag, idx) => (
             <span
               key={idx}
               className="px-2 py-0.5 rounded-full bg-[#FFF5F8]/90 text-[#E13F7C] text-[10px] font-bold border border-[#F6A6B8]/40 shadow-2xs backdrop-blur-xs"

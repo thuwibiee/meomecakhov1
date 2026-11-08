@@ -109,6 +109,7 @@ function getInitialDatabase(): DatabaseSchema {
       isAvailable: true,
       salesCount: 8,
       createdAt: '2026-10-20T10:00:00Z',
+      tags: ['ThơMộng', 'ÔnNhu', 'LinhHồ'],
     },
     {
       id: 'char_tieu_than',
@@ -126,6 +127,7 @@ function getInitialDatabase(): DatabaseSchema {
       isAvailable: true,
       salesCount: 12,
       createdAt: '2026-10-20T10:00:00Z',
+      tags: ['ThiếuTướng', 'LạnhLùng', 'SiTình'],
     },
     {
       id: 'char_co_dien',
@@ -143,6 +145,7 @@ function getInitialDatabase(): DatabaseSchema {
       isAvailable: true,
       salesCount: 15,
       createdAt: '2026-10-20T10:00:00Z',
+      tags: ['TổngTài', 'ChiềuBạnGái', 'KhôThượngPhẩm'],
     },
     {
       id: 'char_da_huyet',
@@ -160,6 +163,7 @@ function getInitialDatabase(): DatabaseSchema {
       isAvailable: true,
       salesCount: 19,
       createdAt: '2026-10-21T08:00:00Z',
+      tags: ['MaTôn', 'VươngGiả', 'ChiềuVợ'],
     },
     {
       id: 'char_minh_nhat',
@@ -177,6 +181,7 @@ function getInitialDatabase(): DatabaseSchema {
       isAvailable: true,
       salesCount: 22,
       createdAt: '2026-10-21T09:00:00Z',
+      tags: ['ThanhMaiTrúcMã', 'NhiệtHuyết', 'ĐộiTrưởng'],
     },
     {
       id: 'char_han_da_bang',
@@ -194,6 +199,7 @@ function getInitialDatabase(): DatabaseSchema {
       isAvailable: true,
       salesCount: 7,
       createdAt: '2026-10-21T10:00:00Z',
+      tags: ['ThầnY', 'ThanhLãnh', 'ẤmÁp'],
     },
   ];
 
@@ -408,6 +414,10 @@ function loadDatabase(): DatabaseSchema {
           }
           if (!c.openScene) {
             c.openScene = match?.openScene || 'Kịch bản phân cảnh mở đầu đang được chuẩn bị.';
+            hasChanges = true;
+          }
+          if (!c.tags || !Array.isArray(c.tags) || c.tags.length === 0) {
+            c.tags = match?.tags || ['ThơMộng', 'CáKhô'];
             hasChanges = true;
           }
           if (catMapping[c.category]) {
@@ -1623,7 +1633,7 @@ app.post('/api/admin/special-orders/:id/status', authMiddleware, adminMiddleware
 app.post('/api/admin/characters', authMiddleware, adminMiddleware, (req, res) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   const user = (req as any).user;
-  const { id, name, fishCode, age, category, shortBio, fullStory, backstory, openScene, price, studioUrl, avatarUrl, receiptAvatarUrl, isAvailable } = req.body;
+  const { id, name, fishCode, age, category, shortBio, fullStory, backstory, openScene, price, studioUrl, avatarUrl, receiptAvatarUrl, isAvailable, tags } = req.body;
 
   const cleanName = (name || '').trim();
   const cleanStudioUrl = (studioUrl || 'https://aistudio.google.com/').trim();
@@ -1671,6 +1681,7 @@ app.post('/api/admin/characters', authMiddleware, adminMiddleware, (req, res) =>
       existing.backstory = fullStory.trim();
     }
     if (openScene !== undefined) existing.openScene = openScene.trim();
+    if (tags !== undefined) existing.tags = Array.isArray(tags) ? tags : [];
     existing.price = numericPrice;
     existing.studioUrl = finalStudioUrl;
     if (avatarUrl !== undefined && finalAvatarUrl) {
@@ -1714,6 +1725,7 @@ app.post('/api/admin/characters', authMiddleware, adminMiddleware, (req, res) =>
       isAvailable: isAvailable !== false,
       salesCount: 0,
       createdAt: new Date().toISOString(),
+      tags: Array.isArray(tags) && tags.length > 0 ? tags : ['ThơMộng', 'CáKhô'],
     };
     db.characters.push(newChar);
 

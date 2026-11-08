@@ -384,6 +384,19 @@ const RANDOM_PAW_MESSAGES = [
 ];
 
 export function normalizeCharacter(c: any): Character {
+  const defaultTagsMap: Record<string, string[]> = {
+    'char_lac_tu_du': ['ThơMộng', 'ÔnNhu', 'LinhHồ'],
+    'char_tieu_than': ['ThiếuTướng', 'LạnhLùng', 'SiTình'],
+    'char_co_dien': ['TổngTài', 'ChiềuBạnGái', 'KhôThượngPhẩm'],
+    'char_da_huyet': ['MaTôn', 'VươngGiả', 'ChiềuVợ'],
+    'char_minh_nhat': ['ThanhMaiTrúcMã', 'NhiệtHuyết', 'ĐộiTrưởng'],
+    'char_han_da_bang': ['ThầnY', 'ThanhLãnh', 'ẤmÁp'],
+  };
+
+  const normTags = Array.isArray(c.tags) && c.tags.length > 0
+    ? c.tags
+    : (defaultTagsMap[c.id] || (c.category ? [c.category, 'CáKhô'] : ['ThơMộng', 'CáKhô']));
+
   return {
     id: String(c.id),
     name: String(c.name || 'Nhân vật mới'),
@@ -401,6 +414,7 @@ export function normalizeCharacter(c: any): Character {
     isAvailable: c.isAvailable !== false,
     salesCount: Number(c.salesCount || 0),
     createdAt: c.createdAt || '2026-10-20T10:00:00Z',
+    tags: normTags,
   };
 }
 
@@ -1053,6 +1067,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
         avatarUrl,
         receiptAvatarUrl,
         isAvailable,
+        tags,
       } = body;
 
       const cleanName = (name || '').trim();
@@ -1113,6 +1128,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           avatarUrl: avatarUrl !== undefined && finalAvatarUrl ? finalAvatarUrl : existing.avatarUrl,
           receiptAvatarUrl: receiptAvatarUrl !== undefined ? finalReceiptAvatarUrl : existing.receiptAvatarUrl,
           isAvailable: isAvailable !== undefined ? Boolean(isAvailable) : existing.isAvailable,
+          tags: tags !== undefined ? (Array.isArray(tags) ? tags : []) : (existing.tags || []),
         };
 
         await setDoc(charRef, updated);
@@ -1145,6 +1161,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           isAvailable: isAvailable !== false,
           salesCount: 0,
           createdAt: new Date().toISOString(),
+          tags: Array.isArray(tags) && tags.length > 0 ? tags : ['ThơMộng', 'CáKhô'],
         };
         await setDoc(doc(db, 'characters', newCharId), newChar);
 
