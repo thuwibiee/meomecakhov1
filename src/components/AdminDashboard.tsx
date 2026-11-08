@@ -47,6 +47,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // Fish Database Admin Editor State (Hồ Bong Bóng)
   const [editingFish, setEditingFish] = useState<any | null>(null);
+  const [editingFishOriginalId, setEditingFishOriginalId] = useState<string>('');
   const [isCreatingFish, setIsCreatingFish] = useState(false);
   const [fishFeedback, setFishFeedback] = useState<string | null>(null);
   const [fishFilterRarity, setFishFilterRarity] = useState<string>('all');
@@ -199,13 +200,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // Open Fish Add Modal
   const handleOpenAddFish = () => {
-    const currentList = catTownConfig?.fishCatalog && catTownConfig.fishCatalog.length > 0
+    const rawCatalog: any[] = (catTownConfig?.fishCatalog && catTownConfig.fishCatalog.length > 0)
       ? catTownConfig.fishCatalog
       : FISH_DATABASE;
-    const nextIdx = currentList.length + 1;
-    const newId = `fish_${String(nextIdx).padStart(2, '0')}`;
+    const fishList = normalizeFishCatalog(rawCatalog);
+    let nextNum = fishList.length + 1;
+    let autoId = `fish_${String(nextNum).padStart(2, '0')}`;
+    while (fishList.some((f) => f.id === autoId)) {
+      nextNum++;
+      autoId = `fish_${String(nextNum).padStart(2, '0')}`;
+    }
+
     setEditingFish({
-      id: newId,
+      id: autoId,
       name: '',
       rarity: 'COMMON',
       rewardCoins: 30,
@@ -219,14 +226,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       color: '#795653',
       iconType: 'custom_fish',
     });
+    setEditingFishOriginalId(autoId);
     setIsCreatingFish(true);
     setFishFeedback(null);
   };
 
   // Open Fish Edit Modal
   const handleOpenEditFish = (fish: any) => {
+    const currentId = fish.id || '';
     setEditingFish({
       ...fish,
+      id: currentId,
       rewardCoins: fish.rewardCoins ?? fish.xuReward ?? 30,
       xuReward: fish.rewardCoins ?? fish.xuReward ?? 30,
       imageSrc: fish.imageSrc || fish.image || '',
@@ -236,6 +246,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       weightMax: fish.weightMax ?? 450,
       description: fish.description || '',
     });
+    setEditingFishOriginalId(currentId);
     setIsCreatingFish(false);
     setFishFeedback(null);
   };
@@ -244,6 +255,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const handleSaveFish = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingFish) return;
+
+    const newId = (editingFish.id || '').trim();
+    if (!newId) {
+      setFishFeedback('Vui lòng nhập Mã loài cá (ID).');
+      return;
+    }
 
     if (!editingFish.name || !editingFish.name.trim()) {
       setFishFeedback('Vui lòng nhập tên loài cá.');
@@ -262,9 +279,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
     const fishData = {
       ...editingFish,
-      id: editingFish.id.trim(),
+      id: newId,
       name: editingFish.name.trim(),
-      rarity: String(editingFish.rarity).toUpperCase(),
+      rarity: String(editingFish.rarity || 'COMMON').toUpperCase(),
       rewardCoins: normalizedReward,
       xuReward: normalizedReward,
       dropRate: normalizedDropRate,
@@ -277,13 +294,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
     let updatedCatalog: any[];
     if (isCreatingFish) {
-      if (currentCatalog.some((f) => f.id === fishData.id)) {
-        setFishFeedback(`Mã cá "${fishData.id}" đã tồn tại! Vui lòng chọn mã khác.`);
+      if (currentCatalog.some((f) => f.id === newId)) {
+        setFishFeedback(`Mã cá "${newId}" đã tồn tại! Vui lòng chọn mã ID khác.`);
         return;
       }
       updatedCatalog = [...currentCatalog, fishData];
     } else {
-      updatedCatalog = currentCatalog.map((f) => (f.id === fishData.id ? fishData : f));
+      if (newId !== editingFishOriginalId && currentCatalog.some((f) => f.id === newId)) {
+        setFishFeedback(`Mã cá mới "${newId}" đã bị trùng với loài cá khác trong hồ!`);
+        return;
+      }
+      updatedCatalog = currentCatalog.map((f) => (f.id === editingFishOriginalId ? fishData : f));
     }
 
     const updatedConfig = {
@@ -308,7 +329,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       if (!res.ok) throw new Error(data.error || 'Lỗi khi lưu thông tin cá');
 
       setCatTownConfig(updatedConfig);
-      setFishFeedback(`✓ Đã lưu thông tin loài cá "${fishData.name}" thành công!`);
+      setFishFeedback(`✓ Đã lưu loài cá "${fishData.name}" (${fishData.id}) thành công!`);
       setTimeout(() => {
         setEditingFish(null);
         setFishFeedback(null);
@@ -1941,17 +1962,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     {/* Fish ID */}
                     <div>
                       <label className="text-[11px] font-black text-[#795653] block mb-1">
-                        Mã loài cá (ID) <span className="text-rose-500">*</span>
+                        Mã loài cá (Fish ID) <span className="text-rose-500">* (Có thể chỉnh sửa)</span>
                       </label>
                       <input
                         type="text"
                         required
-                        disabled={!isCreatingFish}
                         value={editingFish.id || ''}
                         onChange={(e) => setEditingFish({ ...editingFish, id: e.target.value })}
-                        placeholder="VD: fish_01, fish_12..."
-                        className="w-full px-3 py-2 rounded-xl border-2 border-[#795653] bg-white text-xs font-mono font-black text-[#A6536A] disabled:bg-neutral-100 disabled:opacity-75 focus:outline-none"
+                        placeholder="VD: fish_01, fish_12, fish_koi_gold..."
+                        className="w-full px-3 py-2 rounded-xl border-2 border-[#795653] bg-white text-xs font-mono font-black text-[#D6336C] focus:outline-none focus:border-[#D6336C]"
                       />
+                      <span className="text-[10px] text-[#795653]/70 mt-0.5 block">
+                        {isCreatingFish
+                          ? 'Mã ID độc bản cho loài cá mới (VD: fish_12)'
+                          : 'Bà có thể tự do đổi sang mã ID mới (VD: fish_super_01)'}
+                      </span>
                     </div>
 
                     {/* Fish Name */}
