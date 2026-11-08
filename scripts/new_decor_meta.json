@@ -1,0 +1,499 @@
+[
+  {
+    "id": "decor_34",
+    "src": "/assets/furniture/decor/decor_34.png",
+    "width": 136,
+    "height": 120,
+    "sheet": 1
+  },
+  {
+    "id": "decor_35",
+    "src": "/assets/furniture/decor/decor_35.png",
+    "width": 112,
+    "height": 128,
+    "sheet": 1
+  },
+  {
+    "id": "decor_36",
+    "src": "/assets/furniture/decor/decor_36.png",
+    "width": 112,
+    "height": 124,
+    "sheet": 1
+  },
+  {
+    "id": "decor_37",
+    "src": "/assets/furniture/decor/decor_37.png",
+    "width": 140,
+    "height": 116,
+    "sheet": 1
+  },
+  {
+    "id": "decor_38",
+    "src": "/assets/furniture/decor/decor_38.png",
+    "width": 104,
+    "height": 116,
+    "sheet": 1
+  },
+  {
+    "id": "decor_39",
+    "src": "/assets/furniture/decor/decor_39.png",
+    "width": 128,
+    "height": 124,
+    "sheet": 1
+  },
+  {
+    "id": "decor_40",
+    "src": "/assets/furniture/decor/decor_40.png",
+    "width": 104,
+    "height": 124,
+    "sheet": 1
+  },
+  {
+    "id": "decor_41",
+    "src": "/assets/furniture/decor/decor_41.png",
+    "width": 108,
+    "height": 128,
+    "sheet": 1
+  },
+  {
+    "id": "decor_42",
+    "src": "/assets/furniture/decor/decor_42.png",
+    "width": 96,
+    "height": 120,
+    "sheet": 1
+  },
+  {
+    "id": "decor_43",
+    "src": "/assets/furniture/decor/decor_43.png",
+    "width": 88,
+    "height": 184,
+    "sheet": 1
+  },
+  {
+    "id": "decor_44",
+    "src": "/assets/furniture/decor/decor_44.png",
+    "width": 148,
+    "height": 216,
+    "sheet": 1
+  },
+  {
+    "id": "decor_45",
+    "src": "/assets/furniture/decor/decor_45.png",
+    "width": 140,
+    "height": 208,
+    "sheet": 1
+  },
+  {
+    "id": "decor_46",
+    "src": "/assets/furniture/decor/decor_46.png",
+    "width": 140,
+    "height": 204,
+    "sheet": 1
+  },
+  {
+    "id": "decor_47",
+    "src": "/assets/furniture/decor/decor_47.png",
+    "width": 156,
+    "height": 364,
+    "sheet": 1
+  },
+  {
+    "id": "decor_48",
+    "src": "/assets/furniture/decor/decor_48.png",
+    "width": 140,
+    "height": 212,
+    "sheet": 1
+  },
+  {
+    "id": "decor_49",
+    "src": "/assets/furniture/decor/decor_49.png",
+    "width": 456,
+    "height": 84,
+    "sheet": 1
+  },
+  {
+    "id": "decor_50",
+    "src": "/assets/furniture/decor/decor_50.png",
+    "width": 152,
+    "height": 256,
+    "sheet": 1
+  },
+  {
+    "id": "decor_51",
+    "src": "/assets/furniture/decor/decor_51.png",
+    "width": 132,
+    "height": 144,
+    "sheet": 1
+  },
+  {
+    "id": "decor_52",
+    "src": "/assets/furniture/decor/decor_52.png",
+    "width": 128,
+    "height": 136,
+    "sheet": 1
+  },
+  {
+    "id": "decor_53",
+    "src": "/assets/furniture/decor/decor_53.png",
+    "width": 120,
+    "height": 152,
+    "sheet": 1
+  },
+  {
+    "id": "decor_54",
+    "src": "/assets/furniture/decor/decor_54.png",
+    "width": 116,
+    "height": 144,
+    "sheet": 1
+  },
+  {
+    "id": "decor_55",
+    "src": "/assets/furniture/decor/decor_55.png",
+    "width": 120,
+    "height": 152,
+    "sheet": 1
+  },
+  {
+    "id": "decor_56",
+    "src": "/assets/furniture/decor/decor_56.png",
+    "width": 112,
+    "height": 148,
+    "sheet": 1
+  },
+  {
+    "id": "decor_57",
+    "src": "/assets/furniture/decor/decor_57.png",
+    "width": 112,
+    "height": 152,
+    "sheet": 1
+  },
+  {
+    "id": "decor_58",
+    "src": "/assets/furniture/decor/decor_58.png",
+    "width": 108,
+    "height": 168,
+    "sheet": 1
+  },
+  {
+    "id": "decor_59",
+    "src": "/assets/furniture/decor/decor_59.png",
+    "width": 160,
+    "height": 336,
+    "sheet": 1
+  },
+  {
+    "id": "decor_60",
+    "src": "/assets/furniture/decor/decor_60.png",
+    "width": 116,
+    "height": 100,
+    "sheet": 1
+  },
+  {
+    "id": "decor_61",
+    "src": "/assets/furniture/decor/decor_61.png",
+    "width": 96,
+    "height": 108,
+    "sheet": 1
+  },
+  {
+    "id": "decor_62",
+    "src": "/assets/furniture/decor/decor_62.png",
+    "width": 108,
+    "height": 100,
+    "sheet": 1
+  },
+  {
+    "id": "decor_63",
+    "src": "/assets/furniture/decor/decor_63.png",
+    "width": 132,
+    "height": 100,
+    "sheet": 1
+  },
+  {
+    "id": "decor_64",
+    "src": "/assets/furniture/decor/decor_64.png",
+    "width": 184,
+    "height": 341,
+    "sheet": 1
+  },
+  {
+    "id": "decor_65",
+    "src": "/assets/furniture/decor/decor_65.png",
+    "width": 84,
+    "height": 128,
+    "sheet": 1
+  },
+  {
+    "id": "decor_66",
+    "src": "/assets/furniture/decor/decor_66.png",
+    "width": 76,
+    "height": 100,
+    "sheet": 1
+  },
+  {
+    "id": "decor_67",
+    "src": "/assets/furniture/decor/decor_67.png",
+    "width": 124,
+    "height": 116,
+    "sheet": 1
+  },
+  {
+    "id": "decor_68",
+    "src": "/assets/furniture/decor/decor_68.png",
+    "width": 148,
+    "height": 233,
+    "sheet": 1
+  },
+  {
+    "id": "decor_69",
+    "src": "/assets/furniture/decor/decor_69.png",
+    "width": 72,
+    "height": 120,
+    "sheet": 1
+  },
+  {
+    "id": "decor_70",
+    "src": "/assets/furniture/decor/decor_70.png",
+    "width": 68,
+    "height": 120,
+    "sheet": 1
+  },
+  {
+    "id": "decor_71",
+    "src": "/assets/furniture/decor/decor_71.png",
+    "width": 88,
+    "height": 124,
+    "sheet": 1
+  },
+  {
+    "id": "decor_72",
+    "src": "/assets/furniture/decor/decor_72.png",
+    "width": 172,
+    "height": 212,
+    "sheet": 1
+  },
+  {
+    "id": "decor_73",
+    "src": "/assets/furniture/decor/decor_73.png",
+    "width": 180,
+    "height": 120,
+    "sheet": 1
+  },
+  {
+    "id": "decor_74",
+    "src": "/assets/furniture/decor/decor_74.png",
+    "width": 136,
+    "height": 104,
+    "sheet": 1
+  },
+  {
+    "id": "decor_75",
+    "src": "/assets/furniture/decor/decor_75.png",
+    "width": 124,
+    "height": 76,
+    "sheet": 1
+  },
+  {
+    "id": "decor_76",
+    "src": "/assets/furniture/decor/decor_76.png",
+    "width": 132,
+    "height": 84,
+    "sheet": 1
+  },
+  {
+    "id": "decor_77",
+    "src": "/assets/furniture/decor/decor_77.png",
+    "width": 76,
+    "height": 56,
+    "sheet": 1
+  },
+  {
+    "id": "decor_78",
+    "src": "/assets/furniture/decor/decor_78.png",
+    "width": 108,
+    "height": 108,
+    "sheet": 1
+  },
+  {
+    "id": "decor_79",
+    "src": "/assets/furniture/decor/decor_79.png",
+    "width": 132,
+    "height": 92,
+    "sheet": 1
+  },
+  {
+    "id": "decor_80",
+    "src": "/assets/furniture/decor/decor_80.png",
+    "width": 68,
+    "height": 112,
+    "sheet": 1
+  },
+  {
+    "id": "decor_81",
+    "src": "/assets/furniture/decor/decor_81.png",
+    "width": 104,
+    "height": 88,
+    "sheet": 1
+  },
+  {
+    "id": "decor_82",
+    "src": "/assets/furniture/decor/decor_82.png",
+    "width": 172,
+    "height": 220,
+    "sheet": 2
+  },
+  {
+    "id": "decor_83",
+    "src": "/assets/furniture/decor/decor_83.png",
+    "width": 172,
+    "height": 232,
+    "sheet": 2
+  },
+  {
+    "id": "decor_84",
+    "src": "/assets/furniture/decor/decor_84.png",
+    "width": 192,
+    "height": 232,
+    "sheet": 2
+  },
+  {
+    "id": "decor_85",
+    "src": "/assets/furniture/decor/decor_85.png",
+    "width": 204,
+    "height": 224,
+    "sheet": 2
+  },
+  {
+    "id": "decor_86",
+    "src": "/assets/furniture/decor/decor_86.png",
+    "width": 196,
+    "height": 216,
+    "sheet": 2
+  },
+  {
+    "id": "decor_87",
+    "src": "/assets/furniture/decor/decor_87.png",
+    "width": 184,
+    "height": 228,
+    "sheet": 2
+  },
+  {
+    "id": "decor_88",
+    "src": "/assets/furniture/decor/decor_88.png",
+    "width": 200,
+    "height": 224,
+    "sheet": 2
+  },
+  {
+    "id": "decor_89",
+    "src": "/assets/furniture/decor/decor_89.png",
+    "width": 208,
+    "height": 228,
+    "sheet": 2
+  },
+  {
+    "id": "decor_90",
+    "src": "/assets/furniture/decor/decor_90.png",
+    "width": 176,
+    "height": 220,
+    "sheet": 2
+  },
+  {
+    "id": "decor_91",
+    "src": "/assets/furniture/decor/decor_91.png",
+    "width": 200,
+    "height": 216,
+    "sheet": 2
+  },
+  {
+    "id": "decor_92",
+    "src": "/assets/furniture/decor/decor_92.png",
+    "width": 192,
+    "height": 216,
+    "sheet": 2
+  },
+  {
+    "id": "decor_93",
+    "src": "/assets/furniture/decor/decor_93.png",
+    "width": 208,
+    "height": 216,
+    "sheet": 2
+  },
+  {
+    "id": "decor_94",
+    "src": "/assets/furniture/decor/decor_94.png",
+    "width": 196,
+    "height": 380,
+    "sheet": 2
+  },
+  {
+    "id": "decor_95",
+    "src": "/assets/furniture/decor/decor_95.png",
+    "width": 216,
+    "height": 208,
+    "sheet": 2
+  },
+  {
+    "id": "decor_96",
+    "src": "/assets/furniture/decor/decor_96.png",
+    "width": 200,
+    "height": 216,
+    "sheet": 2
+  },
+  {
+    "id": "decor_97",
+    "src": "/assets/furniture/decor/decor_97.png",
+    "width": 132,
+    "height": 124,
+    "sheet": 2
+  },
+  {
+    "id": "decor_98",
+    "src": "/assets/furniture/decor/decor_98.png",
+    "width": 124,
+    "height": 80,
+    "sheet": 2
+  },
+  {
+    "id": "decor_99",
+    "src": "/assets/furniture/decor/decor_99.png",
+    "width": 128,
+    "height": 136,
+    "sheet": 2
+  },
+  {
+    "id": "decor_100",
+    "src": "/assets/furniture/decor/decor_100.png",
+    "width": 132,
+    "height": 108,
+    "sheet": 2
+  },
+  {
+    "id": "decor_101",
+    "src": "/assets/furniture/decor/decor_101.png",
+    "width": 172,
+    "height": 116,
+    "sheet": 2
+  },
+  {
+    "id": "decor_102",
+    "src": "/assets/furniture/decor/decor_102.png",
+    "width": 68,
+    "height": 152,
+    "sheet": 2
+  },
+  {
+    "id": "decor_103",
+    "src": "/assets/furniture/decor/decor_103.png",
+    "width": 96,
+    "height": 88,
+    "sheet": 2
+  },
+  {
+    "id": "decor_104",
+    "src": "/assets/furniture/decor/decor_104.png",
+    "width": 208,
+    "height": 104,
+    "sheet": 2
+  }
+]

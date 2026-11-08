@@ -1,0 +1,137 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account storing username, role, and Xu Cá balance",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "password_hash": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "balance": { "type": "number" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "username", "role", "balance"]
+    },
+    "Character": {
+      "title": "Character",
+      "description": "Character card item available in Tiệm Cá Mèo",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "tagline": { "type": "string" },
+        "description": { "type": "string" },
+        "rank": { "type": "string" },
+        "price": { "type": "string" },
+        "numPrice": { "type": "number" },
+        "image": { "type": "string" },
+        "likes": { "type": "number" },
+        "downloads": { "type": "number" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "isOutOfStock": { "type": "boolean" },
+        "stock": { "type": "number" }
+      },
+      "required": ["id", "name"]
+    },
+    "UserCharacter": {
+      "title": "UserCharacter",
+      "description": "Purchased character in a user's Kho Cá inventory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "character_id": { "type": "string" },
+        "order_id": { "type": "string" },
+        "purchased_at": { "type": "string" }
+      },
+      "required": ["id", "user_id", "character_id"]
+    },
+    "SpecialOrder": {
+      "title": "SpecialOrder",
+      "description": "Custom fish order (Phiếu Đặt Cá) submitted by a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "username": { "type": "string" },
+        "char_name": { "type": "string" },
+        "status": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "user_id", "char_name", "status"]
+    },
+    "UserLoyaltyCard": {
+      "title": "UserLoyaltyCard",
+      "description": "Paw loyalty card check-in state (Thẻ Tích Xu) for a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "current_stamps": { "type": "number" },
+        "total_stamps": { "type": "number" },
+        "completed_cycles": { "type": "number" },
+        "last_checkin_date": { "type": "string" }
+      },
+      "required": ["id", "user_id", "current_stamps"]
+    },
+    "WalletTransaction": {
+      "title": "WalletTransaction",
+      "description": "Transaction log for user Xu Cá balance changes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_id": { "type": "string" },
+        "type": { "type": "string" },
+        "amount": { "type": "number" },
+        "description": { "type": "string" },
+        "created_at": { "type": "string" }
+      },
+      "required": ["id", "user_id", "amount"]
+    },
+    "CatTownProfile": {
+      "title": "CatTownProfile",
+      "description": "User progress and inventory in Thị Trấn Cá Mèo",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "string" },
+        "username": { "type": "string" },
+        "cat_name": { "type": "string" },
+        "level": { "type": "number" },
+        "exp": { "type": "number" }
+      },
+      "required": ["user_id"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User accounts and Xu Cá balances"
+    },
+    "/characters/{characterId}": {
+      "schema": { "$ref": "#/entities/Character" },
+      "description": "Global Character Cards catalog"
+    },
+    "/user_characters/{itemId}": {
+      "schema": { "$ref": "#/entities/UserCharacter" },
+      "description": "User Kho Cá inventory records"
+    },
+    "/special_orders/{orderId}": {
+      "schema": { "$ref": "#/entities/SpecialOrder" },
+      "description": "User Phiếu Đặt Cá special orders"
+    },
+    "/user_loyalty_cards/{cardId}": {
+      "schema": { "$ref": "#/entities/UserLoyaltyCard" },
+      "description": "User Thẻ Tích Xu records"
+    },
+    "/wallet_transactions/{txId}": {
+      "schema": { "$ref": "#/entities/WalletTransaction" },
+      "description": "Wallet Xu Cá history"
+    },
+    "/cat_town_profiles/{userId}": {
+      "schema": { "$ref": "#/entities/CatTownProfile" },
+      "description": "Thị Trấn Cá Mèo player profiles"
+    }
+  }
+}

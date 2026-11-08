@@ -1,0 +1,866 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --milk-cream: #FFF9F4;
+    --strawberry-milk: #F6A6B8;
+    --fish-blue: #A9C5F2;
+    --butter-yellow: #F7DDA0;
+    --cocoa-ink: #795653;
+    --dark-blue: #526C91;
+    --dark-pink: #A6536A;
+  }
+
+  body {
+    background-color: var(--milk-cream);
+    color: var(--cocoa-ink);
+    font-family: 'Nunito', 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+/* Cute Japanese Kawaii Accents & Gingham Background */
+.bg-gingham-soft {
+  background-color: #FFF9F4;
+  background-image:
+    linear-gradient(45deg, rgba(246, 166, 184, 0.08) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(246, 166, 184, 0.08) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(246, 166, 184, 0.08) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(246, 166, 184, 0.08) 75%);
+  background-size: 24px 24px;
+}
+
+.bg-gingham-blue {
+  background-color: #FFF9F4;
+  background-image:
+    linear-gradient(45deg, rgba(169, 197, 242, 0.12) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(169, 197, 242, 0.12) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(169, 197, 242, 0.12) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(169, 197, 242, 0.12) 75%);
+  background-size: 20px 20px;
+}
+
+/* Receipt paper zigzag or dashed border */
+.receipt-dashed {
+  border-bottom: 2px dashed rgba(121, 86, 83, 0.25);
+}
+
+/* Soft paper shadow */
+.shadow-kawaii {
+  box-shadow: 0 4px 18px -2px rgba(121, 86, 83, 0.08), 0 2px 6px -1px rgba(121, 86, 83, 0.04);
+}
+
+.shadow-kawaii-hover {
+  box-shadow: 0 10px 25px -4px rgba(246, 166, 184, 0.25), 0 4px 10px -2px rgba(121, 86, 83, 0.08);
+}
+
+/* Custom cute scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF9F4;
+}
+::-webkit-scrollbar-thumb {
+  background: #F6A6B8;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A6536A;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 3D Liquid Glass Button Effect */
+.liquid-glass-btn {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(246, 166, 184, 0.8) 35%, rgba(255, 182, 193, 0.9) 70%, rgba(255, 240, 245, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 2px 3px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -3px 6px 0 rgba(214, 51, 108, 0.35),
+    0 14px 30px -4px rgba(246, 166, 184, 0.55),
+    0 6px 14px -2px rgba(121, 86, 83, 0.18);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.liquid-glass-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 9999px 9999px 0 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.liquid-glass-btn:hover {
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow:
+    inset 0 2px 4px 0 rgba(255, 255, 255, 1),
+    inset 0 -3px 8px 0 rgba(214, 51, 108, 0.4),
+    0 22px 40px -4px rgba(246, 166, 184, 0.7),
+    0 10px 18px -2px rgba(121, 86, 83, 0.22);
+}
+
+/* Dynamic Liquid Color-Shift when pressed / active */
+.liquid-glass-btn:active,
+.liquid-glass-btn.btn-pressed {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(214, 51, 108, 0.85) 30%, rgba(255, 117, 143, 0.95) 70%, rgba(169, 197, 242, 0.9) 100%) !important;
+  transform: translateY(3px) scale(0.97) !important;
+  box-shadow:
+    inset 0 3px 8px 0 rgba(214, 51, 108, 0.65),
+    inset 0 -2px 4px 0 rgba(255, 255, 255, 0.6),
+    0 4px 20px 2px rgba(214, 51, 108, 0.6),
+    0 2px 6px -1px rgba(121, 86, 83, 0.3) !important;
+}
+
+.liquid-glass-btn:active::before,
+.liquid-glass-btn.btn-pressed::before {
+  opacity: 0.5;
+}
+
+/* Shimmer Sweep Animation for Button */
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-160%) skewX(-25deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  60% {
+    transform: translateX(280%) skewX(-25deg);
+    opacity: 0.9;
+  }
+  61%, 100% {
+    transform: translateX(280%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+.shimmer-liquid {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 55%;
+  height: 120%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.25) 25%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.25) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer-sweep 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  border-radius: 9999px;
+  z-index: 5;
+}
+
+/* ================= REALISTIC GLASSMORPHISM CHARACTER CARDS ================= */
+.glass-character-card {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.28) 45%,
+    rgba(255, 240, 246, 0.38) 78%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 2px 4px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -2px 4px 0 rgba(246, 166, 184, 0.35),
+    inset 2px 0 3px 0 rgba(255, 255, 255, 0.65),
+    0 20px 42px -6px rgba(225, 63, 124, 0.18),
+    0 4px 14px 0 rgba(121, 86, 83, 0.08);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+/* Glass specular light crescent across top */
+.glass-character-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: radial-gradient(
+    ellipse at 25% 0%,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.3) 35%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Diagonal glass light streak */
+.glass-character-card::after {
+  content: '';
+  position: absolute;
+  top: -80%;
+  left: -120%;
+  width: 65%;
+  height: 260%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  pointer-events: none;
+  opacity: 0.55;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  z-index: 1;
+}
+
+.glass-character-card:hover {
+  transform: translateY(-6px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.84) 0%,
+    rgba(255, 255, 255, 0.42) 45%,
+    rgba(255, 240, 246, 0.55) 78%,
+    rgba(255, 255, 255, 0.75) 100%
+  );
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    inset 0 2px 5px 0 rgba(255, 255, 255, 1),
+    inset 0 -3px 6px 0 rgba(225, 63, 124, 0.35),
+    inset 2px 0 4px 0 rgba(255, 255, 255, 0.85),
+    0 28px 56px -6px rgba(225, 63, 124, 0.28),
+    0 8px 22px 0 rgba(121, 86, 83, 0.12);
+}
+
+.glass-character-card:hover::after {
+  transform: rotate(30deg) translateX(390%);
+  opacity: 0.95;
+}
+
+/* Nested Glass Bio Panel */
+.glass-bio-box {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.58) 0%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1.2px solid rgba(255, 255, 255, 0.88);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px 0 rgba(246, 166, 184, 0.2),
+    0 3px 8px 0 rgba(246, 166, 184, 0.12);
+}
+
+/* Nested Glass Pill Buttons */
+.glass-pill-btn {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.2px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px 0 rgba(246, 166, 184, 0.2),
+    0 2px 6px 0 rgba(121, 86, 83, 0.08);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-pill-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(255, 255, 255, 0.65) 100%
+  );
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow:
+    inset 0 2px 3px 0 rgba(255, 255, 255, 1),
+    0 5px 14px 0 rgba(246, 166, 184, 0.32);
+  transform: translateY(-2px);
+}
+
+/* ================= JELLY & LIGHT HOVER EFFECTS FOR ALL BUTTONS ================= */
+@keyframes jelly-bounce {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(0.92, 1.08);
+  }
+  50% {
+    transform: scale(1.08, 0.92);
+  }
+  70% {
+    transform: scale(0.97, 1.03);
+  }
+  85% {
+    transform: scale(1.02, 0.98);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+/* Light hover and tactile jelly effect applied to all button entities on main web */
+button,
+a.cursor-pointer,
+.btn-jelly,
+[role="button"] {
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease, filter 0.2s ease, background-color 0.2s ease;
+  will-change: transform;
+}
+
+button:not(:disabled):hover,
+a.cursor-pointer:not(:disabled):hover,
+.btn-jelly:hover,
+[role="button"]:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+button:not(:disabled):active,
+a.cursor-pointer:not(:disabled):active,
+.btn-jelly:active,
+[role="button"]:active {
+  animation: jelly-bounce 0.46s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ================= STAMP (ĐÓNG MỘC) ANIMATIONS ================= */
+@keyframes stamp-slam {
+  0% {
+    transform: scale(2.2) translateY(-14px) rotate(-16deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.92) translateY(0px) rotate(-6deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(1.08) rotate(-7deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(-6deg);
+    opacity: 1;
+  }
+}
+
+@keyframes ink-ripple {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes stamp-bob {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-4deg);
+  }
+}
+
+.animate-stamp-slam {
+  animation: stamp-slam 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-ink-ripple {
+  animation: ink-ripple 0.5s ease-out forwards;
+}
+
+.animate-stamp-bob {
+  animation: stamp-bob 1.5s ease-in-out infinite;
+}
+
+/* Stamped Paw Logo Shimmer Effect */
+.stamped-paw-shimmer {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.55) 45%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.55) 55%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-22deg);
+  animation: stamped-paw-sweep 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  border-radius: 9999px;
+}
+
+@keyframes stamped-paw-sweep {
+  0% {
+    left: -120%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    left: 150%;
+    opacity: 1;
+  }
+  51%, 100% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+
+/* Retro Arcade Press Start Blinking Animation */
+@keyframes retro-blink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.985);
+  }
+}
+
+.animate-retro-blink {
+  animation: retro-blink 1.2s ease-in-out infinite;
+}
+
+/* ================= RETRO PIXEL ART & ARCADE ENHANCEMENTS ================= */
+
+/* Tactile 3D Pixel Arcade Button Press */
+.pixel-btn-press {
+  box-shadow: 0 5px 0 #795653;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  will-change: transform, box-shadow;
+}
+
+.pixel-btn-press:hover:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #795653;
+}
+
+.pixel-btn-press:active:not(:disabled),
+.pixel-btn-press.btn-active {
+  transform: translateY(5px) !important;
+  box-shadow: 0 0 0 #795653 !important;
+}
+
+.pixel-btn-press-lg {
+  box-shadow: 0 7px 0 #795653;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  will-change: transform, box-shadow;
+}
+
+.pixel-btn-press-lg:hover:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 5px 0 #795653;
+}
+
+.pixel-btn-press-lg:active:not(:disabled) {
+  transform: translateY(7px) !important;
+  box-shadow: 0 0 0 #795653 !important;
+}
+
+/* Pixel text blink (Hấp nháy / 8-bit text blink without blur) */
+@keyframes pixel-text-blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 99% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-pixel-blink {
+  animation: pixel-text-blink 1.1s steps(2, start) infinite;
+}
+
+/* Pixel Stage Reveal / Dissolve Animation */
+@keyframes pixel-reveal-swipe {
+  0% {
+    opacity: 0;
+    transform: scale(0.97) translateY(4px);
+    filter: brightness(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: brightness(1);
+  }
+}
+
+.animate-stage-reveal {
+  animation: pixel-reveal-swipe 0.28s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+/* Gentle Bobbing / Floating Animation */
+@keyframes pixel-bob {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-pixel-bob {
+  animation: pixel-bob 2.2s ease-in-out infinite;
+}
+
+/* Floating Sakura Petals */
+@keyframes petal-drift {
+  0% {
+    transform: translateY(-15px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(320px) translateX(45px) rotate(220deg);
+    opacity: 0;
+  }
+}
+
+.animate-petal-fall {
+  animation: petal-drift 8s linear infinite;
+}
+
+/* Floating Bubble Rise */
+@keyframes bubble-float-up {
+  0% {
+    transform: translateY(30px) scale(0.7);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.75;
+  }
+  80% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.animate-bubble-rise {
+  animation: bubble-float-up 4s ease-out infinite;
+}
+
+/* Mystic Sparkle Twinkle */
+@keyframes star-twinkle {
+  0%, 100% {
+    transform: scale(0.6) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.25) rotate(45deg);
+    opacity: 1;
+  }
+}
+
+.animate-star-twinkle {
+  animation: star-twinkle 2s ease-in-out infinite;
+}
+
+/* Pixel Smoke Rise */
+@keyframes smoke-puff {
+  0% {
+    transform: translateY(0px) scale(0.8) rotate(0deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-40px) scale(1.4) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+.animate-smoke-puff {
+  animation: smoke-puff 2.5s ease-out infinite;
+}
+
+/* ================= PIXEL GAME TITLE KEYFRAMES ================= */
+
+/* Opening: Bounce In Pop */
+@keyframes title-bounce-pop {
+  0% {
+    transform: scale(0.72) translateY(12px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.06) translateY(-4px);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.97) translateY(1px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-title-pop {
+  animation: title-bounce-pop 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Opening: Shine Sweep */
+@keyframes title-shine-pass {
+  0% {
+    left: -130%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  75% {
+    opacity: 0.95;
+  }
+  100% {
+    left: 170%;
+    opacity: 0;
+  }
+}
+
+.animate-title-shine {
+  animation: title-shine-pass 1.1s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+/* Idle: Floating Animation (Cực nhẹ) */
+@keyframes title-gentle-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3.5px);
+  }
+}
+
+.animate-title-float {
+  animation: title-gentle-float 3.2s ease-in-out infinite;
+}
+
+/* Idle: Neon Glow Pulse (Pastel Pink) */
+@keyframes title-pastel-glow {
+  0%, 100% {
+    text-shadow:
+      0 0 6px rgba(255, 143, 171, 0.45),
+      0 0 14px rgba(255, 182, 193, 0.25);
+    filter: drop-shadow(0 2px 4px rgba(121, 86, 83, 0.15));
+  }
+  50% {
+    text-shadow:
+      0 0 12px rgba(255, 143, 171, 0.85),
+      0 0 24px rgba(255, 182, 193, 0.55),
+      0 0 38px rgba(214, 51, 108, 0.3);
+    filter: drop-shadow(0 3px 8px rgba(214, 51, 108, 0.25));
+  }
+}
+
+.animate-title-neon {
+  animation: title-pastel-glow 2.8s ease-in-out infinite;
+}
+
+/* Opening: Initial Pixel Particle Pop */
+@keyframes pixel-particle-pop {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.3) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(90deg);
+    opacity: 0.85;
+  }
+}
+
+.animate-particle-pop {
+  animation: pixel-particle-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Hover: Sparkle Burst */
+@keyframes burst-outward {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: var(--burst-offset, translate(12px, -12px)) scale(1.2);
+    opacity: 0;
+  }
+}
+
+.animate-sparkle-burst {
+  animation: burst-outward 0.55s ease-out forwards;
+}
+
+/* Swimming Pixel Fish across Title */
+@keyframes fish-glide-pass {
+  0% {
+    left: -10%;
+    transform: translateY(0px) scaleX(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  48% {
+    transform: translateY(-4px) scaleX(1);
+  }
+  88% {
+    opacity: 0.95;
+  }
+  100% {
+    left: 105%;
+    transform: translateY(0px) scaleX(1);
+    opacity: 0;
+  }
+}
+
+.animate-fish-glide {
+  animation: fish-glide-pass 12s ease-in-out infinite;
+}
+
+/* Sleeping Cat breathing/tail bobbing */
+@keyframes cat-peaceful-idle {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-1.5px) rotate(-1deg);
+  }
+}
+
+.animate-cat-peaceful {
+  animation: cat-peaceful-idle 2.4s ease-in-out infinite;
+}
+
+/* Cat breathing idle animation for 2.5D Room */
+@keyframes cat-breathe {
+  0%, 100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  50% {
+    transform: translateY(-2.5px) scale(1.03, 0.98);
+  }
+}
+
+.animate-cat-breathe {
+  animation: cat-breathe 2.4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* Reduced Motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .animate-title-pop,
+  .animate-title-shine,
+  .animate-title-float,
+  .animate-title-neon,
+  .animate-fish-glide,
+  .animate-cat-peaceful,
+  .animate-sparkle-burst,
+  .animate-particle-pop,
+  .animate-pixel-ripple,
+  .animate-pixel-ripple-slow {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ================= RETRO PIXEL ARCADE BUTTON & WATER RIPPLES ================= */
+.retro-pixel-btn {
+  border: 3px solid #795653;
+  border-radius: 0px !important;
+  box-shadow: 4px 4px 0px #795653;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  font-family: 'Tiny5', 'Press Start 2P', monospace;
+  will-change: transform, box-shadow;
+  user-select: none;
+}
+
+.retro-pixel-btn:hover:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 2px 2px 0px #795653;
+}
+
+.retro-pixel-btn:active:not(:disabled) {
+  transform: translateY(4px) !important;
+  box-shadow: 0px 0px 0px #795653 !important;
+}
+
+.retro-pixel-box {
+  border: 3px solid #795653;
+  border-radius: 0px !important;
+  box-shadow: 4px 4px 0px #795653;
+}
+
+.retro-pixel-box-lg {
+  border: 4px solid #795653;
+  border-radius: 0px !important;
+  box-shadow: 6px 6px 0px #795653;
+}
+
+/* Water Ripple animations for lake surface */
+@keyframes pixel-water-ripple {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(10px);
+    opacity: 1;
+  }
+}
+
+.animate-pixel-ripple {
+  animation: pixel-water-ripple 3.5s ease-in-out infinite;
+}
+
+.animate-pixel-ripple-slow {
+  animation: pixel-water-ripple 5.5s ease-in-out infinite;
+}
+
+

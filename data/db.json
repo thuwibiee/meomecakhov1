@@ -1,0 +1,2452 @@
+{
+  "users": [
+    {
+      "id": "usr_admin",
+      "username": "meomecakho@6104",
+      "passwordHash": "ddff7d552c6bf32eb1c50974fe2d4e7adfaa8ee505bf6a2721d9e98969afca1027533b79d139fa4eda373a6832a8e1d155a82896c67f54175043fae85892dc33",
+      "salt": "d9e075de289171d8208cf8c564ce5908",
+      "balance": 9999,
+      "role": "admin",
+      "createdAt": "2026-10-20T00:00:00Z",
+      "failedAttempts": 0
+    },
+    {
+      "id": "usr_guest_demo",
+      "username": "khach_yeu_ca",
+      "passwordHash": "a491ee9210a496760777e0626ed321d5a9334a40c762922ad0a5f3c2bf824edc18f56f25ed8ea6f34143de9a2668487d8b546aa3a1cea6a9e8d1efd7aaf6f172",
+      "salt": "d9e075de289171d8208cf8c564ce5908",
+      "balance": 100,
+      "role": "user",
+      "createdAt": "2026-10-21T00:00:00Z",
+      "failedAttempts": 1
+    }
+  ],
+  "characters": [
+    {
+      "id": "char_lac_tu_du",
+      "name": "Lạc Tử Du",
+      "age": 24,
+      "category": "khô cá con",
+      "shortBio": "Hồ ly tiên sinh ngàn năm hóa hình, tính tình ôn nhu tựa ngọc, mỗi ngày đều chuẩn bị sẵn một bàn điểm tâm nóng hổi đợi bà về nhà.",
+      "fullStory": "Lạc Tử Du là linh hồ chín đuôi tu luyện nghìn năm tại Côn Luân tiên sơn. Từng được tiệm Mèo Mê Cá Khô cưu mang thời sơ hóa, chàng nguyện ở lại trần thế, đem hương trà thanh nhã và ánh mắt cưng chiều dịu dàng nhất che chở cho một mình chủ tiệm.",
+      "price": 30,
+      "studioUrl": "https://aistudio.google.com/",
+      "avatarUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80",
+      "isAvailable": true,
+      "salesCount": 9,
+      "createdAt": "2026-10-20T10:00:00Z",
+      "fishCode": "CK-001",
+      "backstory": "Lạc Tử Du là linh hồ chín đuôi tu luyện nghìn năm tại tuyết phong Côn Luân. Chàng từng trải qua thiên kiếp, mang thương tích nặng và vô tình được chủ tiệm Mèo Mê Cá Khô che chở trong một đêm tuyết lạnh. Để báo ân, chàng ẩn đi tiên khí, hóa thành công tử nho nhã với nụ cười ấm áp, nguyện làm chỗ dựa dịu dàng nhất cho bà.",
+      "openScene": "Gió đêm se lạnh luồn qua khe cửa gỗ. Lạc Tử Du khẽ nghiêng đầu, đuôi hồ ly mềm mại như nhung lướt qua mu bàn tay bà. Chàng đặt tách trà hoa cúc còn nghi ngút khói xuống bàn, đôi mắt phượng cong lên ý cười ôn nhu: \"Bà chủ nhỏ, hôm nay mệt rồi phải không? Ta đã nướng sẵn mẻ cá thơm nhất đợi nàng rồi...\""
+    },
+    {
+      "id": "char_tieu_than",
+      "name": "Tiêu Thần",
+      "age": 26,
+      "category": "khô cá một nắng",
+      "shortBio": "Chỉ huy trưởng hạm đội tinh tế lừng danh. Ngoài mặt lạnh lùng kỷ luật thép, nhưng trong nhật ký chỉ toàn ghi lại thói quen nhỏ của bà.",
+      "fullStory": "Vị thiếu tướng trẻ nhất lịch sử Liên bang Tinh hệ. Giữa hàng ngàn chiến hạm lạnh giá, nơi trú ẩn ấm áp duy nhất của Tiêu Thần chính là góc tiệm cá khô, nơi có một người luôn đợi chàng sau mỗi chuyến viễn chinh không gian.",
+      "price": 45,
+      "studioUrl": "https://aistudio.google.com/prompt/tieu-than-thieu-tuong-tinh-he",
+      "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80",
+      "isAvailable": true,
+      "salesCount": 12,
+      "createdAt": "2026-10-20T10:00:00Z",
+      "fishCode": "CK-002",
+      "backstory": "Chỉ huy trưởng tối cao của hạm đội tuần tra Tinh Hải thứ 7. Dưới lớp áo quân phục thẳng thớm và gương mặt lạnh lùng là một trái tim luôn hướng về góc tiệm nhỏ bình yên. Trong kho dữ liệu tuyệt mật trên tàu chỉ huy, chàng dành riêng một thư mục khóa mã sinh trắc học chỉ để lưu ảnh những khoảnh khắc đời thường của bà.",
+      "openScene": "Tiếng động cơ phi thuyền trầm thấp dần lắng xuống. Cửa khoang chỉ huy mở ra, Tiêu Thần tháo găng tay da đen, sải bước dài về phía bạn. Đôi mắt màu xám bạc sâu thẳm khẽ dao động: \"Báo cáo bà chủ, hạm đội vừa hoàn thành hải trình vượt bão từ trường. Tôi... về nhận thưởng rồi đây.\""
+    },
+    {
+      "id": "char_co_dien",
+      "name": "Cố Diễn",
+      "age": 28,
+      "category": "khô thượng phẩm",
+      "shortBio": "Chủ tịch tập đoàn tài chính kín tiếng, sắc sảo quyết đoán trên thương trường nhưng sẵn sàng dẹp bỏ cuộc họp trăm tỷ chỉ để cùng bà ăn cá khô.",
+      "fullStory": "Người đàn ông nắm giữ huyết mạch kinh tế của thành phố cảng, quen thấu tỏ nhân tâm. Chàng thích ghé tiệm lúc chạng vạng, cởi bỏ cà vạt sang trọng, mang tạp dề caro và cùng bà trò chuyện thâu đêm.",
+      "price": 50,
+      "studioUrl": "https://aistudio.google.com/prompt/co-dien-tong-tai-si-tinh",
+      "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80",
+      "isAvailable": true,
+      "salesCount": 15,
+      "createdAt": "2026-10-20T10:00:00Z",
+      "fishCode": "CK-003",
+      "backstory": "Người thừa kế độc nhất kiêm CEO tập đoàn tài chính Cố Thị, người có thể hô mưa gọi gió trên thương trường quốc tế. Chàng cực kỳ ghét sự ồn ào và những lời nịnh bợ, nhưng lại say mê hương vị mộc mạc và sự ấm cúng bên trong tiệm Mèo Mê Cá Khô.",
+      "openScene": "Cố Diễn nới lỏng chiếc cà vạt lụa màu lam khói, tự tay đóng lại tập tài liệu thương vụ triệu đô. Chàng nhìn bạn qua ánh nến lung linh trong tiệm, khóe môi khẽ nhếch: \"Cả ngày hôm nay nghe đối tác thao thao bất tuyệt, tai tôi sắp hỏng rồi. Giờ chỉ muốn ở cạnh em, nghe em cằn nhằn về mấy con cá khô thôi.\""
+    },
+    {
+      "id": "char_da_huyet",
+      "name": "Dạ Huyết",
+      "age": 25,
+      "category": "khô thượng phẩm",
+      "shortBio": "Chúa tể bóng đêm kiêu ngạo tàn nhẫn, một tay định đoạt vận mệnh tam giới nhưng lại ngoan ngoãn cúi đầu để bà xoa tóc mỗi khi đêm về.",
+      "fullStory": "Dạ Huyết thức tỉnh sau giấc ngủ vạn năm, coi thường luật lệ thế tục. Nhưng từ khi nếm thử mẻ cá khô thơm lừng của tiệm, chàng tự nguyện thu lại móng vuốt, trở thành chiếc đuôi bám dính bảo hộ bà cả ngày lẫn đêm.",
+      "price": 60,
+      "studioUrl": "https://aistudio.google.com/prompt/da-huyet-ma-vuong-kieu-ngao",
+      "avatarUrl": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=80",
+      "isAvailable": true,
+      "salesCount": 19,
+      "createdAt": "2026-10-21T08:00:00Z",
+      "fishCode": "CK-004",
+      "backstory": "Ma tôn thống lĩnh vực thẳm Vô Vọng, thức tỉnh sau giấc ngủ sâu vạn năm. Khắp tam giới ai nghe danh chàng cũng run sợ, nhưng một lần lạc bước vào tiệm cá, chàng lại bị thu phục bởi sự bướng bỉnh và mẻ cá khô giòn tan của bà chủ tiệm.",
+      "openScene": "Một làn khói đen tản ra sau lưng bạn, Dạ Huyết cúi người, hơi thở mang theo mùi sương đêm và hoa tử đằng vương trên vành tai. Bàn tay thon dài với móng vuốt sắc bén khẽ chạm nhẹ vào lọn tóc bạn: \"Này cô nhóc bướng bỉnh, dám để bổn tọa chờ lâu như thế sao? Nói xem, hôm nay nàng định bù đắp cho ta thế nào?\""
+    },
+    {
+      "id": "char_minh_nhat",
+      "name": "Minh Nhật",
+      "age": 21,
+      "category": "khô hai nắng",
+      "shortBio": "Đội trưởng đội bơi lội đại học, nụ cười rạng rỡ như nắng hạ. Luôn chạy bay tới tiệm cá sau giờ tập chỉ mong được bà khen ngợi.",
+      "fullStory": "Thanh mai trúc mã cùng lớn lên trong ngõ nhỏ. Cậu biết rõ bà ghét ăn hành cay, thích nhâm nhi cá khô giòn khi xem phim. Dù có bao nhiêu cô gái theo đuổi, ánh mắt cậu mười năm qua chỉ hướng về một người.",
+      "price": 25,
+      "studioUrl": "https://aistudio.google.com/prompt/minh-nhat-thanh-mai-truc-ma",
+      "avatarUrl": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80",
+      "isAvailable": true,
+      "salesCount": 22,
+      "createdAt": "2026-10-21T09:00:00Z",
+      "fishCode": "CK-005",
+      "backstory": "Đội trưởng đội bơi lội trường đại học thể thao, thanh xuân phơi phới rực rỡ như ánh mặt trời ban trưa. Cậu là thanh mai trúc mã lớn lên cùng bạn, thích bạn từ những ngày còn chia nhau từng que kem, cây kẹo.",
+      "openScene": "Minh Nhật khoác chiếc khăn bông trắng trên cổ, mái tóc còn vương vài giọt nước lấp lánh dưới nắng. Cậu nhảy chân sáo qua bậc thềm tiệm, nụ cười rạng rỡ tỏa sáng: \"Bà chủ ơi! Hôm nay tui phá kỷ lục bơi 200m bướm rồi nè! Mau mau thưởng cho tui đĩa cá khô đặc biệt đi, tui đói xỉu rồi nè~\""
+    },
+    {
+      "id": "char_han_da_bang",
+      "name": "Hàn Dạ Băng",
+      "age": 27,
+      "category": "khô cá một nắng",
+      "shortBio": "Y tiên ẩn cư tuyết cốc, y thuật tuyệt thế. Bề ngoài lãnh đạm ít lời nhưng bình thuốc bổ nào đưa cho bà cũng ngập tràn mật ong hoa mai.",
+      "fullStory": "Y giả cứu vớt trăm họ nhưng không thể chữa nổi vết thương tương tư trong lòng mình. Chàng cõng hòm thuốc rời khỏi sơn cốc giá lạnh, tình nguyện làm lang trung thường trực chăm sóc giấc ngủ và sức khỏe của chủ tiệm.",
+      "price": 35,
+      "studioUrl": "https://aistudio.google.com/prompt/han-da-bang-than-y-thanh-lanh",
+      "avatarUrl": "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600&auto=format&fit=crop&q=80",
+      "isAvailable": true,
+      "salesCount": 7,
+      "createdAt": "2026-10-21T10:00:00Z",
+      "fishCode": "CK-006",
+      "backstory": "Thần y vang danh thiên hạ ẩn cư tại Băng Nguyệt Cốc. Tính tình thanh lãnh như sương mai đầu cành, nhưng đối với bà chủ tiệm, chàng luôn tỉ mỉ kê những thang thuốc bổ tẩm mật ong ngọt ngào nhất.",
+      "openScene": "Tiếng chuông gió trước hiên tiệm khẽ reo. Hàn Dạ Băng đặt chiếc hòm thuốc bằng gỗ đàn hương xuống góc bàn, ngón tay thanh mảnh nhẹ nhàng bắt mạch nơi cổ tay bạn: \"Khí huyết có phần hao tổn, đêm qua nàng lại thức khuya nữa sao? Ngồi yên đó, ta pha trà dưỡng thần cho nàng.\""
+    }
+  ],
+  "user_characters": [],
+  "orders": [],
+  "wallet_transactions": [
+    {
+      "id": "tx_seed_welcome_demo",
+      "userId": "usr_guest_demo",
+      "type": "ADMIN_ADJUST",
+      "amount": 100,
+      "balanceAfter": 100,
+      "description": "Quà tặng tân thủ tiệm Mèo Mê Cá Khô",
+      "createdAt": "2026-10-21T00:00:00Z"
+    },
+    {
+      "id": "tx_1792682792120_ce428811",
+      "userId": "usr_guest_demo",
+      "type": "BUY_CHARACTER",
+      "amount": -30,
+      "balanceAfter": 70,
+      "referenceId": "ORD-20261022-0001",
+      "description": "Mua cá: Lạc Tử Du (Tiên Hiệp)",
+      "createdAt": "2026-10-22T15:26:32.120Z"
+    },
+    {
+      "id": "tx_1793505050006_90e2d824",
+      "userId": "usr_1793505012727_a23020b1",
+      "type": "DAILY_QUEST",
+      "amount": 50,
+      "balanceAfter": 50,
+      "referenceId": "loyalty_cycle_1",
+      "description": "Hoàn thành thẻ Dấu Chân Khách Quen (Chu kỳ #1)",
+      "createdAt": "2026-11-01T03:50:50.006Z"
+    }
+  ],
+  "redeem_codes": [
+    {
+      "id": "code_1",
+      "code": "MEOME2026",
+      "rewardCoins": 50,
+      "maxUses": 1000,
+      "usedCount": 0,
+      "expiresAt": "2027-12-31T23:59:59Z",
+      "maxPerUser": 1,
+      "isActive": true
+    },
+    {
+      "id": "code_2",
+      "code": "CHAOMUNG50",
+      "rewardCoins": 50,
+      "maxUses": 500,
+      "usedCount": 0,
+      "expiresAt": "2027-12-31T23:59:59Z",
+      "maxPerUser": 1,
+      "isActive": true
+    },
+    {
+      "id": "code_3",
+      "code": "KHAITRUONG",
+      "rewardCoins": 100,
+      "maxUses": 200,
+      "usedCount": 0,
+      "expiresAt": "2027-12-31T23:59:59Z",
+      "maxPerUser": 1,
+      "isActive": true
+    }
+  ],
+  "code_redemptions": [],
+  "quests": [
+    {
+      "id": "quest_daily_checkin",
+      "title": "Điểm danh hằng ngày",
+      "description": "Ghé tiệm điểm danh mõi ngày để nhận ngay 10 xu cá ᰔ",
+      "rewardCoins": 10,
+      "type": "daily_checkin",
+      "isActive": true
+    },
+    {
+      "id": "quest_streak_7",
+      "title": "Thưởng chuỗi điểm danh 7 ngày",
+      "description": "Điểm danh kiên trì đủ 7 ngày liên tiếp nhận thêm 50 Xu Cá.",
+      "rewardCoins": 50,
+      "type": "streak_7",
+      "isActive": true
+    }
+  ],
+  "user_quests": [],
+  "gacha_config": {
+    "spinPrice": 20,
+    "isPaused": false,
+    "rates": [
+      {
+        "coins": 5,
+        "rate": 40,
+        "label": "Voucher 5 Xu Cá",
+        "rarity": "common",
+        "capsuleType": "strawberry_milk",
+        "capsuleName": "Capsule 01 — Strawberry Milk"
+      },
+      {
+        "coins": 10,
+        "rate": 30,
+        "label": "Voucher 10 Xu Cá",
+        "rarity": "common",
+        "capsuleType": "fish_blue",
+        "capsuleName": "Capsule 02 — Fish Blue"
+      },
+      {
+        "coins": 20,
+        "rate": 20,
+        "label": "Voucher 20 Xu Cá",
+        "rarity": "rare",
+        "capsuleType": "butter_cream",
+        "capsuleName": "Capsule 03 — Butter Cream"
+      },
+      {
+        "coins": 50,
+        "rate": 9,
+        "label": "Voucher 50 Xu Cá",
+        "rarity": "super_rare",
+        "capsuleType": "pearl_rainbow",
+        "capsuleName": "Capsule 04 — Pearl Rainbow"
+      },
+      {
+        "coins": 100,
+        "rate": 1,
+        "label": "Voucher 100 Xu Cá Đại Cát",
+        "rarity": "legendary",
+        "capsuleType": "pearl_rainbow",
+        "capsuleName": "Capsule 04 — Pearl Rainbow"
+      }
+    ]
+  },
+  "vouchers": [],
+  "feedbacks": [],
+  "admin_audit_logs": [
+    {
+      "id": "log_seed",
+      "adminUsername": "admin",
+      "action": "INIT_SYSTEM",
+      "target": "SYSTEM",
+      "details": "Khởi tạo hệ thống Mèo Mê Cá Khô với cơ sở dữ liệu gốc",
+      "timestamp": "2026-10-20T00:00:00Z"
+    },
+    {
+      "id": "log_1793444271674",
+      "adminUsername": "meomecakho@6104",
+      "action": "UPDATE_CHARACTER",
+      "target": "Lạc Tử Du Test",
+      "details": "Cập nhật thông tin nhân vật Lạc Tử Du Test",
+      "timestamp": "2026-10-31T10:57:51.674Z"
+    },
+    {
+      "id": "log_1793444276547",
+      "adminUsername": "meomecakho@6104",
+      "action": "UPDATE_CHARACTER",
+      "target": "Lạc Tử Du",
+      "details": "Cập nhật thông tin nhân vật Lạc Tử Du",
+      "timestamp": "2026-10-31T10:57:56.547Z"
+    },
+    {
+      "id": "log_1793581410987",
+      "adminUsername": "meomecakho@6104",
+      "action": "UPDATE_CHARACTER",
+      "target": "Lạc Tử Du Test",
+      "details": "Cập nhật thông tin nhân vật Lạc Tử Du Test",
+      "timestamp": "2026-11-02T01:03:30.987Z"
+    }
+  ],
+  "orderCounter": 1,
+  "sessions": [
+    {
+      "token": "usr_guest_demo.ded1614b9edcaed4290c4c53eaeb8c77a113488a1eccfe15",
+      "userId": "usr_guest_demo",
+      "createdAt": "2026-10-22T16:37:23.631Z"
+    },
+    {
+      "token": "usr_guest_demo.9af65882d88af947fc2ffb61866f5d09df41f808d6da7f12",
+      "userId": "usr_guest_demo",
+      "createdAt": "2026-10-30T03:59:34.012Z"
+    },
+    {
+      "token": "usr_1793500378976_dce70517.746216489fa61c09f0cf9018def8b581d9884a322b16029b",
+      "userId": "usr_1793500378976_dce70517",
+      "createdAt": "2026-11-01T02:32:58.976Z"
+    },
+    {
+      "token": "usr_1793505012727_a23020b1.1a11fc6e7ffa56646c11291ea38e49b3c275041724273889",
+      "userId": "usr_1793505012727_a23020b1",
+      "createdAt": "2026-11-01T03:50:12.728Z"
+    }
+  ],
+  "complaints": [],
+  "character_feedbacks": [],
+  "special_orders": [
+    {
+      "id": "REQ-0001",
+      "requestId": "REQ-0001",
+      "userId": "usr_guest_demo",
+      "username": "khach_yeu_ca",
+      "characterName": "Lâm Dật Thần",
+      "fishType": "Thanh xuân vườn trường, đối thủ học đường",
+      "description": "Học bá lạnh lùng, tóc đen kính cận, luôn đứng nhất khối nhưng bí mật mang kẹo dâu cho bạn.",
+      "plotIdea": "Hai người cùng tham gia kỳ thi học sinh giỏi quốc gia, bị kẹt lại phòng thí nghiệm trong đêm mưa...",
+      "extraNotes": "Muốn có thêm phân cảnh che ô dưới mưa lúc tan học ạ!",
+      "title": "Lâm Dật Thần",
+      "requestTypeName": "PHIẾU ĐẶT CÁ KHÔ",
+      "requestType": "custom_fish_order",
+      "status": "received",
+      "createdAt": "2026-10-30T03:59:44.106Z",
+      "updatedAt": "2026-10-30T03:59:44.106Z"
+    }
+  ],
+  "requestCounter": 2,
+  "loyalty_config": {
+    "isEnabled": true,
+    "rewardCoins": 50
+  },
+  "user_loyalty_cards": [
+    {
+      "id": "ulc_usr_1793505012727_a23020b1",
+      "userId": "usr_1793505012727_a23020b1",
+      "lastCheckInDate": "2026-11-01",
+      "accumulatedDays": 7,
+      "totalCyclesCompleted": 1,
+      "totalXuEarnedFromLoyalty": 50,
+      "lastCheckInTimestamp": "2026-11-01T03:50:50.006Z"
+    }
+  ],
+  "loyalty_completion_logs": [],
+  "cat_town_config": {
+    "isEnabled": true,
+    "dailyFishingLimit": 12,
+    "dailyGrillingLimit": 12,
+    "fishingRewardMin": 5,
+    "fishingRewardMax": 20,
+    "grillingRewardPerfect": 20,
+    "grillingRewardGood": 10,
+    "grillingRewardBurnt": 2,
+    "fortuneRewardCoins": 10,
+    "fishCatalog": [
+      {
+        "id": "fish_07",
+        "name": "Sò Ngọc Trai Cực Kì Hiếm",
+        "rarity": "legendary",
+        "rewardCoins": 200,
+        "dropRate": 2,
+        "image": "/assets/fishing/fish_07.png",
+        "weightMin": 1500,
+        "weightMax": 3200,
+        "description": "Báu vật linh thiêng dưới đáy Hồ Bong Bóng! Vỏ sò 7 sắc cầu vồng ngậm viên ngọc trai phát sáng rực rỡ.",
+        "color": "#FFD166",
+        "iconType": "pearl_shell"
+      },
+      {
+        "id": "fish_01",
+        "name": "Cá Xiêm Hoa Anh Đào",
+        "rarity": "legendary",
+        "rewardCoins": 160,
+        "dropRate": 3,
+        "image": "/assets/fishing/fish_01.png",
+        "weightMin": 900,
+        "weightMax": 2100,
+        "description": "Cá cực kì hiếm! Mang sắc hồng cánh sen ngọt ngào và đóa hoa anh đào cài vây kiêu sa.",
+        "color": "#FF8FAB",
+        "iconType": "sakura_betta"
+      },
+      {
+        "id": "fish_03",
+        "name": "Cá Xiêm Lam Hoàng Kim",
+        "rarity": "epic",
+        "rewardCoins": 100,
+        "dropRate": 6,
+        "image": "/assets/fishing/fish_03.png",
+        "weightMin": 600,
+        "weightMax": 1300,
+        "description": "Cá betta hoàng tộc, đuôi xòe tròn như vầng trăng rằm tỏa sắc vàng lam lộng lẫy.",
+        "color": "#A855F7",
+        "iconType": "gold_blue_betta"
+      },
+      {
+        "id": "fish_10",
+        "name": "Cá Chép Nâu Đuôi Đỏ",
+        "rarity": "epic",
+        "rewardCoins": 80,
+        "dropRate": 6,
+        "image": "/assets/fishing/fish_10.png",
+        "weightMin": 520,
+        "weightMax": 1150,
+        "description": "Cá chép cổ thụ mang dáng dấp dũng mãnh, vảy nâu gấm và đuôi đỏ uy nghi.",
+        "color": "#C084FC",
+        "iconType": "brown_carp"
+      },
+      {
+        "id": "fish_02",
+        "name": "Cá Vàng Ryukin Ánh Bạc",
+        "rarity": "rare",
+        "rewardCoins": 60,
+        "dropRate": 8,
+        "image": "/assets/fishing/fish_02.png",
+        "weightMin": 400,
+        "weightMax": 850,
+        "description": "Chú cá vàng Ryukin dáng tròn quý phái, vây đuôi ánh bạc lấp lánh dưới nắng.",
+        "color": "#3B82F6",
+        "iconType": "ryukin_goldfish"
+      },
+      {
+        "id": "fish_09",
+        "name": "Cá Rô Phi Vây Cam",
+        "rarity": "rare",
+        "rewardCoins": 50,
+        "dropRate": 8,
+        "image": "/assets/fishing/fish_09.png",
+        "weightMin": 310,
+        "weightMax": 720,
+        "description": "Thân xanh ngọc bích phối vây cam rực lửa, loài cá nhanh nhẹn bậc nhất đầm nước.",
+        "color": "#60A5FA",
+        "iconType": "tilapia_orange"
+      },
+      {
+        "id": "fish_04",
+        "name": "Cá Bướm Xanh Sọc Đen",
+        "rarity": "rare",
+        "rewardCoins": 50,
+        "dropRate": 9,
+        "image": "/assets/fishing/fish_04.png",
+        "weightMin": 280,
+        "weightMax": 620,
+        "description": "Họa tiết sọc đen trên nền ngọc lục bảo, viền vây vàng chanh tựa chú bướm rập rờn dưới nước.",
+        "color": "#38BDF8",
+        "iconType": "butterfly_fish"
+      },
+      {
+        "id": "fish_05",
+        "name": "Cá Hồi Suối Xanh Rêu",
+        "rarity": "common",
+        "rewardCoins": 30,
+        "dropRate": 12,
+        "image": "/assets/fishing/fish_05.png",
+        "weightMin": 200,
+        "weightMax": 480,
+        "description": "Chú cá suối thân thuộc, đốm xanh rêu mát lành, thịt thơm ngọt rất hợp đem nướng.",
+        "color": "#795653",
+        "iconType": "moss_trout"
+      },
+      {
+        "id": "fish_06",
+        "name": "Cá Tròn Mắt To Đỏ Rực",
+        "rarity": "common",
+        "rewardCoins": 30,
+        "dropRate": 12,
+        "image": "/assets/fishing/fish_06.png",
+        "weightMin": 180,
+        "weightMax": 420,
+        "description": "Tròn ủng như quả cà chua đỏ, đôi mắt to ngơ ngác cực kỳ đáng yêu khi bị kéo lên bờ.",
+        "color": "#EF4444",
+        "iconType": "round_red_fish"
+      },
+      {
+        "id": "fish_08",
+        "name": "Cá Bánh Mì Bơ Vàng",
+        "rarity": "common",
+        "rewardCoins": 30,
+        "dropRate": 12,
+        "image": "/assets/fishing/fish_08.png",
+        "weightMin": 160,
+        "weightMax": 390,
+        "description": "Mập mạp tròn xoe, màu vàng bơ thơm phức như vừa ra lò từ tiệm bánh mèo.",
+        "color": "#F59E0B",
+        "iconType": "bread_butter_fish"
+      },
+      {
+        "id": "fish_11",
+        "name": "Cá Bầu Trời Xanh Biển",
+        "rarity": "common",
+        "rewardCoins": 30,
+        "dropRate": 12,
+        "image": "/assets/fishing/fish_11.png",
+        "weightMin": 170,
+        "weightMax": 410,
+        "description": "Xanh trong vắt như bầu trời không một gợn mây, thích bơi theo đàn sát bờ nước.",
+        "color": "#0EA5E9",
+        "iconType": "sky_blue_fish"
+      }
+    ],
+    "furnitureCatalog": [
+      {
+        "id": "bed_01",
+        "name": "Giường Nệm Rơm Vàng",
+        "category": "bed",
+        "price": 20,
+        "description": "Nệm đan rơm vàng mộc mạc lót bông mềm mại cho mèo con say giấc.",
+        "imageUrl": "/assets/furniture/beds/bed_01.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_02",
+        "name": "Giường Gỗ Khăn Ca-rô",
+        "category": "bed",
+        "price": 25,
+        "description": "Khung gỗ sồi tự nhiên lót chăn kẻ ca-rô xanh ấm áp ngày đông.",
+        "imageUrl": "/assets/furniture/beds/bed_02.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_03",
+        "name": "Nệm Lông Cừu Dâu Tây",
+        "category": "bed",
+        "price": 30,
+        "description": "Nệm tròn mềm xốp thêu hình quả dâu tây ngọt ngào.",
+        "imageUrl": "/assets/furniture/beds/bed_03.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_04",
+        "name": "Giường Công Chúa Pastel",
+        "category": "bed",
+        "price": 35,
+        "description": "Giường ngủ viền bèo nhún màu hồng phấn ngọt ngào cho bé mèo.",
+        "imageUrl": "/assets/furniture/beds/bed_04.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_05",
+        "name": "Nệm Vỏ Sò Biển Xanh",
+        "category": "bed",
+        "price": 40,
+        "description": "Tạo hình vỏ sò đại dương xanh ngọc, nệm êm ái mát rượi.",
+        "imageUrl": "/assets/furniture/beds/bed_05.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_06",
+        "name": "Giường Hộp Carton Vintage",
+        "category": "bed",
+        "price": 45,
+        "description": "Chiếc hộp carton mà mèo mê mẩn, lót thêm nệm nhung xịn.",
+        "imageUrl": "/assets/furniture/beds/bed_06.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_07",
+        "name": "Nệm Tai Thỏ Xốp Mềm",
+        "category": "bed",
+        "price": 50,
+        "description": "Nệm nhung tuyết có đôi tai thỏ vểnh đáng yêu, giữ ấm tuyệt đối.",
+        "imageUrl": "/assets/furniture/beds/bed_07.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_08",
+        "name": "Giường Bánh Mì Nướng Bơ",
+        "category": "bed",
+        "price": 55,
+        "description": "Thiết kế lát bánh mì nướng vàng giòn, mèo nằm vào cưng xỉu.",
+        "imageUrl": "/assets/furniture/beds/bed_08.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_09",
+        "name": "Giường Gỗ Tầng Rừng Xanh",
+        "category": "bed",
+        "price": 60,
+        "description": "Khung gỗ phong cách mộc mạc, nệm xanh lá rừng thiên nhiên.",
+        "imageUrl": "/assets/furniture/beds/bed_09.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_10",
+        "name": "Nệm Lười Quả Bơ Béo",
+        "category": "bed",
+        "price": 65,
+        "description": "Hình nửa quả bơ xanh ngọc béo tròn, ruột nệm êm như mây.",
+        "imageUrl": "/assets/furniture/beds/bed_10.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_11",
+        "name": "Giường Cổ Điển Hoàng Gia",
+        "category": "bed",
+        "price": 70,
+        "description": "Giường gỗ chạm khắc hoa văn hoàng tộc, phủ chăn gấm tím quý phái.",
+        "imageUrl": "/assets/furniture/beds/bed_11.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_12",
+        "name": "Nệm Bát Mì Ramen Nóng",
+        "category": "bed",
+        "price": 75,
+        "description": "Chiếc nệm hình tô ramen thơm phức, có cả nắp đậy giữ ấm.",
+        "imageUrl": "/assets/furniture/beds/bed_12.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_13",
+        "name": "Giường Lều Du Mục Boho",
+        "category": "bed",
+        "price": 80,
+        "description": "Lều vải Canvas phong cách thổ dân, chỗ ẩn nấp lý tưởng của hoàng thượng.",
+        "imageUrl": "/assets/furniture/beds/bed_13.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_14",
+        "name": "Nệm Hoa Hướng Dương",
+        "category": "bed",
+        "price": 85,
+        "description": "Cánh hoa vàng rực rỡ ôm trọn chú mèo cưng, tràn đầy năng lượng.",
+        "imageUrl": "/assets/furniture/beds/bed_14.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_15",
+        "name": "Giường Phi Thuyền Vũ Trụ",
+        "category": "bed",
+        "price": 90,
+        "description": "Thiết kế phi thuyền hiện đại, kính vòm trong suốt cực ngầu.",
+        "imageUrl": "/assets/furniture/beds/bed_15.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "bed_16",
+        "name": "Ngai Vàng Mèo Đế Vương",
+        "category": "bed",
+        "price": 95,
+        "description": "Ngai vàng dát ngọc hoàng gia nạm hồng bảo, đẳng cấp thượng đế mèo!",
+        "imageUrl": "/assets/furniture/beds/bed_16.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "sofa_01",
+        "name": "Sofa Băng Dài Kem Sữa",
+        "category": "sofa",
+        "price": 35,
+        "description": "Ghế bành dài êm ái bọc nỉ màu kem, đủ chỗ cho đàn mèo phơi bụng.",
+        "imageUrl": "/assets/furniture/sofas/sofa_01.png",
+        "dimensions": {
+          "w": 2,
+          "h": 1
+        }
+      },
+      {
+        "id": "sofa_02",
+        "name": "Sofa Nhung Đỏ Rượu Vang",
+        "category": "sofa",
+        "price": 45,
+        "description": "Chất liệu nhung đỏ sang trọng, tôn lên nét quý phái cho phòng khách.",
+        "imageUrl": "/assets/furniture/sofas/sofa_02.png",
+        "dimensions": {
+          "w": 2,
+          "h": 1
+        }
+      },
+      {
+        "id": "sofa_03",
+        "name": "Sofa Xanh Rêu Vintage",
+        "category": "sofa",
+        "price": 55,
+        "description": "Tông xanh cổ điển thanh lịch, đệm bông dày dặn đàn hồi êm ru.",
+        "imageUrl": "/assets/furniture/sofas/sofa_03.png",
+        "dimensions": {
+          "w": 2,
+          "h": 1
+        }
+      },
+      {
+        "id": "sofa_04",
+        "name": "Sofa Da Bò Nâu Ấm Áp",
+        "category": "sofa",
+        "price": 65,
+        "description": "Ghế da phong cách quý tộc cổ điển, chống trầy móng vuốt mèo hiệu quả.",
+        "imageUrl": "/assets/furniture/sofas/sofa_04.png",
+        "dimensions": {
+          "w": 2,
+          "h": 1
+        }
+      },
+      {
+        "id": "sofa_05",
+        "name": "Sofa Hồng Kẹo Ngọt MMCK",
+        "category": "sofa",
+        "price": 75,
+        "description": "Sofa hồng pastel phong cách tiệm bánh ngọt ngào thêu hoa văn độc quyền.",
+        "imageUrl": "/assets/furniture/sofas/sofa_05.png",
+        "dimensions": {
+          "w": 2,
+          "h": 1
+        }
+      },
+      {
+        "id": "sofa_06",
+        "name": "Sofa Hoàng Tộc Thượng Hạng",
+        "category": "sofa",
+        "price": 90,
+        "description": "Tay vịn uốn lượn phong cách Baroque, nệm gấm cao cấp cho vua mèo.",
+        "imageUrl": "/assets/furniture/sofas/sofa_06.png",
+        "dimensions": {
+          "w": 2,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_01",
+        "name": "Tường Sọc Kem Vani",
+        "category": "wallpaper",
+        "price": 30,
+        "description": "Họa tiết sọc dọc pastel kem nhẹ nhàng, tạo cảm giác trần nhà cao ráo.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_01.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_02",
+        "name": "Tường Hồng Phấn Ngọt Ngào",
+        "category": "wallpaper",
+        "price": 35,
+        "description": "Tông hồng pastel dịu mắt, mang hơi thở ấm áp như phòng công chúa.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_02.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_03",
+        "name": "Tường Xanh Bạc Hà Mát Lành",
+        "category": "wallpaper",
+        "price": 40,
+        "description": "Sắc xanh mint thanh mát, xoa dịu đôi mắt và đem lại giấc ngủ ngon.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_03.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_04",
+        "name": "Tường Bầu Trời Mây Trắng",
+        "category": "wallpaper",
+        "price": 45,
+        "description": "Bầu trời xanh ngắt điểm xuyết những đám mây trắng xốp bay bổng.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_04.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_05",
+        "name": "Tường Gạch Mộc Cổ Kính",
+        "category": "wallpaper",
+        "price": 50,
+        "description": "Gạch nung đỏ ấm cúng phong cách nhà gỗ vùng quê châu Âu.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_05.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_06",
+        "name": "Tường Dấu Chân Mèo",
+        "category": "wallpaper",
+        "price": 55,
+        "description": "Hàng ngàn dấu chân mèo ngộ nghĩnh in nổi trên nền giấy dán tường.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_06.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_07",
+        "name": "Tường Hoa Nhí Đồng Quê",
+        "category": "wallpaper",
+        "price": 60,
+        "description": "Những đóa hoa cúc họa mi nhỏ nhắn tinh tế phong cách Cottagecore.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_07.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_08",
+        "name": "Tường Vàng Nắng Ban Mai",
+        "category": "wallpaper",
+        "price": 65,
+        "description": "Ánh nắng bình minh rọi sáng căn phòng, tràn đầy năng lượng tươi mới.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_08.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_09",
+        "name": "Tường Tím Hoa Oải Hương",
+        "category": "wallpaper",
+        "price": 70,
+        "description": "Sắc tím Lavender mộng mơ giúp an thần và thư giãn tinh thần tối đa.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_09.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_10",
+        "name": "Tường Rừng Rậm Nhiệt Đới",
+        "category": "wallpaper",
+        "price": 75,
+        "description": "Tán lá dừa và cây cọ xanh mướt cho mèo cảm giác làm chúa tể sơn lâm.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_10.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_11",
+        "name": "Tường Bầu Trời Đêm Đầy Sao",
+        "category": "wallpaper",
+        "price": 80,
+        "description": "Ngàn vì sao lấp lánh giữa màn đêm huyền bí, có dải ngân hà huyền ảo.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_11.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_12",
+        "name": "Tường Kẹo Bông Cầu Vồng",
+        "category": "wallpaper",
+        "price": 85,
+        "description": "Dải màu cầu vồng chuyển sắc mượt mà ngọt ngào như tiệm kẹo marshmallow.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_12.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_13",
+        "name": "Tường Đá Cẩm Thạch Xa Hoa",
+        "category": "wallpaper",
+        "price": 90,
+        "description": "Vân đá cẩm thạch trắng viền vàng kim quý tộc, tôn vinh vẻ vương giả.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_13.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_14",
+        "name": "Tường Tranh Cá Biển Thủy Cung",
+        "category": "wallpaper",
+        "price": 95,
+        "description": "Những đàn cá bơi lội tung tăng quanh rạn san hô, mèo ngắm mê mẩn.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_14.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "wall_15",
+        "name": "Tường Cung Điện Ánh Trăng",
+        "category": "wallpaper",
+        "price": 105,
+        "description": "Tường dát vàng ánh trăng lung linh độc bản chỉ có tại thị trấn mèo.",
+        "imageUrl": "/assets/furniture/wallpapers/wall_15.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_01",
+        "name": "Sàn Ván Gỗ Sồi Sáng",
+        "category": "floor",
+        "price": 25,
+        "description": "Ván gỗ tự nhiên màu sáng mộc mạc, tạo cảm giác sạch sẽ và ấm chân.",
+        "imageUrl": "/assets/furniture/floors/floor_01.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_02",
+        "name": "Sàn Gỗ Xương Cá Cổ Điển",
+        "category": "floor",
+        "price": 30,
+        "description": "Kiểu ghép xương cá tinh tế chuẩn phong cách kiến trúc Pháp sang trọng.",
+        "imageUrl": "/assets/furniture/floors/floor_02.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_03",
+        "name": "Sàn Gạch Bông Hoài Niệm",
+        "category": "floor",
+        "price": 35,
+        "description": "Hoa văn gạch bông vintage mát rượi những ngày hè nóng bức.",
+        "imageUrl": "/assets/furniture/floors/floor_03.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_04",
+        "name": "Sàn Đá Trắng Cẩm Thạch",
+        "category": "floor",
+        "price": 40,
+        "description": "Bề mặt đá bóng bẩy mát rượi, mèo rất thích nằm ườn giải nhiệt.",
+        "imageUrl": "/assets/furniture/floors/floor_04.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_05",
+        "name": "Sàn Gỗ Nâu Trầm Ấm Áp",
+        "category": "floor",
+        "price": 45,
+        "description": "Gỗ óc chó màu nâu trầm ấm cúng, đem lại cảm giác bình yên thư thái.",
+        "imageUrl": "/assets/furniture/floors/floor_05.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_06",
+        "name": "Sàn Chiếu Tatami Truyền Thống",
+        "category": "floor",
+        "price": 50,
+        "description": "Chiếu rơm thơm hương thảo mộc tự nhiên, thân thiện với đệm thịt của mèo.",
+        "imageUrl": "/assets/furniture/floors/floor_06.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_07",
+        "name": "Sàn Thảm Cỏ Xanh Rì Rào",
+        "category": "floor",
+        "price": 55,
+        "description": "Mô phỏng bãi cỏ tự nhiên mềm mại, như đang dạo chơi giữa công viên.",
+        "imageUrl": "/assets/furniture/floors/floor_07.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_08",
+        "name": "Sàn Gạch Ca-rô Đen Trắng",
+        "category": "floor",
+        "price": 60,
+        "description": "Bàn cờ ca-rô cá tính hiện đại, biến phòng khách thành sàn diễn thời trang.",
+        "imageUrl": "/assets/furniture/floors/floor_08.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_09",
+        "name": "Sàn Gỗ Hoa Hồng Pastel",
+        "category": "floor",
+        "price": 65,
+        "description": "Ván sàn phủ men hồng ánh kim nữ tính, tạo không gian thơ mộng.",
+        "imageUrl": "/assets/furniture/floors/floor_09.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_10",
+        "name": "Sàn Đá Sỏi Suối Trong Lành",
+        "category": "floor",
+        "price": 70,
+        "description": "Những viên sỏi cuội nhẵn bóng mát mẻ giúp massage bàn chân mèo.",
+        "imageUrl": "/assets/furniture/floors/floor_10.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_11",
+        "name": "Sàn Gạch Men Lam Thượng Hạng",
+        "category": "floor",
+        "price": 75,
+        "description": "Họa tiết men lam cung đình tinh xảo được thợ gốm lành nghề chế tác.",
+        "imageUrl": "/assets/furniture/floors/floor_11.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_12",
+        "name": "Sàn Kẹo Bánh Quy Ngọt Ngào",
+        "category": "floor",
+        "price": 80,
+        "description": "Các ô bánh quy bơ nướng thơm phức lót sàn, biến ngôi nhà thành xứ kẹo.",
+        "imageUrl": "/assets/furniture/floors/floor_12.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_13",
+        "name": "Sàn Dung Nham Lửa Ấm Áp",
+        "category": "floor",
+        "price": 85,
+        "description": "Họa tiết đá núi lửa phát nhiệt dịu nhẹ sưởi ấm mùa đông băng giá.",
+        "imageUrl": "/assets/furniture/floors/floor_13.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_14",
+        "name": "Sàn Thủy Tinh Ngắm Cá",
+        "category": "floor",
+        "price": 90,
+        "description": "Sàn kính nhìn thẳng xuống đáy hồ bong bóng, đàn cá bơi dưới chân.",
+        "imageUrl": "/assets/furniture/floors/floor_14.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "floor_15",
+        "name": "Sàn Vàng Hoàng Kim Lộng Lẫy",
+        "category": "floor",
+        "price": 95,
+        "description": "Dát vàng 24K rực rỡ lấp lánh khắp mặt sàn dinh thự của hoàng thượng mèo.",
+        "imageUrl": "/assets/furniture/floors/floor_15.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_01",
+        "name": "Tủ Quần Áo Gỗ Sồi 2 Cánh",
+        "category": "decor",
+        "price": 15,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_01.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_02",
+        "name": "Tủ Sách Gỗ Thông Nhiều Ngăn",
+        "category": "decor",
+        "price": 16,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_02.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_03",
+        "name": "Kệ Bếp Men Xanh Pastel",
+        "category": "decor",
+        "price": 17,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_03.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_04",
+        "name": "Tủ Trưng Bày Màu Rêu",
+        "category": "decor",
+        "price": 18,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_04.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_05",
+        "name": "Kệ Gỗ Tím Oải Hương",
+        "category": "decor",
+        "price": 19,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_05.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_06",
+        "name": "Tủ Đựng Đồ Gỗ Mộc",
+        "category": "decor",
+        "price": 20,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_06.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_07",
+        "name": "Cửa Sổ Vòm Đón Nắng Sớm",
+        "category": "decor",
+        "price": 21,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_07.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_08",
+        "name": "Gương Soi Đứng Viền Đen",
+        "category": "decor",
+        "price": 22,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_08.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_09",
+        "name": "Cửa Sổ Gỗ Hai Cánh Vintage",
+        "category": "decor",
+        "price": 23,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_09.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_10",
+        "name": "Gương Soi Viền Hồng Pastel",
+        "category": "decor",
+        "price": 24,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_10.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_11",
+        "name": "Bàn Trà Tròn Chân Gỗ Hồng",
+        "category": "decor",
+        "price": 25,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_11.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_12",
+        "name": "Bàn Trà Gỗ Sồi Sáng",
+        "category": "decor",
+        "price": 26,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_12.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_13",
+        "name": "Bàn Trà Xanh Bạc Hà",
+        "category": "decor",
+        "price": 27,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_13.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_14",
+        "name": "Bàn Ăn Dài Gia Đình Mèo",
+        "category": "decor",
+        "price": 28,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_14.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_15",
+        "name": "Chậu Cây Kiểng Lá Xanh",
+        "category": "decor",
+        "price": 29,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_15.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_16",
+        "name": "Đèn Cây Phòng Khách Cổ Điển",
+        "category": "decor",
+        "price": 30,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_16.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_17",
+        "name": "Cây Cào Móng Mèo Cao Tầng",
+        "category": "decor",
+        "price": 31,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_17.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_18",
+        "name": "Đệm Ngồi Bệt Tròn Màu Be",
+        "category": "decor",
+        "price": 32,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_18.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_19",
+        "name": "Đệm Bệt Lông Cừu Mềm Xốp",
+        "category": "decor",
+        "price": 33,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_19.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_20",
+        "name": "Đệm Bệt Xám Tro Êm Ái",
+        "category": "decor",
+        "price": 34,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_20.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_21",
+        "name": "Đệm Ngồi Bơ Vàng Xinh Xắn",
+        "category": "decor",
+        "price": 35,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_21.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_22",
+        "name": "Giỏ Mây Mèo Nằm Cuộn Tròn",
+        "category": "decor",
+        "price": 36,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_22.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_23",
+        "name": "Lò Sưởi Gạch Củi Hồng Ấm Áp",
+        "category": "decor",
+        "price": 37,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_23.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_24",
+        "name": "Lò Sưởi Cổ Điển Viền Hồng",
+        "category": "decor",
+        "price": 38,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_24.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_25",
+        "name": "Lò Sưởi Đá Tím Quý Tộc",
+        "category": "decor",
+        "price": 39,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_25.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_26",
+        "name": "Lò Sưởi Đá Rêu Cổ Kính",
+        "category": "decor",
+        "price": 40,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_26.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_27",
+        "name": "Lò Sưởi Men Lam Băng Tuyết",
+        "category": "decor",
+        "price": 41,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_27.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_28",
+        "name": "Đàn Piano Cổ Điển",
+        "category": "decor",
+        "price": 42,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_28.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_29",
+        "name": "Tivi Hoài Niệm Màn Hình Cong",
+        "category": "decor",
+        "price": 43,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_29.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_30",
+        "name": "Đài Radio Cassette Retro",
+        "category": "decor",
+        "price": 44,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_30.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_31",
+        "name": "Đồng Hồ Để Bàn Cổ Điển",
+        "category": "decor",
+        "price": 45,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_31.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_32",
+        "name": "Bồn Tắm Chân Quỳ Bọt Tuyết",
+        "category": "decor",
+        "price": 46,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_32.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_33",
+        "name": "Tủ Kính Lưu Niệm Hoàng Gia",
+        "category": "decor",
+        "price": 47,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_33.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_34",
+        "name": "Bàn Phấn Trang Điểm Mini",
+        "category": "decor",
+        "price": 48,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_34.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_35",
+        "name": "Ghế Đẩu Bọc Đệm Nhung",
+        "category": "decor",
+        "price": 49,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_35.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_36",
+        "name": "Kệ Đầu Giường Gỗ Trầm",
+        "category": "decor",
+        "price": 50,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_36.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_37",
+        "name": "Bàn Cà Phê Chân Thấp",
+        "category": "decor",
+        "price": 51,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_37.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_38",
+        "name": "Ghế Xoay Quầy Bar Đỏ Rượu",
+        "category": "decor",
+        "price": 52,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_38.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_39",
+        "name": "Tủ Tivi Gỗ Hiện Đại",
+        "category": "decor",
+        "price": 53,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_39.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_40",
+        "name": "Ghế Bành Thư Giãn Bọc Nỉ",
+        "category": "decor",
+        "price": 54,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_40.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_41",
+        "name": "Bàn Học Trẻ Em Pastel",
+        "category": "decor",
+        "price": 55,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_41.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_42",
+        "name": "Ghế Đôn Vuông Xinh Xắn",
+        "category": "decor",
+        "price": 56,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_42.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_43",
+        "name": "Đèn Cây Đứng Vòm Cong",
+        "category": "decor",
+        "price": 57,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_43.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_44",
+        "name": "Tủ Rượu Cổ Kính",
+        "category": "decor",
+        "price": 58,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_44.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_45",
+        "name": "Tủ Đựng Đồ Chơi Gỗ Trắng",
+        "category": "decor",
+        "price": 59,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_45.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_46",
+        "name": "Kệ Cây Cảnh Trong Nhà",
+        "category": "decor",
+        "price": 60,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_46.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_47",
+        "name": "Giá Treo Đồ & Mũ Áo",
+        "category": "decor",
+        "price": 61,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_47.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_48",
+        "name": "Bàn Trà Gỗ Óc Chó",
+        "category": "decor",
+        "price": 62,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_48.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_49",
+        "name": "Kệ Tường Dài Treo Tranh",
+        "category": "decor",
+        "price": 63,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_49.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_50",
+        "name": "Gương Toàn Thân Kiểu Cung Điện",
+        "category": "decor",
+        "price": 64,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_50.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_51",
+        "name": "Chậu Cây Kim Ngân Chiêu Tài",
+        "category": "decor",
+        "price": 65,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_51.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_52",
+        "name": "Ghế Tựa Hồng Công Chúa",
+        "category": "decor",
+        "price": 66,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_52.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_53",
+        "name": "Tủ Bếp Mini Nhiều Ngăn",
+        "category": "decor",
+        "price": 67,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_53.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_54",
+        "name": "Máy Giặt Mini Tiện Ích",
+        "category": "decor",
+        "price": 68,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_54.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_55",
+        "name": "Thùng Rác Dễ Thương Hình Mèo",
+        "category": "decor",
+        "price": 69,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_55.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_56",
+        "name": "Ghế Đọc Sách Thư Thái",
+        "category": "decor",
+        "price": 70,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_56.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_57",
+        "name": "Tủ Giày Gỗ Sồi",
+        "category": "decor",
+        "price": 71,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_57.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_58",
+        "name": "Đèn Chùm Tinh Thể Lấp Lánh",
+        "category": "decor",
+        "price": 72,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_58.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_59",
+        "name": "Cây Treo Chậu Hoa Leo",
+        "category": "decor",
+        "price": 73,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_59.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_60",
+        "name": "Bàn Ăn Nhỏ 2 Chỗ",
+        "category": "decor",
+        "price": 74,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_60.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_61",
+        "name": "Ghế Sofa Đơn Nệm Êm",
+        "category": "decor",
+        "price": 75,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_61.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_62",
+        "name": "Bàn Trà Mặt Kính Tròn",
+        "category": "decor",
+        "price": 76,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_62.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_63",
+        "name": "Thảm Lông Tròn Xinh Xắn",
+        "category": "decor",
+        "price": 77,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_63.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_64",
+        "name": "Tháp Leo Trèo Khám Phá",
+        "category": "decor",
+        "price": 78,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_64.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_65",
+        "name": "Bình Gốm Cắm Cành Đào",
+        "category": "decor",
+        "price": 79,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_65.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_66",
+        "name": "Hộp Nhạc Gỗ Du Dương",
+        "category": "decor",
+        "price": 80,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_66.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_67",
+        "name": "Giỏ Đựng Đồ Chơi Len",
+        "category": "decor",
+        "price": 81,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_67.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_68",
+        "name": "Tủ Chén Bát Sứ Hoa Lam",
+        "category": "decor",
+        "price": 82,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_68.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_69",
+        "name": "Đèn Ngủ Để Bàn Nấm Lùn",
+        "category": "decor",
+        "price": 83,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_69.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_70",
+        "name": "Bình Tưới Cây Men Sứ",
+        "category": "decor",
+        "price": 84,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_70.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_71",
+        "name": "Lọ Hoa Thủy Tinh Để Bàn",
+        "category": "decor",
+        "price": 85,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_71.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_72",
+        "name": "Tủ Đầu Giường 3 Tầng",
+        "category": "decor",
+        "price": 86,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_72.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_73",
+        "name": "Bàn Vi Tính Hiện Đại",
+        "category": "decor",
+        "price": 87,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_73.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_74",
+        "name": "Bàn Trà Nhật Ngồi Bệt",
+        "category": "decor",
+        "price": 88,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_74.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_75",
+        "name": "Bát Ăn Cho Mèo Đôi Sứ Trắng",
+        "category": "decor",
+        "price": 89,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_75.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_76",
+        "name": "Đệm Bát Mì Ramen Độc Đáo",
+        "category": "decor",
+        "price": 90,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_76.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_77",
+        "name": "Chuông Gió Treo Ban Công",
+        "category": "decor",
+        "price": 91,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_77.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_78",
+        "name": "Khay Cát Mèo Tự Động",
+        "category": "decor",
+        "price": 92,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_78.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_79",
+        "name": "Máy Lọc Không Khí Mini",
+        "category": "decor",
+        "price": 93,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_79.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_80",
+        "name": "Bình Nước Tự Động Cho Mèo",
+        "category": "decor",
+        "price": 94,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_80.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_81",
+        "name": "Thảm Cào Móng Hình Con Cá",
+        "category": "decor",
+        "price": 95,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_81.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_82",
+        "name": "Tủ Đựng Đồ Đa Năng",
+        "category": "decor",
+        "price": 96,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_82.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_83",
+        "name": "Bàn Làm Việc Vintage",
+        "category": "decor",
+        "price": 97,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_83.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_84",
+        "name": "Ghế Bập Bênh Thư Giãn",
+        "category": "decor",
+        "price": 98,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_84.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_85",
+        "name": "Tủ Sách Góc Tường",
+        "category": "decor",
+        "price": 99,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_85.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_86",
+        "name": "Kệ Trang Trí Treo Tường",
+        "category": "decor",
+        "price": 100,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_86.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_87",
+        "name": "Ghế Lười Hạt Xốp Khổng Lồ",
+        "category": "decor",
+        "price": 101,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_87.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_88",
+        "name": "Bồn Rửa Mặt Mini Sứ Men",
+        "category": "decor",
+        "price": 102,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_88.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_89",
+        "name": "Tủ Quần Áo Cửa Lùa",
+        "category": "decor",
+        "price": 103,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_89.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_90",
+        "name": "Bàn Trang Điểm Gương Tròn",
+        "category": "decor",
+        "price": 104,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_90.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_91",
+        "name": "Tủ Búp Bê Kính Trong Suốt",
+        "category": "decor",
+        "price": 105,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_91.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_92",
+        "name": "Ghế Sofa Góc Phòng Khách",
+        "category": "decor",
+        "price": 106,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_92.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_93",
+        "name": "Bàn Ăn Bằng Đá Cẩm Thạch",
+        "category": "decor",
+        "price": 107,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_93.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_94",
+        "name": "Cây Thông Noel Lấp Lánh",
+        "category": "decor",
+        "price": 108,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_94.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_95",
+        "name": "Tủ Buffet Phòng Khách",
+        "category": "decor",
+        "price": 109,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_95.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_96",
+        "name": "Kệ Trưng Bày Đồ Lưu Niệm",
+        "category": "decor",
+        "price": 110,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_96.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_97",
+        "name": "Nôi Mèo Treo Trần Dây Thừng",
+        "category": "decor",
+        "price": 111,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_97.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_98",
+        "name": "Bể Cá Cảnh Mini Thủy Sinh",
+        "category": "decor",
+        "price": 112,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_98.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_99",
+        "name": "Đài Phun Nước Phong Thủy",
+        "category": "decor",
+        "price": 113,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_99.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_100",
+        "name": "Máy Chơi Game Thùng Retro",
+        "category": "decor",
+        "price": 114,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_100.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_101",
+        "name": "Bàn Bi-a Mini Thư Giãn",
+        "category": "decor",
+        "price": 115,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_101.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_102",
+        "name": "Đồng Hồ Cây Quả Lắc Cung Đình",
+        "category": "decor",
+        "price": 116,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_102.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_103",
+        "name": "Hộp Kho Báu Mèo Hoàng Gia",
+        "category": "decor",
+        "price": 117,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_103.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "decor_104",
+        "name": "Bộ Sofa Da Phòng Khách Sang Trọng",
+        "category": "decor",
+        "price": 118,
+        "description": "Món đồ trang trí pixel phong cách RPG dễ thương dành cho dinh thự mèo.",
+        "imageUrl": "/assets/furniture/decor/decor_104.png",
+        "dimensions": {
+          "w": 1,
+          "h": 1
+        }
+      }
+    ],
+    "fortuneCatalog": [
+      {
+        "id": "fort_01",
+        "category": "love",
+        "title": "Tình Duyên Nở Rộ",
+        "prophecy": "Hôm nay sợi dây hồng duyên đang lay động khẽ khàng. Nam chính bà thích thầm có thể đang nghĩ về bà đó nha!",
+        "luckyNumber": 7,
+        "luckyColor": "Hồng Phấn",
+        "advice": "Hãy ghé Quầy Cá ngắm nam chính và gửi một lời thì thầm ngọt ngào nhé~"
+      },
+      {
+        "id": "fort_02",
+        "category": "wealth",
+        "title": "Tài Lộc Đầy Rổ Cá",
+        "prophecy": "Tiền tài và Xu Cá đang tìm đường chảy vào ví. Bến câu hôm nay có làn sóng bạc may mắn!",
+        "luckyNumber": 8,
+        "luckyColor": "Vàng Bơ",
+        "advice": "Mau ra Hồ Bong Bóng thả cần, có cá hiếm đang chờ cắn câu đấy!"
+      },
+      {
+        "id": "fort_03",
+        "category": "luck",
+        "title": "Vạn Sự Hanh Thông",
+        "prophecy": "Một ngày nhẹ nhõm như chú mèo nằm sưởi nắng bên bậu cửa sổ. Mọi muộn phiền sẽ tan biến.",
+        "luckyNumber": 3,
+        "luckyColor": "Xanh Biển Nhạt",
+        "advice": "Uống một ngụm sữa ấm, mỉm cười và nướng một xiên cá giòn rụm nha."
+      },
+      {
+        "id": "fort_04",
+        "category": "cat_wisdom",
+        "title": "Lời Khuyên Đại Tiên Mèo",
+        "prophecy": "Mèo bảo: Ăn ngoan, ngủ đủ giấc và đừng quên vuốt ve boss mỗi ngày thì đời tự khắc nở hoa.",
+        "luckyNumber": 9,
+        "luckyColor": "Trắng Kem",
+        "advice": "Về nhà gãi cằm cho bé mèo của bà 3 cái để tích thêm may mắn!"
+      },
+      {
+        "id": "fort_05",
+        "category": "wealth",
+        "title": "Quý Nhân Phù Trợ",
+        "prophecy": "Sắp có một món quà bất ngờ hoặc một vị khách quý ghé thăm tiệm và mang lại niềm vui lớn.",
+        "luckyNumber": 6,
+        "luckyColor": "Tím Oải Hương",
+        "advice": "Giữ tâm trạng tích cực và trang trí căn nhà thật gọn gàng nhé."
+      },
+      {
+        "id": "fort_06",
+        "category": "love",
+        "title": "Trái Tim Rung Rinh",
+        "prophecy": "Có người đang chuẩn bị tạo bất ngờ nho nhỏ cho bà. Hãy mở rộng trái tim đón nhận nhé!",
+        "luckyNumber": 2,
+        "luckyColor": "Đỏ Dâu Tây",
+        "advice": "Đừng ngại ngần bày tỏ sự yêu thương với những người bên cạnh."
+      },
+      {
+        "id": "fort_07",
+        "category": "luck",
+        "title": "Ngư Ông Đắc Lợi",
+        "prophecy": "Hôm nay độ chính xác của bà cao vọt, nướng cá là vàng ruộm, thả cần là trúng phóc!",
+        "luckyNumber": 11,
+        "luckyColor": "Xanh Mint",
+        "advice": "Ghé Bếp Xèo Xèo trổ tài nướng cá 100 điểm hoàn hảo ngay!"
+      }
+    ]
+  },
+  "cat_town_profiles": []
+}
