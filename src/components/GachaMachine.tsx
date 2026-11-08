@@ -853,12 +853,12 @@ export const GachaMachine: React.FC<GachaMachineProps> = ({
           role="dialog"
           aria-modal="true"
           onClick={handleCloseModal}
-          className="fixed inset-0 z-50 bg-[#795653]/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-[#795653]/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200 overflow-y-auto cursor-pointer"
         >
           {/* Modal Container */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-sm rounded-3xl bg-[#FFF9F4] border-[3.5px] border-[#795653] shadow-[8px_8px_0px_#795653] p-6 sm:p-7 flex flex-col items-center text-center overflow-hidden animate-in zoom-in-95 duration-300"
+            className="relative w-full max-w-sm rounded-3xl bg-[#FFF9F4] border-[3.5px] border-[#795653] shadow-[8px_8px_0px_#795653] p-6 sm:p-7 flex flex-col items-center text-center max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300 cursor-default"
           >
             {/* Close Button */}
             <button

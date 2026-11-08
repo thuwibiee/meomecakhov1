@@ -354,10 +354,10 @@ export const WalletSection: React.FC<WalletSectionProps> = ({
       {showHistoryModal && (
         <div
           onClick={() => setShowHistoryModal(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs transition-opacity duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs transition-opacity duration-200 overflow-y-auto cursor-pointer"
         >
           <div 
-            className="relative w-full max-w-2xl bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 sm:p-7 text-[#795653] max-h-[85vh] flex flex-col animate-in fade-in zoom-in-95 duration-200"
+            className="relative w-full max-w-2xl bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 sm:p-7 text-[#795653] max-h-[90vh] flex flex-col animate-in fade-in zoom-in-95 duration-200 cursor-default"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-4 border-b border-[#795653]/20">

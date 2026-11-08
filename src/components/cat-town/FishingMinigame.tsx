@@ -585,8 +585,14 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
 
       {/* ================= 5. SUCCESS CAUGHT POPUP MODAL (DYNAMIC POPUP UI THEO FISH_DATABASE) ================= */}
       {gameState === 'caught' && caughtFishData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/65 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="relative w-full max-w-sm bg-[#FFF9F4] border-4 border-[#795653] p-5 sm:p-6 text-center shadow-[6px_6px_0px_#795653] rounded-none animate-in zoom-in-95 duration-150">
+        <div
+          onClick={() => setGameState('idle')}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/65 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-sm bg-[#FFF9F4] border-4 border-[#795653] p-5 sm:p-6 text-center shadow-[6px_6px_0px_#795653] rounded-none animate-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto cursor-default"
+          >
             {/* Header banner */}
             <div className="text-3xl mb-1 animate-bounce">🎉</div>
             <h3
@@ -730,8 +736,14 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
 
       {/* ================= 6. BỂ CÁ COMPENDIUM MODAL (DANH SÁCH 11 LOÀI CÁ & TỶ LỆ CÂU) ================= */}
       {isCompendiumOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/65 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-2xl bg-[#FFF9F4] border-4 border-[#795653] p-4 sm:p-5 shadow-[6px_6px_0px_#795653] rounded-none max-h-[90vh] flex flex-col">
+        <div
+          onClick={() => setIsCompendiumOpen(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/65 backdrop-blur-xs animate-in fade-in overflow-y-auto cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-2xl bg-[#FFF9F4] border-4 border-[#795653] p-4 sm:p-5 shadow-[6px_6px_0px_#795653] rounded-none max-h-[90vh] flex flex-col cursor-default"
+          >
             <div className="flex items-center justify-between border-b-2 border-[#795653] pb-2 mb-3">
               <h3
                 className="text-sm font-black text-[#D6336C] flex items-center gap-1.5"
@@ -825,8 +837,14 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
 
       {/* ================= 7. ADMIN ASSET CUSTOMIZER MODAL (CHỈ ADMIN THẤY & LƯU PUBLIC) ================= */}
       {isAdmin && isAdminAssetModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/60 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-md bg-[#FFF9F4] border-4 border-[#795653] p-5 shadow-[6px_6px_0px_#795653] rounded-none">
+        <div
+          onClick={() => setIsAdminAssetModalOpen(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/60 backdrop-blur-xs animate-in fade-in overflow-y-auto cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-md bg-[#FFF9F4] border-4 border-[#795653] p-5 shadow-[6px_6px_0px_#795653] rounded-none max-h-[90vh] overflow-y-auto cursor-default"
+          >
             <div className="flex items-center justify-between border-b-2 border-[#795653] pb-2 mb-3">
               <h3
                 className="text-sm font-black text-[#D6336C] flex items-center gap-1.5"

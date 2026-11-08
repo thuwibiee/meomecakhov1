@@ -30,11 +30,11 @@ export const PurchaseConfirmModal: React.FC<PurchaseConfirmModalProps> = ({
         // Global modal dismissal: Click outside closes unless processing
         if (!isProcessing) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs transition-opacity duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs transition-opacity duration-200 overflow-y-auto cursor-pointer"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-sm bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 text-[#795653] overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-sm bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 text-[#795653] max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200 cursor-default"
       >
         {/* Close Button */}
         <button

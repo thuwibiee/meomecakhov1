@@ -28,10 +28,10 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
       onClick={() => {
         if (!isProcessing) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs overflow-y-auto transition-opacity duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs overflow-y-auto transition-opacity duration-200 cursor-pointer"
     >
       <div 
-        className="relative w-full max-w-lg my-8 bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 sm:p-7 overflow-hidden text-[#795653] animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-lg my-8 bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 sm:p-7 max-h-[90vh] overflow-y-auto text-[#795653] animate-in fade-in zoom-in-95 duration-200 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         <button

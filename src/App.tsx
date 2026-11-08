@@ -1020,11 +1020,11 @@ export default function App() {
       {showFeedbackModal && (
         <div
           onClick={() => setShowFeedbackModal(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs transition-opacity duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs transition-opacity duration-200 overflow-y-auto cursor-pointer"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 text-[#795653] animate-in fade-in zoom-in-95 duration-200"
+            className="relative w-full max-w-md bg-[#FFF9F4] rounded-3xl border-2 border-[#795653]/30 shadow-2xl p-6 text-[#795653] max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200 cursor-default"
           >
             <button
               type="button"
@@ -1070,9 +1070,13 @@ export default function App() {
 
       {/* 4. Cat Town Train Departure Confirmation Modal */}
       {showCatTownConfirmModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs animate-in fade-in duration-200">
+        <div
+          onClick={() => setShowCatTownConfirmModal(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#795653]/45 backdrop-blur-xs animate-in fade-in duration-200 overflow-y-auto cursor-pointer"
+        >
           <div
-            className="relative w-full max-w-sm sm:max-w-md bg-[#FFF9F4] rounded-3xl border-2 border-[#FFB3C6] p-6 sm:p-7 text-center animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-sm sm:max-w-md bg-[#FFF9F4] rounded-3xl border-2 border-[#FFB3C6] p-6 sm:p-7 text-center animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto cursor-default"
             style={{
               boxShadow: '0 20px 45px -15px rgba(225, 63, 124, 0.3), 0 0 0 1px #FFB3C6',
             }}

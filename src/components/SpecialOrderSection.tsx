@@ -580,9 +580,9 @@ export const SpecialOrderSection: React.FC<SpecialOrderSectionProps> = ({
                   style={{ fontFamily: "'Cal Sans', sans-serif", color: '#E13F7C' }}
                 >
                   <span>𑣲⋆</span>
-                  <span>MIÊU TẢ CÁ KHÔ</span>
+                  <span style={{ fontSize: '15px', fontFamily: 'Tiny5' }}>MIÊU TẢ CÁ KHÔ</span>
                 </label>
-                <span className="text-[10px] font-medium" style={{ color: '#E13F7C' }}>
+                <span className="text-xs font-medium" style={{ color: '#E13F7C', fontSize: '15px', fontFamily: 'Tiny5' }}>
                   {description.length}/5000
                 </span>
               </div>
@@ -652,7 +652,7 @@ export const SpecialOrderSection: React.FC<SpecialOrderSectionProps> = ({
               />
 
               {fieldErrors.plotIdea && (
-                <p className="text-[11px] text-rose-600 font-medium pl-1">
+                <p className="text-xs text-rose-600 font-medium pl-1" style={{ fontSize: '12px' }}>
                   {fieldErrors.plotIdea}
                 </p>
               )}

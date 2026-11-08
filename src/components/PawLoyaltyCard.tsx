@@ -488,9 +488,13 @@ export const PawLoyaltyCard: React.FC<PawLoyaltyCardProps> = ({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-[#795653]/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setCompletionModal(null)}
+          className="fixed inset-0 z-50 bg-[#795653]/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200 overflow-y-auto cursor-pointer"
         >
-          <div className="relative w-full max-w-sm rounded-3xl bg-[#FFF9F4] border-[3.5px] border-[#FF8FAB] shadow-[8px_8px_0px_#FF8FAB] p-5 sm:p-6 flex flex-col items-center text-center overflow-hidden animate-in zoom-in-95 duration-300">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-sm rounded-3xl bg-[#FFF9F4] border-[3.5px] border-[#FF8FAB] shadow-[8px_8px_0px_#FF8FAB] p-5 sm:p-6 flex flex-col items-center text-center max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300 cursor-default"
+          >
             {/* Close button */}
             <button
               onClick={() => setCompletionModal(null)}

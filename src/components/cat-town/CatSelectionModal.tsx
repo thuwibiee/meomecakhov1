@@ -55,8 +55,16 @@ export const CatSelectionModal: React.FC<CatSelectionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#795653]/70 backdrop-blur-xs animate-in fade-in select-none">
-      <div className="relative w-full max-w-2xl bg-[#FFF9F4] border-4 sm:border-6 border-[#795653] shadow-[8px_8px_0px_#795653] rounded-3xl p-4 sm:p-6 overflow-hidden max-h-[92vh] flex flex-col">
+    <div
+      onClick={() => {
+        if (!isFirstTime && onClose) onClose();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#795653]/70 backdrop-blur-xs animate-in fade-in select-none overflow-y-auto cursor-pointer"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-2xl bg-[#FFF9F4] border-4 sm:border-6 border-[#795653] shadow-[8px_8px_0px_#795653] rounded-3xl p-4 sm:p-6 overflow-y-auto max-h-[90vh] flex flex-col cursor-default"
+      >
         {/* Header Ribbon */}
         <div className="flex items-center justify-between border-b-3 border-[#795653] pb-3 mb-3">
           <div className="flex items-center gap-2">

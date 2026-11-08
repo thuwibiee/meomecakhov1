@@ -528,8 +528,14 @@ export const FortuneMinigame: React.FC<FortuneMinigameProps> = ({
 
       {/* Prophecy Result Modal */}
       {revealedFortune && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#12081F]/80 backdrop-blur-xs animate-in fade-in select-none">
-          <div className="relative w-full max-w-md bg-[#FFF9F4] rounded-3xl border-4 sm:border-5 border-[#795653] p-5 sm:p-6 text-center shadow-[8px_8px_0px_#12081F] animate-in zoom-in-95 overflow-hidden">
+        <div
+          onClick={() => setRevealedFortune(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#12081F]/80 backdrop-blur-xs animate-in fade-in select-none overflow-y-auto cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-md bg-[#FFF9F4] rounded-3xl border-4 sm:border-5 border-[#795653] p-5 sm:p-6 text-center shadow-[8px_8px_0px_#12081F] animate-in zoom-in-95 overflow-y-auto max-h-[90vh] cursor-default"
+          >
             {/* Top Decorative Sparkles */}
             <div className="absolute top-2 left-4 text-sm animate-bounce">✨</div>
             <div className="absolute top-2 right-4 text-sm animate-bounce" style={{ animationDelay: '0.4s' }}>🌟</div>
