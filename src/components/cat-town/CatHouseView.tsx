@@ -1118,12 +1118,6 @@ export const CatHouseView: React.FC<CatHouseViewProps> = ({
 
               {/* Wooden Cushion Platform */}
               <div className="w-28 h-5 bg-[#FF8FAB] border-2 border-[#795653] rounded-none shadow-[2px_2px_0px_#795653] -mt-1 flex items-center justify-center relative z-20">
-                <span
-                  className="text-[10px] text-white font-black tracking-wider"
-                  style={{ fontFamily: "'Tiny5 Duo', 'Tiny5', monospace" }}
-                >
-                  NỆM ÊM
-                </span>
               </div>
             </div>
 
