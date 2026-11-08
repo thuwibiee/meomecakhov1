@@ -49,21 +49,18 @@ import { DEFAULT_FURNITURE_CATALOG } from './components/cat-town/furnitureCatalo
 
 // Connect directly to the user's Firebase project
 const firebaseConfig = {
-  apiKey: firebaseAppletConfig.apiKey || "AIzaSyDzx_V2nrBu6Vk8keprKtnngVu14t20qts",
-  authDomain: firebaseAppletConfig.authDomain || "meomecakho-5c993.firebaseapp.com",
-  projectId: firebaseAppletConfig.projectId || "meomecakho-5c993",
-  storageBucket: firebaseAppletConfig.storageBucket || "meomecakho-5c993.firebasestorage.app",
-  messagingSenderId: firebaseAppletConfig.messagingSenderId || "728185346016",
-  appId: firebaseAppletConfig.appId || "1:728185346016:web:66f518c2b7a5bfe8647d85",
-  measurementId: firebaseAppletConfig.measurementId || "G-8QVWX1CPVE",
-  firestoreDatabaseId: firebaseAppletConfig.firestoreDatabaseId,
+  apiKey: firebaseAppletConfig.apiKey || "AIzaSyAj8ihDtN2Lua6o1cEY-SYkhAwkjFyDvPM",
+  authDomain: firebaseAppletConfig.authDomain || "meomecakhov1.firebaseapp.com",
+  projectId: firebaseAppletConfig.projectId || "meomecakhov1",
+  storageBucket: firebaseAppletConfig.storageBucket || "meomecakhov1.firebasestorage.app",
+  messagingSenderId: firebaseAppletConfig.messagingSenderId || "73422378489",
+  appId: firebaseAppletConfig.appId || "1:73422378489:web:a3f29319ee6b6555749928",
+  measurementId: firebaseAppletConfig.measurementId || "G-XY14JPMGLD",
 };
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = firebaseConfig.firestoreDatabaseId
-  ? getFirestore(app, firebaseConfig.firestoreDatabaseId)
-  : getFirestore(app);
+export const db = getFirestore(app);
 
 export enum OperationType {
   CREATE = 'create',
