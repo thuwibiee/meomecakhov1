@@ -913,6 +913,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 <div>
+                  <label className="text-[11px] font-bold text-[#795653]">Gắn Tags cho nhân vật (phân cách bằng dấu phẩy)</label>
+                  <input
+                    type="text"
+                    placeholder="VD: ThơMộng, LạnhLùng, TổngTài, NiênHạ, CáKhô..."
+                    value={Array.isArray(editingChar.tags) ? editingChar.tags.join(', ') : (editingChar.tags || '')}
+                    onChange={(e) => {
+                      const raw = e.target.value;
+                      const parsedTags = raw.split(',').map((t) => t.trim()).filter(Boolean);
+                      setEditingChar({ ...editingChar, tags: parsedTags });
+                    }}
+                    className="w-full px-3 py-1.5 rounded-lg border border-[#795653]/25 text-xs font-medium"
+                  />
+                </div>
+
+                <div>
                   <div className="flex items-center justify-between mb-1">
                     <label className="text-xs font-extrabold text-[#795653]">
                       Back-story (Cốt truyện chi tiết nhân vật)

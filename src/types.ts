@@ -23,6 +23,7 @@ export interface Character {
   isAvailable: boolean;
   salesCount: number;
   createdAt: string;
+  tags?: string[];
 }
 
 export interface UserCharacterOwnership {
