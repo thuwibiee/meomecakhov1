@@ -67,6 +67,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // Character Form state
   const [editingChar, setEditingChar] = useState<Partial<Character> | null>(initialEditingCharacter || null);
+  const [charTagsInput, setCharTagsInput] = useState<string>(
+    initialEditingCharacter && Array.isArray(initialEditingCharacter.tags)
+      ? initialEditingCharacter.tags.join(', ')
+      : ''
+  );
   const [charError, setCharError] = useState<string | null>(null);
   const [charSuccess, setCharSuccess] = useState<string | null>(null);
   const [isSavingChar, setIsSavingChar] = useState<boolean>(false);
@@ -75,6 +80,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (initialEditingCharacter) {
       setTab('characters');
       setEditingChar(initialEditingCharacter);
+      setCharTagsInput(Array.isArray(initialEditingCharacter.tags) ? initialEditingCharacter.tags.join(', ') : '');
       setCharError(null);
       setCharSuccess(null);
     }
@@ -461,10 +467,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       return;
     }
 
+    const parsedTags = charTagsInput
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+
     const payload = {
       ...editingChar,
       name: charName,
       price: numericPrice,
+      tags: parsedTags,
       studioUrl: normalizeUrl(studioLink) || 'https://aistudio.google.com/',
       avatarUrl: normalizeUrl(editingChar?.avatarUrl),
       receiptAvatarUrl: normalizeUrl(editingChar?.receiptAvatarUrl),
@@ -756,7 +768,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </h3>
             <button
               onClick={() => {
-                setEditingChar({ name: '', fishCode: `CK-${String(characters.length + 1).padStart(3, '0')}`, price: 30, age: 22, category: 'khô thượng phẩm', isAvailable: true, studioUrl: 'https://aistudio.google.com/prompt/', backstory: '', openScene: '' });
+                setEditingChar({ name: '', fishCode: `CK-${String(characters.length + 1).padStart(3, '0')}`, price: 30, age: 22, category: 'khô thượng phẩm', isAvailable: true, studioUrl: 'https://aistudio.google.com/prompt/', backstory: '', openScene: '', tags: ['ThơMộng', 'CáKhô'] });
+                setCharTagsInput('ThơMộng, CáKhô');
                 setCharError(null);
                 setCharSuccess(null);
               }}
@@ -913,18 +926,46 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-[#795653]">Gắn Tags cho nhân vật (phân cách bằng dấu phẩy)</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[11px] font-bold text-[#795653]">Gắn Tags cho nhân vật (gõ phân cách bằng dấu phẩy)</label>
+                    <span className="text-[10px] text-[#795653]/60 font-medium">Gõ phẩy tự do hoặc click ✕ trên thẻ tag để xóa nhanh</span>
+                  </div>
                   <input
                     type="text"
                     placeholder="VD: ThơMộng, LạnhLùng, TổngTài, NiênHạ, CáKhô..."
-                    value={Array.isArray(editingChar.tags) ? editingChar.tags.join(', ') : (editingChar.tags || '')}
-                    onChange={(e) => {
-                      const raw = e.target.value;
-                      const parsedTags = raw.split(',').map((t) => t.trim()).filter(Boolean);
-                      setEditingChar({ ...editingChar, tags: parsedTags });
-                    }}
-                    className="w-full px-3 py-1.5 rounded-lg border border-[#795653]/25 text-xs font-medium"
+                    value={charTagsInput}
+                    onChange={(e) => setCharTagsInput(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded-lg border border-[#795653]/25 text-xs font-medium focus:outline-hidden focus:ring-1 focus:ring-[#F6A6B8]"
                   />
+                  {/* Tag preview chips with instant delete buttons */}
+                  {charTagsInput.trim() && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {charTagsInput
+                        .split(',')
+                        .map((t) => t.trim())
+                        .filter(Boolean)
+                        .map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FFF9F4] text-[#A6536A] border border-[#F6A6B8]/50 text-[11px] font-bold shadow-2xs"
+                          >
+                            <span>#{tag.replace(/^#/, '')}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const currentTags = charTagsInput.split(',').map((t) => t.trim()).filter(Boolean);
+                                const nextTags = currentTags.filter((_, i) => i !== idx);
+                                setCharTagsInput(nextTags.join(', '));
+                              }}
+                              className="w-3.5 h-3.5 rounded-full hover:bg-rose-100 flex items-center justify-center text-rose-500 font-black cursor-pointer text-[10px]"
+                              title="Xóa tag này"
+                            >
+                              ✕
+                            </button>
+                          </span>
+                        ))}
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -1035,6 +1076,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <button
                         onClick={() => {
                           setEditingChar({ ...c });
+                          setCharTagsInput(Array.isArray(c.tags) ? c.tags.join(', ') : '');
                           setCharError(null);
                           setCharSuccess(null);
                         }}

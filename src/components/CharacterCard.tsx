@@ -90,10 +90,32 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
       </h3>
 
       {/* (3) Tuổi & (4) Danh mục / Thể loại (Category tag) */}
-      <div className="relative z-10 flex items-center gap-2 text-xs font-semibold text-[#795653]/85 mt-1 mb-2.5">
+      <div className="relative z-10 flex items-center gap-2 text-xs font-semibold text-[#795653]/85 mt-1 mb-1.5">
         <span style={{ fontFamily: "'Cal Sans', sans-serif", fontWeight: 'normal', color: '#ff6fb2' }}>{character.age} tuổi</span>
         <span aria-hidden="true" className="text-[#F6A6B8] font-bold">·</span>
         <span style={{ fontFamily: "'Cal Sans', sans-serif", color: '#599bc2' }}>{character.category}</span>
+      </div>
+
+      {/* (3.5) Tags nhân vật - Nằm ngay dưới tuổi & category */}
+      <div className="relative z-10 flex flex-wrap gap-1.5 mb-2.5">
+        {Array.isArray(character.tags) && character.tags.length > 0 ? (
+          character.tags.slice(0, 4).map((tag, idx) => (
+            <span
+              key={idx}
+              className="px-2 py-0.5 rounded-full bg-[#FFF5F8]/90 text-[#E13F7C] text-[10px] font-bold border border-[#F6A6B8]/40 shadow-2xs backdrop-blur-xs"
+              style={{ fontFamily: "'Cal Sans', sans-serif" }}
+            >
+              #{tag.replace(/^#/, '')}
+            </span>
+          ))
+        ) : (
+          <span
+            className="px-2 py-0.5 rounded-full bg-[#FFF5F8]/90 text-[#E13F7C] text-[10px] font-bold border border-[#F6A6B8]/40 shadow-2xs"
+            style={{ fontFamily: "'Cal Sans', sans-serif" }}
+          >
+            #{character.category || 'CáKhô'}
+          </span>
+        )}
       </div>
 
       {/* (5) Khung nội dung riêng chứa vài dòng giới thiệu ngắn (short bio/hook) - Frosted Glass Box */}
