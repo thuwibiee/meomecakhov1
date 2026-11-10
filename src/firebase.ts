@@ -355,6 +355,7 @@ export const DEFAULT_GACHA_CONFIG: GachaConfig = {
 export const DEFAULT_LOYALTY_CONFIG: LoyaltyCardConfig = {
   isEnabled: true,
   rewardCoins: 50,
+  dailyRewardCoins: 5,
 };
 
 export const DEFAULT_QUESTS: Quest[] = [
@@ -464,7 +465,7 @@ export async function ensureSeeded(): Promise<void> {
   if (seedPromise) return seedPromise;
   seedPromise = (async () => {
     try {
-      // 1. Seed Characters if Firestore characters collection is empty
+      // 1. Seed Characters if Firestore characters collection is completely empty
       const charSnap = await getDocs(collection(db, 'characters'));
       if (charSnap.empty) {
         const batchPromises = (initialCharactersData as any[]).map((rawChar) => {
@@ -1279,6 +1280,46 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
       return makeRes(400, { error: 'Dữ liệu danh sách nhân vật không hợp lệ.' });
     }
 
+    if (url.startsWith('/api/admin/characters/') && method === 'DELETE') {
+      const user = await resolveUser(options);
+      if (!user || user.role !== 'admin') {
+        return makeRes(403, { error: 'Bạn không có quyền thực hiện thao tác này.' });
+      }
+
+      const charId = url.replace('/api/admin/characters/', '').trim();
+      if (!charId) {
+        return makeRes(400, { error: 'Mã nhân vật không hợp lệ.' });
+      }
+
+      const charRef = doc(db, 'characters', charId);
+      const charSnap = await getDoc(charRef);
+      const charData = charSnap.exists() ? charSnap.data() : null;
+      const charName = charData?.name || charId;
+
+      await deleteDoc(charRef);
+
+      const logId = genId('log');
+      await setDoc(doc(db, 'admin_audit_logs', logId), {
+        id: logId,
+        adminUsername: user.username,
+        action: 'DELETE_CHARACTER',
+        target: charName,
+        details: `Xóa nhân vật: ${charName} (ID: ${charId})`,
+        timestamp: new Date().toISOString(),
+      });
+
+      const allSnap = await getDocs(collection(db, 'characters'));
+      const characters = allSnap.docs
+        .map((d) => normalizeCharacter({ ...d.data(), id: d.id }))
+        .sort((a, b) => String(a.fishCode || '').localeCompare(String(b.fishCode || '')));
+
+      return makeRes(200, {
+        success: true,
+        message: `Đã xóa nhân vật ${charName} thành công!`,
+        characters,
+      });
+    }
+
     // ==========================================
     // 2b. SPICES (Quầy Gia Vị)
     // ==========================================
@@ -1837,16 +1878,14 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
       card.lastCheckInTimestamp = new Date().toISOString();
 
       let isCompleted = false;
-      let rewardCoins = 0;
+      const dailyReward = Math.max(0, Number(config.dailyRewardCoins ?? 5));
+      const cycleReward = card.accumulatedDays === 7 ? Math.max(0, Number(config.rewardCoins) || 50) : 0;
+      const totalEarnedThisCheckIn = dailyReward + cycleReward;
       let newBalance = user.balance;
 
-      if (card.accumulatedDays === 7) {
-        isCompleted = true;
-        rewardCoins = Math.max(0, Number(config.rewardCoins) || 50);
-        newBalance += rewardCoins;
-        card.totalCyclesCompleted = (card.totalCyclesCompleted || 0) + 1;
-        card.totalXuEarnedFromLoyalty = (card.totalXuEarnedFromLoyalty || 0) + rewardCoins;
-
+      if (totalEarnedThisCheckIn > 0) {
+        newBalance += totalEarnedThisCheckIn;
+        card.totalXuEarnedFromLoyalty = (card.totalXuEarnedFromLoyalty || 0) + totalEarnedThisCheckIn;
         await updateDoc(doc(db, 'users', user.id), { balance: newBalance });
 
         const txId = genId('tx');
@@ -1854,12 +1893,19 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           id: txId,
           userId: user.id,
           type: 'DAILY_QUEST',
-          amount: rewardCoins,
+          amount: totalEarnedThisCheckIn,
           balanceAfter: newBalance,
-          referenceId: `loyalty_cycle_${card.totalCyclesCompleted}`,
-          description: `Hoàn thành thẻ Dấu Chân Khách Quen (Chu kỳ #${card.totalCyclesCompleted})`,
+          referenceId: `loyalty_day_${card.accumulatedDays}`,
+          description: card.accumulatedDays === 7
+            ? `Đóng mộc hàng ngày (+${dailyReward} Xu) & Hoàn thành thẻ (+${cycleReward} Xu)`
+            : `Đóng mộc Dấu Chân Khách Quen (Ngày ${card.accumulatedDays}/7)`,
           createdAt: new Date().toISOString(),
         });
+      }
+
+      if (card.accumulatedDays === 7) {
+        isCompleted = true;
+        card.totalCyclesCompleted = (card.totalCyclesCompleted || 0) + 1;
 
         const logId = genId('lcl');
         await setDoc(doc(db, 'loyalty_logs', logId), {
@@ -1867,7 +1913,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           userId: user.id,
           username: user.username,
           cycleNumber: card.totalCyclesCompleted,
-          rewardCoins,
+          rewardCoins: cycleReward + dailyReward,
           completedAt: new Date().toISOString(),
         });
       }
@@ -1875,13 +1921,15 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
       await setDoc(cardRef, card);
 
       const randomMsg = RANDOM_PAW_MESSAGES[Math.floor(Math.random() * RANDOM_PAW_MESSAGES.length)];
-      const completionMsg = `CHÚC MỪNG QUÝ KHÁCH ♡ Quý khách đã hoàn thành thẻ Dấu Chân Khách Quen và nhận được +${rewardCoins} XU CÁ!`;
+      const dailyEarnText = dailyReward > 0 ? ` (+${dailyReward} Xu điểm danh)` : '';
+      const completionMsg = `CHÚC MỪNG QUÝ KHÁCH ♡ Quý khách đã đóng mộc ngày 7/7 và nhận được +${totalEarnedThisCheckIn} XU CÁ!`;
+      const normalMsg = `${randomMsg}${dailyEarnText}`;
 
       return makeRes(200, {
         success: true,
-        message: isCompleted ? completionMsg : randomMsg,
+        message: isCompleted ? completionMsg : normalMsg,
         isCompleted,
-        rewardCoins,
+        rewardCoins: totalEarnedThisCheckIn,
         accumulatedDays: card.accumulatedDays,
         totalCyclesCompleted: card.totalCyclesCompleted,
         totalXuEarnedFromLoyalty: card.totalXuEarnedFromLoyalty,
@@ -2273,7 +2321,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
       const user = await resolveUser(options);
       if (!user || user.role !== 'admin') return makeRes(403, { error: 'Forbidden' });
 
-      const { rewardCoins, isEnabled } = body;
+      const { rewardCoins, dailyRewardCoins, isEnabled } = body;
       const cfgSnap = await getDoc(doc(db, 'settings', 'loyalty_config'));
       const current: LoyaltyCardConfig = cfgSnap.exists()
         ? (cfgSnap.data() as LoyaltyCardConfig)
@@ -2282,6 +2330,9 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
       if (typeof isEnabled === 'boolean') current.isEnabled = isEnabled;
       if (typeof rewardCoins === 'number' && !isNaN(rewardCoins) && rewardCoins >= 0) {
         current.rewardCoins = Math.floor(rewardCoins);
+      }
+      if (typeof dailyRewardCoins === 'number' && !isNaN(dailyRewardCoins) && dailyRewardCoins >= 0) {
+        current.dailyRewardCoins = Math.floor(dailyRewardCoins);
       }
 
       await setDoc(doc(db, 'settings', 'loyalty_config'), current);

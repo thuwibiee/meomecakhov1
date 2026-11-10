@@ -165,6 +165,7 @@ export const PawLoyaltyCard: React.FC<PawLoyaltyCardProps> = ({
   const accumulatedDays = loyaltyData?.card.accumulatedDays || 0;
   const hasCheckedInToday = !!loyaltyData?.card.hasCheckedInToday;
   const rewardCoins = loyaltyData?.config.rewardCoins || 50;
+  const dailyRewardCoins = loyaltyData?.config.dailyRewardCoins ?? 5;
   const isCompleteToday = accumulatedDays >= 7 && hasCheckedInToday;
   const nextTargetDay = accumulatedDays < 7 ? accumulatedDays + 1 : 1;
 
@@ -325,12 +326,12 @@ export const PawLoyaltyCard: React.FC<PawLoyaltyCardProps> = ({
                 className="text-[11px]"
                 style={{
                   fontFamily: "'Cal Sans', sans-serif",
-                  marginTop: '0px',
-                  marginLeft: '-4px',
                   fontWeight: 'bold',
                 }}
               >
-                Thưởng: +{rewardCoins} xu
+                {dailyRewardCoins > 0 ? `+${dailyRewardCoins} xu/mộc` : ''}
+                {dailyRewardCoins > 0 && rewardCoins > 0 ? ' · ' : ''}
+                {rewardCoins > 0 ? `+${rewardCoins} xu/thẻ` : ''}
               </span>
             </div>
           </div>

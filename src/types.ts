@@ -204,7 +204,8 @@ export interface SpecialOrder {
 
 export interface LoyaltyCardConfig {
   isEnabled: boolean;
-  rewardCoins: number;
+  rewardCoins: number; // Thưởng hoàn thành chu kỳ 7 ngày
+  dailyRewardCoins?: number; // Thưởng đóng mộc hàng ngày
 }
 
 export interface UserLoyaltyCard {

@@ -1234,35 +1234,39 @@ app.post('/api/loyalty-card/checkin', authMiddleware, (req, res) => {
   card.lastCheckInTimestamp = new Date().toISOString();
 
   let isCompleted = false;
-  let rewardCoins = 0;
+  const dailyReward = Math.max(0, Number(db.loyalty_config.dailyRewardCoins ?? 5));
+  const cycleReward = card.accumulatedDays === 7 ? Math.max(0, Number(db.loyalty_config.rewardCoins) || 50) : 0;
+  const totalEarnedThisCheckIn = dailyReward + cycleReward;
 
-  if (card.accumulatedDays === 7) {
-    isCompleted = true;
-    rewardCoins = Math.max(0, Number(db.loyalty_config.rewardCoins) || 50);
-
-    // Atomic credit to balance
-    user.balance += rewardCoins;
-    card.totalCyclesCompleted = (card.totalCyclesCompleted || 0) + 1;
-    card.totalXuEarnedFromLoyalty = (card.totalXuEarnedFromLoyalty || 0) + rewardCoins;
+  if (totalEarnedThisCheckIn > 0) {
+    user.balance += totalEarnedThisCheckIn;
+    card.totalXuEarnedFromLoyalty = (card.totalXuEarnedFromLoyalty || 0) + totalEarnedThisCheckIn;
 
     const tx: WalletTransaction = {
       id: `tx_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`,
       userId: user.id,
       type: 'DAILY_QUEST',
-      amount: rewardCoins,
+      amount: totalEarnedThisCheckIn,
       balanceAfter: user.balance,
-      referenceId: `loyalty_cycle_${card.totalCyclesCompleted}`,
-      description: `Hoàn thành thẻ Dấu Chân Khách Quen (Chu kỳ #${card.totalCyclesCompleted})`,
+      referenceId: `loyalty_day_${card.accumulatedDays}`,
+      description: card.accumulatedDays === 7
+        ? `Đóng mộc hàng ngày (+${dailyReward} Xu) & Hoàn thành thẻ (+${cycleReward} Xu)`
+        : `Đóng mộc Dấu Chân Khách Quen (Ngày ${card.accumulatedDays}/7)`,
       createdAt: new Date().toISOString(),
     };
     db.wallet_transactions.push(tx);
+  }
+
+  if (card.accumulatedDays === 7) {
+    isCompleted = true;
+    card.totalCyclesCompleted = (card.totalCyclesCompleted || 0) + 1;
 
     db.loyalty_completion_logs.unshift({
       id: `lcl_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`,
       userId: user.id,
       username: user.username,
       cycleNumber: card.totalCyclesCompleted,
-      rewardCoins: rewardCoins,
+      rewardCoins: totalEarnedThisCheckIn,
       completedAt: new Date().toISOString(),
     });
   }
@@ -1270,13 +1274,15 @@ app.post('/api/loyalty-card/checkin', authMiddleware, (req, res) => {
   saveDatabase();
 
   const randomMsg = RANDOM_PAW_MESSAGES[Math.floor(Math.random() * RANDOM_PAW_MESSAGES.length)];
-  const completionMsg = `CHÚC MỪNG QUÝ KHÁCH ♡ Quý khách đã hoàn thành thẻ Dấu Chân Khách Quen và nhận được +${rewardCoins} XU CÁ!`;
+  const dailyEarnText = dailyReward > 0 ? ` (+${dailyReward} Xu điểm danh)` : '';
+  const completionMsg = `CHÚC MỪNG QUÝ KHÁCH ♡ Quý khách đã đóng mộc ngày 7/7 và nhận được +${totalEarnedThisCheckIn} XU CÁ!`;
+  const normalMsg = `${randomMsg}${dailyEarnText}`;
 
   res.json({
     success: true,
-    message: isCompleted ? completionMsg : randomMsg,
+    message: isCompleted ? completionMsg : normalMsg,
     isCompleted,
-    rewardCoins,
+    rewardCoins: totalEarnedThisCheckIn,
     accumulatedDays: card.accumulatedDays,
     totalCyclesCompleted: card.totalCyclesCompleted,
     totalXuEarnedFromLoyalty: card.totalXuEarnedFromLoyalty,
@@ -1286,7 +1292,7 @@ app.post('/api/loyalty-card/checkin', authMiddleware, (req, res) => {
 
 // Admin: Get Loyalty Config & Logs
 app.get('/api/admin/loyalty-config', authMiddleware, adminMiddleware, (req, res) => {
-  db.loyalty_config = db.loyalty_config || { isEnabled: true, rewardCoins: 50 };
+  db.loyalty_config = db.loyalty_config || { isEnabled: true, rewardCoins: 50, dailyRewardCoins: 5 };
   db.loyalty_completion_logs = db.loyalty_completion_logs || [];
   db.user_loyalty_cards = db.user_loyalty_cards || [];
 
@@ -1304,9 +1310,9 @@ app.get('/api/admin/loyalty-config', authMiddleware, adminMiddleware, (req, res)
 // Admin: Update Loyalty Config
 app.post('/api/admin/loyalty-config', authMiddleware, adminMiddleware, (req, res) => {
   const adminUser = (req as any).user;
-  const { rewardCoins, isEnabled } = req.body;
+  const { rewardCoins, dailyRewardCoins, isEnabled } = req.body;
 
-  db.loyalty_config = db.loyalty_config || { isEnabled: true, rewardCoins: 50 };
+  db.loyalty_config = db.loyalty_config || { isEnabled: true, rewardCoins: 50, dailyRewardCoins: 5 };
 
   if (typeof isEnabled === 'boolean') {
     db.loyalty_config.isEnabled = isEnabled;
@@ -1314,13 +1320,16 @@ app.post('/api/admin/loyalty-config', authMiddleware, adminMiddleware, (req, res
   if (typeof rewardCoins === 'number' && !isNaN(rewardCoins) && rewardCoins >= 0) {
     db.loyalty_config.rewardCoins = Math.floor(rewardCoins);
   }
+  if (typeof dailyRewardCoins === 'number' && !isNaN(dailyRewardCoins) && dailyRewardCoins >= 0) {
+    db.loyalty_config.dailyRewardCoins = Math.floor(dailyRewardCoins);
+  }
 
   const log: AdminAuditLog = {
     id: `log_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`,
     adminUsername: adminUser.username,
     action: 'UPDATE_LOYALTY_CONFIG',
     target: 'LOYALTY_CONFIG',
-    details: `Cập nhật Dấu Chân Khách Quen: thưởng ${db.loyalty_config.rewardCoins} Xu, trạng thái: ${db.loyalty_config.isEnabled ? 'Bật' : 'Tắt'}`,
+    details: `Cập nhật Dấu Chân Khách Quen: thưởng ${db.loyalty_config.dailyRewardCoins ?? 5} Xu/ngày đóng mộc, thưởng ${db.loyalty_config.rewardCoins} Xu hoàn thành thẻ, trạng thái: ${db.loyalty_config.isEnabled ? 'Bật' : 'Tắt'}`,
     timestamp: new Date().toISOString(),
   };
   db.admin_audit_logs.push(log);
@@ -1810,6 +1819,32 @@ app.post('/api/admin/characters/sync', authMiddleware, adminMiddleware, (req, re
     return;
   }
   res.status(400).json({ error: 'Dữ liệu danh sách nhân vật không hợp lệ.' });
+});
+
+// Admin: Delete character
+app.delete('/api/admin/characters/:id', authMiddleware, adminMiddleware, (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  const user = (req as any).user;
+  const charId = req.params.id;
+
+  const charIndex = db.characters.findIndex((c) => c.id === charId);
+  if (charIndex === -1) {
+    res.status(404).json({ error: 'Không tìm thấy nhân vật để xóa.' });
+    return;
+  }
+
+  const removedChar = db.characters.splice(charIndex, 1)[0];
+  db.admin_audit_logs.push({
+    id: `log_${Date.now()}`,
+    adminUsername: user.username,
+    action: 'DELETE_CHARACTER',
+    target: removedChar.name,
+    details: `Xóa nhân vật ${removedChar.name} (ID: ${charId})`,
+    timestamp: new Date().toISOString(),
+  });
+
+  saveDatabase();
+  res.json({ success: true, message: `Đã xóa nhân vật ${removedChar.name} thành công!`, characters: db.characters });
 });
 
 // Admin: Adjust user balance manually

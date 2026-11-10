@@ -75,6 +75,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [charError, setCharError] = useState<string | null>(null);
   const [charSuccess, setCharSuccess] = useState<string | null>(null);
   const [isSavingChar, setIsSavingChar] = useState<boolean>(false);
+  const [deletingCharTarget, setDeletingCharTarget] = useState<{ id: string; name: string } | null>(null);
+  const [isDeletingChar, setIsDeletingChar] = useState<boolean>(false);
 
   useEffect(() => {
     if (initialEditingCharacter) {
@@ -519,6 +521,51 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setCharError(err.message || 'Lỗi kết nối máy chủ. Vui lòng thử lại sau.');
     } finally {
       setIsSavingChar(false);
+    }
+  };
+
+  // Request Delete Character (Opens in-app confirmation modal)
+  const handleDeleteCharacter = (charId: string, charName: string) => {
+    setDeletingCharTarget({ id: charId, name: charName });
+  };
+
+  // Execute deletion confirmed by user
+  const handleConfirmDeleteCharacter = async () => {
+    if (!deletingCharTarget || isDeletingChar) return;
+    const { id: charId, name: charName } = deletingCharTarget;
+    setIsDeletingChar(true);
+
+    try {
+      const res = await firebaseApi(`/api/admin/characters/${charId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        if (data.characters) {
+          setCharacters(data.characters);
+          try {
+            localStorage.setItem('meome_characters_cache', JSON.stringify(data.characters));
+          } catch (e) {}
+          if (onUpdateCharacters) {
+            onUpdateCharacters(data.characters);
+          }
+        } else {
+          setCharacters((prev) => prev.filter((c) => c.id !== charId));
+        }
+        if (editingChar?.id === charId) {
+          setEditingChar(null);
+        }
+        setDeletingCharTarget(null);
+        fetchDashboardData();
+        onRefreshCharacters();
+      } else {
+        alert(data.error || 'Xóa nhân vật thất bại.');
+      }
+    } catch (err: any) {
+      alert(err.message || 'Lỗi khi kết nối xóa nhân vật.');
+    } finally {
+      setIsDeletingChar(false);
     }
   };
 
@@ -1014,32 +1061,46 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   </div>
                 )}
 
-                <div className="flex gap-2 justify-end pt-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditingChar(null);
-                      setCharError(null);
-                      setCharSuccess(null);
-                    }}
-                    className="py-1.5 px-4 rounded-lg border border-[#795653]/20 hover:bg-[#795653]/10 text-xs font-bold cursor-pointer transition-colors"
-                  >
-                    Hủy
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSavingChar}
-                    className="py-2.5 px-6 rounded-xl bg-[#F6A6B8] hover:bg-[#f391a6] active:scale-95 text-[#795653] text-xs font-black shadow-xs cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
-                  >
-                    {isSavingChar ? (
-                      <>
-                        <span className="inline-block w-3.5 h-3.5 border-2 border-[#795653] border-t-transparent rounded-full animate-spin" />
-                        <span>Đang lưu...</span>
-                      </>
-                    ) : (
-                      <span>Lưu Nhân Vật</span>
+                <div className="flex gap-2 justify-between items-center pt-2">
+                  <div>
+                    {editingChar.id && (
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteCharacter(editingChar.id!, editingChar.name || 'nhân vật')}
+                        className="py-1.5 px-3 rounded-lg border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold cursor-pointer transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>Xóa Nhân Vật Này</span>
+                      </button>
                     )}
-                  </button>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingChar(null);
+                        setCharError(null);
+                        setCharSuccess(null);
+                      }}
+                      className="py-1.5 px-4 rounded-lg border border-[#795653]/20 hover:bg-[#795653]/10 text-xs font-bold cursor-pointer transition-colors"
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSavingChar}
+                      className="py-2.5 px-6 rounded-xl bg-[#F6A6B8] hover:bg-[#f391a6] active:scale-95 text-[#795653] text-xs font-black shadow-xs cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                    >
+                      {isSavingChar ? (
+                        <>
+                          <span className="inline-block w-3.5 h-3.5 border-2 border-[#795653] border-t-transparent rounded-full animate-spin" />
+                          <span>Đang lưu...</span>
+                        </>
+                      ) : (
+                        <span>Lưu Nhân Vật</span>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
@@ -1073,18 +1134,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <td className="p-3 font-black text-[#526C91]">{c.price} Xu</td>
                     <td className="p-3 font-semibold">{c.salesCount || 0}</td>
                     <td className="p-3">
-                      <button
-                        onClick={() => {
-                          setEditingChar({ ...c });
-                          setCharTagsInput(Array.isArray(c.tags) ? c.tags.join(', ') : '');
-                          setCharError(null);
-                          setCharSuccess(null);
-                        }}
-                        className="p-1.5 rounded-lg border border-[#795653]/20 hover:bg-[#F6A6B8]/30 cursor-pointer"
-                        title="Chỉnh sửa"
-                      >
-                        <Edit className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => {
+                            setEditingChar({ ...c });
+                            setCharTagsInput(Array.isArray(c.tags) ? c.tags.join(', ') : '');
+                            setCharError(null);
+                            setCharSuccess(null);
+                          }}
+                          className="p-1.5 rounded-lg border border-[#795653]/20 hover:bg-[#F6A6B8]/30 cursor-pointer"
+                          title="Chỉnh sửa nhân vật"
+                        >
+                          <Edit className="w-3.5 h-3.5 text-[#795653]" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCharacter(c.id, c.name)}
+                          className="p-1.5 rounded-lg border border-rose-200 hover:bg-rose-100 text-rose-600 cursor-pointer transition-colors"
+                          title="Xóa nhân vật này"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -1399,14 +1469,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {/* Module Cấu Hình */}
           <div className="p-5 sm:p-6 rounded-3xl bg-white border-2 border-[#795653]/20 shadow-xs space-y-4">
             <div className="flex items-center justify-between border-b border-[#795653]/10 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🐾</span>
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl p-2 bg-[#FFF9F4] rounded-2xl border border-[#795653]/15">🐾</span>
                 <div>
-                  <h3 className="text-base font-black text-[#795653]">
-                    Cấu Hình Dấu Chân Khách Quen
+                  <h3 className="text-base font-extrabold text-[#795653]" style={{ fontFamily: "'Cal Sans', sans-serif" }}>
+                    Điều Chỉnh Mức Thưởng Xu Cá - Thẻ Tích Xu (Loyalty Card)
                   </h3>
                   <p className="text-xs text-[#795653]/70">
-                    Tùy chỉnh số lượng xu thưởng hoàn thành thẻ 7 ngày và trạng thái hoạt động của tính năng.
+                    Cấu hình số lượng xu thưởng tự động trao cho người dùng khi đóng đủ 7/7 dấu chân điểm danh.
                   </p>
                 </div>
               </div>
@@ -1429,11 +1499,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#FFF9F4] border border-[#795653]/20">
                 <div>
                   <label className="text-xs font-black text-[#795653] block">
-                    Bật / Tắt tính năng
+                    Bật / Tắt Thẻ Tích Xu
                   </label>
                   <span className="text-[11px] text-[#795653]/70">
                     {loyaltyConfig.isEnabled
-                      ? 'Người dùng có thể điểm danh và nhận thưởng bình thường.'
+                      ? 'Người dùng có thể điểm danh 7 ngày và nhận thưởng xu bình thường.'
                       : 'Tính năng sẽ tạm khóa và hiển thị thông báo bảo trì.'}
                   </span>
                 </div>
@@ -1452,11 +1522,75 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </button>
               </div>
 
-              {/* Số Xu Cá thưởng khi đạt 7 ngày */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-black text-[#795653]">
-                  Số Xu Cá thưởng khi đạt 7 ngày (Hoàn thành chu kỳ):
-                </label>
+              {/* 1. Mức Xu Cá thưởng khi đóng mộc hàng ngày (Mỗi ngày) */}
+              <div className="space-y-2 p-4 rounded-2xl bg-[#FFF9F4]/70 border border-[#795653]/15">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-black text-[#795653]">
+                    1. Mức Xu Cá thưởng mỗi ngày khi đóng mộc:
+                  </label>
+                  <span className="text-xs font-black text-[#D6336C] px-2.5 py-0.5 rounded-full bg-[#FF8FAB]/20 border border-[#FF8FAB]/40">
+                    Hiện tại: {loyaltyConfig.dailyRewardCoins ?? 5} Xu / ngày
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    required
+                    value={loyaltyConfig.dailyRewardCoins ?? 5}
+                    onChange={(e) =>
+                      setLoyaltyConfig((prev) => ({
+                        ...prev,
+                        dailyRewardCoins: Math.max(0, parseInt(e.target.value, 10) || 0),
+                      }))
+                    }
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#795653]/30 bg-white text-base font-black text-[#D81C63] focus:outline-hidden focus:ring-2 focus:ring-[#FF8FAB]"
+                    placeholder="Nhập số xu thưởng đóng mộc hàng ngày (VD: 5)"
+                  />
+                  <span className="absolute right-3.5 top-3 text-xs font-bold text-[#795653]/60">
+                    Xu / Ngày
+                  </span>
+                </div>
+
+                {/* Quick preset buttons for daily reward */}
+                <div className="pt-1">
+                  <span className="text-[10px] font-bold text-[#795653]/70 mb-1.5 block">Chọn nhanh mức xu mỗi ngày:</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[0, 5, 10, 15, 20, 50].map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setLoyaltyConfig((prev) => ({ ...prev, dailyRewardCoins: val }))}
+                        className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                          (loyaltyConfig.dailyRewardCoins ?? 5) === val
+                            ? 'bg-[#FF8FAB] text-white border-[#FF8FAB] shadow-2xs'
+                            : 'bg-white hover:bg-[#FFF9F4] text-[#795653] border-[#795653]/20'
+                        }`}
+                      >
+                        {val === 0 ? '0 Xu (Tắt thưởng ngày)' : `${val} Xu${val === 5 ? ' (Mặc định)' : ''}`}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-[#795653]/75 pt-1 leading-relaxed">
+                  🐾 Mỗi ngày bấm đóng mộc, người dùng sẽ nhận ngay số xu này vào ví.
+                </p>
+              </div>
+
+              {/* 2. Mức Xu Cá thưởng thêm khi hoàn thành thẻ (7 ngày) */}
+              <div className="space-y-2 p-4 rounded-2xl bg-[#FFF9F4]/70 border border-[#795653]/15">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-black text-[#795653]">
+                    2. Mức Xu Cá thưởng thêm khi hoàn thành thẻ (7/7 ngày):
+                  </label>
+                  <span className="text-xs font-black text-[#D6336C] px-2.5 py-0.5 rounded-full bg-[#FF8FAB]/20 border border-[#FF8FAB]/40">
+                    Hiện tại: {loyaltyConfig.rewardCoins} Xu
+                  </span>
+                </div>
+
                 <div className="relative">
                   <input
                     type="number"
@@ -1470,24 +1604,46 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         rewardCoins: Math.max(0, parseInt(e.target.value, 10) || 0),
                       }))
                     }
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#795653]/30 bg-[#FFF9F4] text-sm font-black text-[#D81C63] focus:outline-hidden focus:ring-2 focus:ring-[#FF8FAB]"
-                    placeholder="VD: 50"
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#795653]/30 bg-white text-base font-black text-[#D81C63] focus:outline-hidden focus:ring-2 focus:ring-[#FF8FAB]"
+                    placeholder="Nhập số xu thưởng hoàn thành thẻ (VD: 50)"
                   />
-                  <span className="absolute right-3.5 top-2.5 text-xs font-bold text-[#795653]/60">
+                  <span className="absolute right-3.5 top-3 text-xs font-bold text-[#795653]/60">
                     Xu Cá
                   </span>
                 </div>
-                <p className="text-[11px] text-[#795653]/65">
-                  Số xu này sẽ tự động cộng vào Ví Xu Cá của người dùng khi đóng đủ 7/7 dấu chân.
+
+                {/* Quick preset buttons */}
+                <div className="pt-1">
+                  <span className="text-[10px] font-bold text-[#795653]/70 mb-1.5 block">Chọn nhanh mức xu hoàn thành 7 ngày:</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[30, 50, 100, 150, 200, 500].map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setLoyaltyConfig((prev) => ({ ...prev, rewardCoins: val }))}
+                        className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                          loyaltyConfig.rewardCoins === val
+                            ? 'bg-[#FF8FAB] text-white border-[#FF8FAB] shadow-2xs'
+                            : 'bg-white hover:bg-[#FFF9F4] text-[#795653] border-[#795653]/20'
+                        }`}
+                      >
+                        {val} Xu {val === 50 ? '(Mặc định)' : ''}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-[#795653]/75 pt-1 leading-relaxed">
+                  💡 Số xu này sẽ tự động cộng thêm vào Ví Xu Cá của người dùng khi họ hoàn thành đóng đủ 7/7 dấu chân.
                 </p>
               </div>
 
               <button
                 type="submit"
                 disabled={isSavingLoyalty}
-                className="py-2.5 px-6 rounded-xl bg-[#F6A6B8] hover:bg-[#f391a6] text-[#795653] font-black text-xs uppercase tracking-wider shadow-xs cursor-pointer active:scale-95 transition-all disabled:opacity-50"
+                className="py-2.5 px-6 rounded-2xl bg-[#FF8FAB] hover:bg-[#ff7aa0] text-white font-extrabold text-xs uppercase tracking-wider shadow-xs cursor-pointer active:scale-95 transition-all disabled:opacity-50 border border-white/80"
               >
-                {isSavingLoyalty ? 'Đang lưu...' : 'Lưu Cấu Hình Dấu Chân'}
+                {isSavingLoyalty ? 'Đang lưu...' : 'Lưu Mức Xu Thưởng Thẻ Tích Xu'}
               </button>
             </form>
           </div>
@@ -2815,6 +2971,65 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ================= MODAL XÁC NHẬN XÓA NHÂN VẬT AN TOÀN ================= */}
+      {deletingCharTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => {
+            if (!isDeletingChar) setDeletingCharTarget(null);
+          }}
+        >
+          <div
+            className="bg-[#FFF9F4] rounded-3xl p-6 sm:p-7 max-w-md w-full border-2 border-[#795653]/30 shadow-2xl space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 border border-rose-300 text-rose-600 flex items-center justify-center text-2xl shrink-0">
+                🗑️
+              </div>
+              <div>
+                <h3 className="font-extrabold text-[#795653] text-base" style={{ fontFamily: "'Cal Sans', sans-serif" }}>
+                  Xác nhận xóa nhân vật?
+                </h3>
+                <p className="text-xs text-[#795653]/70">
+                  Thao tác này sẽ xóa vĩnh viễn dữ liệu khỏi cửa hàng.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-white border border-[#795653]/15 text-xs text-[#795653] leading-relaxed">
+              Bà chủ có chắc muốn xóa nhân vật <span className="font-bold text-[#E13F7C]">"{deletingCharTarget.name}"</span> (ID: <code className="font-mono text-[#526C91]">{deletingCharTarget.id}</code>) không?
+            </div>
+
+            <div className="flex gap-2.5 justify-end pt-1">
+              <button
+                type="button"
+                disabled={isDeletingChar}
+                onClick={() => setDeletingCharTarget(null)}
+                className="py-2.5 px-4 rounded-xl border border-[#795653]/20 hover:bg-[#795653]/10 text-xs font-bold text-[#795653] cursor-pointer transition-colors disabled:opacity-50"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                disabled={isDeletingChar}
+                onClick={handleConfirmDeleteCharacter}
+                className="py-2.5 px-5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-xs font-black shadow-xs cursor-pointer transition-all disabled:opacity-50 flex items-center gap-1.5"
+              >
+                {isDeletingChar ? (
+                  <>
+                    <span className="inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Đang xóa...</span>
+                  </>
+                ) : (
+                  <span>Đồng Ý Xóa</span>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
