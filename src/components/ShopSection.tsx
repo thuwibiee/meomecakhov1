@@ -34,7 +34,7 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'newest' | 'price_asc' | 'price_desc'>('newest');
+  const [sortBy, setSortBy] = useState<'fish_code' | 'newest' | 'price_asc' | 'price_desc'>('fish_code');
 
   // Fixed categories list as requested
   const categories = useMemo(() => {
@@ -55,14 +55,20 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
       .filter((c) => {
         const matchesSearch =
           c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          c.shortBio.toLowerCase().includes(searchTerm.toLowerCase());
+          c.shortBio.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (c.fishCode && c.fishCode.toLowerCase().includes(searchTerm.toLowerCase()));
         const matchesCategory = selectedCategory === 'all' || c.category === selectedCategory;
         return matchesSearch && matchesCategory;
       })
       .sort((a, b) => {
         if (sortBy === 'price_asc') return a.price - b.price;
         if (sortBy === 'price_desc') return b.price - a.price;
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        if (sortBy === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+
+        // Default 'fish_code': sort by fishCode (e.g. CK-001, CK-002...)
+        const codeA = String(a.fishCode || a.id || '');
+        const codeB = String(b.fishCode || b.id || '');
+        return codeA.localeCompare(codeB, undefined, { numeric: true, sensitivity: 'base' });
       });
   }, [characters, searchTerm, selectedCategory, sortBy]);
 
@@ -119,6 +125,7 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
               className="py-1.5 px-2.5 rounded-xl border border-[#795653]/25 bg-white text-xs text-[#795653] focus:outline-hidden focus:ring-2 focus:ring-[#F6A6B8] cursor-pointer"
               style={{ fontFamily: "'Cal Sans', sans-serif", fontWeight: 'normal' }}
             >
+              <option value="fish_code">Mã cá khô (Mặc định)</option>
               <option value="newest">Mới cập bến</option>
               <option value="price_asc">Giá tăng dần</option>
               <option value="price_desc">Giá giảm dần</option>
