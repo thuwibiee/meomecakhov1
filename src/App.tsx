@@ -21,6 +21,7 @@ import { PurchaseConfirmModal } from './components/PurchaseConfirmModal.tsx';
 import { StoryModal } from './components/StoryModal.tsx';
 import { ComplainModal } from './components/ComplainModal.tsx';
 import { FitBachModal } from './components/FitBachModal.tsx';
+import { SpiceCounterSection } from './components/SpiceCounterSection.tsx';
 import { XuCaIcon } from './components/XuCaIcon.tsx';
 import { 
   Store, 
@@ -45,7 +46,7 @@ export default function App() {
     } catch {}
     return 'landing';
   });
-  const [activeTab, setActiveTab] = useState<'shop' | 'inventory' | 'wallet' | 'quests' | 'special_order' | 'cat_town'>('shop');
+  const [activeTab, setActiveTab] = useState<'shop' | 'spice_counter' | 'inventory' | 'wallet' | 'quests' | 'special_order' | 'cat_town'>('shop');
   const [showAdmin, setShowAdmin] = useState<boolean>(false);
   const [adminEditingCharacter, setAdminEditingCharacter] = useState<Character | null>(null);
 
@@ -527,7 +528,7 @@ export default function App() {
           <div className="sticky top-20 space-y-4">
             {/* Navigation Card */}
             <nav className="bg-[#FFF9F4]/90 backdrop-blur-md p-3 rounded-3xl border-2 border-[#795653]/20 shadow-kawaii space-y-2">
-              {/* 1. Quầy Cá */}
+              {/* 1. QUẦY CÁ */}
               <button
                 onClick={() => {
                   setShowAdmin(false);
@@ -560,6 +561,33 @@ export default function App() {
                   }}
                 >
                   {characters.length}
+                </span>
+              </button>
+
+              {/* QUẦY GIA VỊ (Spice Counter) - Đặt ngay dưới QUẦY CÁ */}
+              <button
+                onClick={() => {
+                  setShowAdmin(false);
+                  setActiveTab('spice_counter');
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-2xl font-black text-sm transition-all duration-200 cursor-pointer overflow-hidden relative ${
+                  !showAdmin && activeTab === 'spice_counter'
+                    ? 'liquid-glass-btn text-[#D6336C] border-2 border-white/90 shadow-md scale-[1.02]'
+                    : 'bg-white/70 hover:bg-white text-[#795653]/85 border border-white/80 hover:border-[#F6A6B8]/50 shadow-2xs hover:shadow-xs hover:-translate-y-0.5'
+                }`}
+              >
+                {!showAdmin && activeTab === 'spice_counter' && <span className="shimmer-liquid" />}
+                <div className="relative z-10 flex items-center gap-2.5">
+                  <span className="text-lg">🧂</span>
+                  <span
+                    className="uppercase font-bold"
+                    style={{ fontFamily: "'Cal Sans', sans-serif", fontWeight: 'bold', color: '#E13F7C' }}
+                  >
+                    QUẦY GIA VỊ
+                  </span>
+                </div>
+                <span className="relative z-10 text-[10px] px-2.5 py-0.5 rounded-full bg-[#FF8FAB]/25 text-[#D6336C] font-black uppercase">
+                  WIKI 🧂
                 </span>
               </button>
 
@@ -790,6 +818,16 @@ export default function App() {
                 setShowAdmin(true);
               }}
             />
+          ) : activeTab === 'spice_counter' ? (
+            <SpiceCounterSection
+              authToken={authToken}
+              isAdmin={user?.role === 'admin'}
+              onOpenAuth={() => {
+                setAuthMode('login');
+                setIsAuthModalOpen(true);
+              }}
+              onGoToShop={() => setActiveTab('shop')}
+            />
           ) : activeTab === 'inventory' ? (
             <InventorySection
               items={inventoryItems}
@@ -847,6 +885,20 @@ export default function App() {
         >
           <span className="text-base">🐟</span>
           <span>QUẦY CÁ</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setShowAdmin(false);
+            setActiveTab('spice_counter');
+          }}
+          className={`flex flex-col items-center py-1 px-1.5 rounded-xl text-[10px] uppercase font-bold transition-colors ${
+            !showAdmin && activeTab === 'spice_counter' ? 'text-[#D6336C]' : 'text-[#795653]/70'
+          }`}
+          style={{ fontFamily: "'Cal Sans', sans-serif", fontWeight: 'bold' }}
+        >
+          <span className="text-base">🧂</span>
+          <span>GIA VỊ</span>
         </button>
 
         <button

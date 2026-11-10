@@ -26,6 +26,18 @@ export interface Character {
   tags?: string[];
 }
 
+export type SpiceType = 'command' | 'lore';
+
+export interface Spice {
+  id: string;
+  type: SpiceType;
+  title: string;
+  content: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface UserCharacterOwnership {
   id: string;
   userId: string;

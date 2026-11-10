@@ -25,6 +25,7 @@ import {
   LoyaltyCompletionLog,
   CatTownConfig,
   CatTownUserProfile,
+  Spice,
 } from './src/types.ts';
 import { setupCatTownRoutes, getDefaultCatTownConfig } from './server/catTown.ts';
 
@@ -62,6 +63,7 @@ interface DatabaseSchema {
   loyalty_completion_logs?: LoyaltyCompletionLog[];
   cat_town_config?: CatTownConfig;
   cat_town_profiles?: CatTownUserProfile[];
+  spices?: Spice[];
   orderCounter: number;
   requestCounter?: number;
   sessions?: { token: string; userId: string; createdAt: string }[];
@@ -324,6 +326,44 @@ function getInitialDatabase(): DatabaseSchema {
     },
     user_loyalty_cards: [],
     loyalty_completion_logs: [],
+    spices: [
+      {
+        id: 'spice_01',
+        type: 'command',
+        title: 'Lệnh neo thời gian (Time-Anchor)',
+        content: 'Dán lệnh này vào cuối câu chat để bot nhớ mạch thời gian:\n\n[System note: Update current time to 23:30. Character is currently at hotel balcony. Maintain narrative tone and do not skip time unless instructed.]',
+        author: 'Chủ Tiệm',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 'spice_02',
+        type: 'lore',
+        title: 'Luật ngầm thế giới Kẻ Săn Mồi',
+        content: 'Bất cứ ai bước chân vào khu vực này sau 12h đêm đều phải tuân thủ 3 quy tắc tĩnh lặng. NPC xung quanh sẽ phản ứng mạnh nếu nhân vật tạo ra tiếng ồn lớn.',
+        author: 'Chủ Tiệm',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 'spice_03',
+        type: 'command',
+        title: 'Lệnh đẩy cao kịch tính & mâu thuẫn (Drama Injector)',
+        content: 'Sử dụng khi câu chuyện đang đi vào bối cảnh quá bình lặng:\n\n[System note: Introduce a sudden unexpected conflict, secret revelation, or dramatic arrival that forces both characters to react immediately.]',
+        author: 'Chủ Tiệm',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 'spice_04',
+        type: 'lore',
+        title: 'Thiết lập Ban Chuyên Án & Vùng Tối',
+        content: 'Ban chuyên án đặc biệt làm việc dưới sự chỉ đạo trực tiếp của Tổng Cục. Mọi tài liệu mật liên quan đến thân thế các nhân vật đều được bảo vệ bằng mã hóa cấp 5.',
+        author: 'Chủ Tiệm',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ],
     orderCounter: 1,
     requestCounter: 1,
     sessions: [],
@@ -355,6 +395,9 @@ function loadDatabase(): DatabaseSchema {
       parsed.loyalty_config = parsed.loyalty_config || { isEnabled: true, rewardCoins: 50 };
       parsed.user_loyalty_cards = parsed.user_loyalty_cards || [];
       parsed.loyalty_completion_logs = parsed.loyalty_completion_logs || [];
+      if (!parsed.spices || !Array.isArray(parsed.spices) || parsed.spices.length === 0) {
+        parsed.spices = getInitialDatabase().spices;
+      }
 
       // Restore characters from dedicated characters.json if present
       if (fs.existsSync(CHARACTERS_FILE)) {
@@ -2045,6 +2088,63 @@ app.delete('/api/admin/character-comments/:id', authMiddleware, adminMiddleware,
 
   saveDatabase();
   res.json({ success: true, message: 'Đã xóa bình luận thành công.' });
+});
+
+// ======================== QUẦY GIA VỊ (SPICE COUNTER) ROUTES ========================
+
+// 1. Get all spices (Public)
+app.get('/api/spices', (req, res) => {
+  db.spices = db.spices || [];
+  res.json({ spices: db.spices });
+});
+
+// 2. Add or Edit spice (Admin)
+app.post('/api/admin/spices', authMiddleware, adminMiddleware, (req, res) => {
+  const adminUser = (req as any).user;
+  const { id, type, title, content, author } = req.body;
+
+  if (!title || !content) {
+    res.status(400).json({ error: 'Vui lòng nhập tiêu đề và nội dung gia vị.' });
+    return;
+  }
+
+  db.spices = db.spices || [];
+
+  if (id) {
+    const existing = db.spices.find((s) => s.id === id);
+    if (!existing) {
+      res.status(404).json({ error: 'Không tìm thấy bài viết gia vị.' });
+      return;
+    }
+    existing.title = title.trim();
+    existing.content = content.trim();
+    existing.author = author ? author.trim() : existing.author;
+    existing.type = type === 'lore' ? 'lore' : 'command';
+    existing.updatedAt = new Date().toISOString();
+  } else {
+    const newSpice: Spice = {
+      id: `spice_${Date.now()}`,
+      type: type === 'lore' ? 'lore' : 'command',
+      title: title.trim(),
+      content: content.trim(),
+      author: author ? author.trim() : 'Chủ Tiệm',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    db.spices.unshift(newSpice);
+  }
+
+  saveDatabase();
+  res.json({ success: true, spices: db.spices });
+});
+
+// 3. Delete spice (Admin)
+app.delete('/api/admin/spices/:id', authMiddleware, adminMiddleware, (req, res) => {
+  const { id } = req.params;
+  db.spices = db.spices || [];
+  db.spices = db.spices.filter((s) => s.id !== id);
+  saveDatabase();
+  res.json({ success: true, spices: db.spices });
 });
 
 // ======================== THỊ TRẤN CÁ MÈO (CAT FISH TOWN) ROUTES ========================

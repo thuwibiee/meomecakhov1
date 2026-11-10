@@ -43,6 +43,7 @@ import {
   CatTownFurniture,
   CatTownFortune,
   CatBreed,
+  Spice,
 } from './types.ts';
 import { FISH_DATABASE, catchFish as pickWeightedFish } from './components/cat-town/fishDatabase';
 import { DEFAULT_FURNITURE_CATALOG } from './components/cat-town/furnitureCatalog.ts';
@@ -375,6 +376,45 @@ export const DEFAULT_QUESTS: Quest[] = [
   },
 ];
 
+export const DEFAULT_SPICES: Spice[] = [
+  {
+    id: 'spice_01',
+    type: 'command',
+    title: 'Lệnh neo thời gian (Time-Anchor)',
+    content: 'Dán lệnh này vào cuối câu chat để bot nhớ mạch thời gian:\n\n[System note: Update current time to 23:30. Character is currently at hotel balcony. Maintain narrative tone and do not skip time unless instructed.]',
+    author: 'Chủ Tiệm',
+    createdAt: '2026-10-20T10:00:00Z',
+    updatedAt: '2026-10-20T10:00:00Z',
+  },
+  {
+    id: 'spice_02',
+    type: 'lore',
+    title: 'Luật ngầm thế giới Kẻ Săn Mồi',
+    content: 'Bất cứ ai bước chân vào khu vực này sau 12h đêm đều phải tuân thủ 3 quy tắc tĩnh lặng. NPC xung quanh sẽ phản ứng mạnh nếu nhân vật tạo ra tiếng ồn lớn.',
+    author: 'Chủ Tiệm',
+    createdAt: '2026-10-20T10:00:00Z',
+    updatedAt: '2026-10-20T10:00:00Z',
+  },
+  {
+    id: 'spice_03',
+    type: 'command',
+    title: 'Lệnh đẩy cao kịch tính & mâu thuẫn (Drama Injector)',
+    content: 'Sử dụng khi câu chuyện đang đi vào bối cảnh quá bình lặng:\n\n[System note: Introduce a sudden unexpected conflict, secret revelation, or dramatic arrival that forces both characters to react immediately.]',
+    author: 'Chủ Tiệm',
+    createdAt: '2026-10-21T08:00:00Z',
+    updatedAt: '2026-10-21T08:00:00Z',
+  },
+  {
+    id: 'spice_04',
+    type: 'lore',
+    title: 'Thiết lập Ban Chuyên Án & Vùng Tối',
+    content: 'Ban chuyên án đặc biệt làm việc dưới sự chỉ đạo trực tiếp của Tổng Cục. Mọi tài liệu mật liên quan đến thân thế các nhân vật đều được bảo vệ bằng mã hóa cấp 5.',
+    author: 'Chủ Tiệm',
+    createdAt: '2026-10-21T09:00:00Z',
+    updatedAt: '2026-10-21T09:00:00Z',
+  },
+];
+
 const RANDOM_PAW_MESSAGES = [
   'Meo~ Hôm nay quý khách đã ghé tiệm rồi! Một dấu chân xinh đã được đóng ♡',
   'Paw paw~ Cảm ơn quý khách đã ghé thăm tiệm Mèo Mê Cá Khô hôm nay!',
@@ -542,6 +582,12 @@ export async function ensureSeeded(): Promise<void> {
           });
         }
       }
+
+      // 6. Seed spices if empty
+      const spicesSnap = await getDocs(collection(db, 'spices'));
+      if (spicesSnap.empty) {
+        await Promise.all(DEFAULT_SPICES.map((s) => setDoc(doc(db, 'spices', s.id), s)));
+      }
     } catch (err) {
       console.warn('Firestore seed check encountered an issue (will retry on next request):', err);
       seedPromise = null;
@@ -576,6 +622,33 @@ export function subscribeToCharacters(onUpdate: (chars: Character[]) => void): (
     console.warn('Characters subscription exception:', err);
     const fallback = (initialCharactersData as any[]).map(normalizeCharacter);
     onUpdate(fallback);
+    return () => {};
+  }
+}
+
+export function subscribeToSpices(onUpdate: (spices: Spice[]) => void): () => void {
+  ensureSeeded().catch(() => {});
+  try {
+    return onSnapshot(
+      collection(db, 'spices'),
+      (snapshot) => {
+        if (!snapshot.empty) {
+          const list = snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as Spice));
+          list.sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime());
+          onUpdate(list);
+        } else {
+          ensureSeeded().catch(() => {});
+          onUpdate(DEFAULT_SPICES);
+        }
+      },
+      (error) => {
+        console.warn('Spices subscription notice:', error);
+        onUpdate(DEFAULT_SPICES);
+      }
+    );
+  } catch (err) {
+    console.warn('Spices subscription exception:', err);
+    onUpdate(DEFAULT_SPICES);
     return () => {};
   }
 }
@@ -1204,6 +1277,72 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
         });
       }
       return makeRes(400, { error: 'Dữ liệu danh sách nhân vật không hợp lệ.' });
+    }
+
+    // ==========================================
+    // 2b. SPICES (Quầy Gia Vị)
+    // ==========================================
+    if (url === '/api/spices' && method === 'GET') {
+      const snap = await getDocs(collection(db, 'spices'));
+      let list = snap.docs.map((d) => ({ ...d.data(), id: d.id } as Spice));
+      if (list.length === 0) list = DEFAULT_SPICES;
+      list.sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime());
+      return makeRes(200, { spices: list });
+    }
+
+    if (url === '/api/admin/spices' && method === 'POST') {
+      const user = await resolveUser(options);
+      if (!user || user.role !== 'admin') {
+        return makeRes(403, { error: 'Bạn không có quyền truy cập trang quản trị.' });
+      }
+
+      const { id, type, title, content, author } = body;
+      const cleanTitle = (title || '').trim();
+      const cleanContent = (content || '').trim();
+
+      if (!cleanTitle || !cleanContent) {
+        return makeRes(400, { error: 'Vui lòng nhập tiêu đề và nội dung gia vị.' });
+      }
+
+      const nowIso = new Date().toISOString();
+      const spiceId = id || `spice_${Date.now()}`;
+      const spiceData: Spice = {
+        id: spiceId,
+        type: type === 'lore' ? 'lore' : 'command',
+        title: cleanTitle,
+        content: cleanContent,
+        author: (author || 'Chủ Tiệm').trim(),
+        createdAt: nowIso,
+        updatedAt: nowIso,
+      };
+
+      await setDoc(doc(db, 'spices', spiceId), spiceData);
+
+      const allSnap = await getDocs(collection(db, 'spices'));
+      const spices = allSnap.docs
+        .map((d) => ({ ...d.data(), id: d.id } as Spice))
+        .sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime());
+
+      return makeRes(200, { success: true, spices });
+    }
+
+    if (url.startsWith('/api/admin/spices/') && method === 'DELETE') {
+      const user = await resolveUser(options);
+      if (!user || user.role !== 'admin') {
+        return makeRes(403, { error: 'Bạn không có quyền truy cập trang quản trị.' });
+      }
+
+      const spiceId = url.replace('/api/admin/spices/', '').trim();
+      if (spiceId) {
+        await deleteDoc(doc(db, 'spices', spiceId));
+      }
+
+      const allSnap = await getDocs(collection(db, 'spices'));
+      const spices = allSnap.docs
+        .map((d) => ({ ...d.data(), id: d.id } as Spice))
+        .sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime());
+
+      return makeRes(200, { success: true, spices });
     }
 
     // ==========================================
