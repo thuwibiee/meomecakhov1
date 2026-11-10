@@ -118,9 +118,9 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
         )}
       </div>
 
-      {/* (5) Khung nội dung riêng chứa vài dòng giới thiệu ngắn (short bio/hook) - Frosted Glass Box */}
+      {/* (5) Khung nội dung riêng chứa vài dòng giới thiệu ngắn (short bio/hook) - Auto-fit height according to text */}
       <div
-        className="glass-bio-box z-10 rounded-xl p-2.5 text-xs text-[#795653]/90 leading-relaxed mb-3 line-clamp-3 min-h-[4.25rem]"
+        className="glass-bio-box z-10 rounded-xl p-2.5 text-xs text-[#795653]/90 leading-relaxed mb-3 h-auto"
         style={{ fontFamily: "'Cal Sans', sans-serif", fontWeight: 'normal' }}
       >
         {character.shortBio}
