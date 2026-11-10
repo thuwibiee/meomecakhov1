@@ -83,8 +83,8 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
 
       {/* (2) Họ và tên nhân vật */}
       <h3
-        className="relative z-10 text-lg font-extrabold tracking-tight group-hover:text-[#A6536A] transition-colors line-clamp-1"
-        style={{ fontFamily: "'Cal Sans', sans-serif", color: '#E13F7C' }}
+        className="relative z-10 font-extrabold tracking-tight group-hover:text-[#A6536A] transition-colors line-clamp-1"
+        style={{ fontFamily: "'Cal Sans', sans-serif", color: '#E13F7C', fontSize: '22px' }}
       >
         {character.name}
       </h3>
