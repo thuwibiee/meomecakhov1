@@ -188,6 +188,59 @@ export const TownMap: React.FC<TownMapProps> = ({
     setCurrentIndex((prev) => (prev === TOWN_LOCATIONS.length - 1 ? 0 : prev + 1));
   };
 
+  // Touch & Swipe gestures on mobile & tablet
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [swipeOffset, setSwipeOffset] = useState<number>(0);
+  const [isSwiping, setIsSwiping] = useState(false);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchStartY(e.touches[0].clientY);
+    setIsSwiping(true);
+    setSwipeOffset(0);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX === null || !isSwiping) return;
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const diffX = currentX - touchStartX;
+    const diffY = currentY - (touchStartY || currentY);
+
+    // If user is scrolling vertically, don't drag
+    if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffX) < 15) {
+      return;
+    }
+    // Clamped elastic offset
+    const clamped = Math.max(-40, Math.min(40, diffX));
+    setSwipeOffset(clamped);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) {
+      setIsSwiping(false);
+      setSwipeOffset(0);
+      return;
+    }
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - (touchStartY || touchEndY);
+
+    if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        handlePrev();
+      } else {
+        handleNext();
+      }
+    }
+    setTouchStartX(null);
+    setTouchStartY(null);
+    setIsSwiping(false);
+    setSwipeOffset(0);
+  };
+
   // Jump directly to a stage
   const handleSelectStageIndex = (idx: number) => {
     if (idx === currentIndex) return;
@@ -526,15 +579,15 @@ export const TownMap: React.FC<TownMapProps> = ({
         {/* SCREEN 2: LEVEL SELECTOR ARCADE (CHỌN KHU VỰC CHƠI)           */}
         {/* ------------------------------------------------------------- */}
         {currentScreen === 'selector' && (
-          <div className="relative w-full min-h-[620px] bg-[#FFF9F4]/85 backdrop-blur-xs flex flex-col items-center justify-between p-3.5 sm:p-5 select-none z-10">
+          <div className="relative w-full min-h-[580px] sm:min-h-[620px] bg-[#FFF9F4]/85 backdrop-blur-xs flex flex-col items-center justify-between px-1.5 py-3 sm:p-5 select-none z-10">
             {/* Top Row: Back to Start Screen & Arcade Stage Indicator */}
-            <div className="w-full flex items-center justify-between mb-2">
+            <div className="w-full flex items-center justify-between mb-2 px-1 sm:px-0">
               <button
                 onClick={() => {
                   retroAudio.playBlip(340, 0.06);
                   setCurrentScreen('start');
                 }}
-                className="pixel-btn-press px-3 py-1.5 bg-[#FFFDF7] hover:bg-[#FFE5EC] text-[#795653] font-bold text-xs rounded-xl border-2 border-[#795653] flex items-center gap-1 cursor-pointer"
+                className="pixel-btn-press px-2.5 sm:px-3 py-1.5 bg-[#FFFDF7] hover:bg-[#FFE5EC] text-[#795653] font-bold text-[11px] sm:text-xs rounded-xl border-2 border-[#795653] flex items-center gap-1 cursor-pointer shrink-0"
                 style={{ fontFamily: "'Tiny5', monospace" }}
               >
                 <span>◀</span>
@@ -542,7 +595,7 @@ export const TownMap: React.FC<TownMapProps> = ({
               </button>
 
               {/* Stage Selection Indicator Badge */}
-              <div className="flex items-center gap-1.5 bg-[#FFFDF7] px-3 py-1 rounded-xl border-2 border-[#795653] shadow-[2px_2px_0px_#795653]">
+              <div className="flex items-center gap-1.5 bg-[#FFFDF7] px-2.5 sm:px-3 py-1 rounded-xl border-2 border-[#795653] shadow-[2px_2px_0px_#795653] shrink-0">
                 <span className="text-xs">🚩</span>
                 <span
                   className="text-xs font-black text-[#D6336C]"
@@ -553,23 +606,35 @@ export const TownMap: React.FC<TownMapProps> = ({
               </div>
             </div>
 
-            {/* Central Stage Carousel with Arcade Controls */}
-            <div className="w-full flex items-center justify-center gap-2 sm:gap-5 my-auto py-1">
-              {/* Left Arrow Button: "◀" with retro 3D button press */}
+            {/* Central Stage Carousel with Arcade Controls & Swipe */}
+            <div
+              className="w-full flex items-center justify-center lg:gap-5 my-auto py-1"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {/* Left Arrow Button: "◀" with retro 3D button press (ONLY ON DESKTOP, HIDDEN ON MOBILE & TABLET) */}
               <button
                 onClick={handlePrev}
                 title="Khu vực trước đó (Phím Mũi tên trái hoặc phím A)"
-                className="pixel-btn-press flex-shrink-0 flex items-center justify-center w-11 sm:w-14 h-11 sm:h-14 bg-[#FFFDF7] hover:bg-[#F7DDA0] text-[#795653] font-black rounded-2xl border-3 sm:border-4 border-[#795653] cursor-pointer shadow-[3px_3px_0px_#795653] select-none"
+                className="hidden lg:flex pixel-btn-press shrink-0 items-center justify-center w-14 h-14 bg-[#FFFDF7] hover:bg-[#F7DDA0] active:scale-95 text-[#795653] font-black rounded-2xl border-4 border-[#795653] cursor-pointer shadow-[3px_3px_0px_#795653] select-none z-20"
                 style={{ fontFamily: "'Tiny5', monospace" }}
+                aria-label="Khu vực trước đó"
               >
-                <span className="text-xl sm:text-2xl leading-none">◀</span>
+                <span className="text-2xl leading-none">◀</span>
               </button>
 
               {/* Central Main Stage Frame (Active Location) */}
-              <div className="w-full max-w-md sm:max-w-lg flex flex-col items-center">
+              <div
+                className="w-full max-w-sm sm:max-w-md lg:max-w-lg flex flex-col items-center select-none touch-pan-y"
+                style={{
+                  transform: swipeOffset !== 0 ? `translateX(${swipeOffset}px)` : undefined,
+                  transition: isSwiping ? 'none' : 'transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)',
+                }}
+              >
                 {/* 1. Khung Hình Ảnh Trung Tâm với Pixel Reveal effect & animated preview */}
                 <div
-                  className={`relative w-full aspect-[4/3] max-h-[270px] sm:max-h-[310px] bg-[#FFFDF7] border-4 sm:border-5 border-[#795653] rounded-2xl shadow-[6px_6px_0px_#795653] overflow-hidden flex items-center justify-center p-1 sm:p-2 transition-all ${
+                  className={`relative w-full aspect-[4/3] max-h-[240px] sm:max-h-[310px] bg-[#FFFDF7] border-3 sm:border-5 border-[#795653] rounded-2xl shadow-[4px_4px_0px_#795653] sm:shadow-[6px_6px_0px_#795653] overflow-hidden flex items-center justify-center p-1 sm:p-2 transition-all ${
                     isStageRevealing ? 'animate-stage-reveal' : ''
                   }`}
                   style={{
@@ -783,15 +848,41 @@ export const TownMap: React.FC<TownMapProps> = ({
                   </div>
                 </div>
 
+                {/* 2. Stage Pagination Dots / Indicators (Tap or Swipe to change stage) */}
+                <div className="flex items-center justify-center gap-2 mt-2 mb-0.5">
+                  {TOWN_LOCATIONS.map((loc, idx) => (
+                    <button
+                      key={loc.id}
+                      onClick={() => handleSelectStageIndex(idx)}
+                      className={`transition-all duration-300 rounded-full cursor-pointer flex items-center justify-center ${
+                        currentIndex === idx
+                          ? 'w-7 h-2.5 bg-[#FF8FAB] border-2 border-[#795653] shadow-[1px_1px_0px_#795653]'
+                          : 'w-2.5 h-2.5 bg-white/90 hover:bg-[#FFE5EC] border-2 border-[#795653]/50'
+                      }`}
+                      title={`${loc.icon} ${loc.name}`}
+                      aria-label={`Chuyển đến ${loc.name}`}
+                    />
+                  ))}
+                </div>
+
+                {/* Mobile / Tablet Swipe Hint */}
+                <div className="lg:hidden flex items-center justify-center gap-1.5 text-[10px] sm:text-xs font-bold text-[#795653]/70 mb-1" style={{ fontFamily: "'Tiny5', monospace" }}>
+                  <span className="animate-pulse">‹</span>
+                  <span>Vuốt trái / phải để đổi game</span>
+                  <span className="animate-pulse">›</span>
+                </div>
+
                 {/* 3. Bảng Thông Tin (Info Panel - Arcade Style) */}
-                <div className="w-full mt-2.5 bg-[#FFF9F4] border-3 sm:border-4 border-[#795653] rounded-2xl shadow-[5px_5px_0px_#795653] p-3 sm:p-4 flex flex-col items-center text-center">
+                <div className="w-full mt-1.5 sm:mt-2 bg-[#FFF9F4] border-3 sm:border-4 border-[#795653] rounded-2xl shadow-[4px_4px_0px_#795653] sm:shadow-[5px_5px_0px_#795653] p-2.5 sm:p-4 flex flex-col items-center text-center">
                   {/* Tên Khu Vực */}
                   <h2
                     className="text-base sm:text-xl font-black text-[#D6336C] tracking-wide flex items-center justify-center gap-1.5"
                     style={{ fontFamily: "'Tiny5', monospace" }}
                   >
                     <span>{activeLocation.icon}</span>
-                    <span style={{ fontFamily: "'Tiny5 Duo', 'Tiny5', monospace", fontSize: '25px' }}>{activeLocation.name}</span>
+                    <span style={{ fontFamily: "'Tiny5 Duo', 'Tiny5', monospace" }} className="text-xl sm:text-[25px] leading-tight">
+                      {activeLocation.name}
+                    </span>
                   </h2>
 
                   {/* Dòng Giới Thiệu */}
@@ -822,33 +913,35 @@ export const TownMap: React.FC<TownMapProps> = ({
                   {/* Nút Xác Nhận Chơi (Action Button with Retro Button Press) */}
                   <button
                     onClick={handleEnterLocation}
-                    className="pixel-btn-press mt-3 w-full sm:w-auto px-8 sm:px-12 py-2.5 sm:py-3 bg-[#FF8FAB] hover:bg-[#ff7599] text-white font-black text-sm sm:text-base rounded-xl border-3 sm:border-4 border-[#795653] cursor-pointer flex items-center justify-center gap-2 select-none"
+                    className="pixel-btn-press mt-2.5 sm:mt-3 w-full sm:w-auto px-6 sm:px-12 py-2 sm:py-3 bg-[#FF8FAB] hover:bg-[#ff7599] text-white font-black text-xs sm:text-base rounded-xl border-3 sm:border-4 border-[#795653] cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 select-none"
                     style={{
                       fontFamily: "'Tiny5 Duo', 'Tiny5', monospace",
                     }}
                   >
-                    <span style={{ fontSize: '18px' }}>
+                    <span className="text-sm sm:text-[18px]">
                       {activeLocation.id === 'house' ? 'VÀO NHÀ MÈO' : 'VÀO KHU VỰC'}
                     </span>
-                    <span className="text-base sm:text-lg animate-pulse">▶</span>
+                    <span className="text-sm sm:text-lg animate-pulse">▶</span>
                   </button>
                 </div>
               </div>
 
-              {/* Right Arrow Button: "▶" with retro 3D button press */}
+              {/* Right Arrow Button: "▶" with retro 3D button press (ONLY ON DESKTOP, HIDDEN ON MOBILE & TABLET) */}
               <button
                 onClick={handleNext}
                 title="Khu vực kế tiếp (Phím Mũi tên phải hoặc phím D)"
-                className="pixel-btn-press flex-shrink-0 flex items-center justify-center w-11 sm:w-14 h-11 sm:h-14 bg-[#FFFDF7] hover:bg-[#F7DDA0] text-[#795653] font-black rounded-2xl border-3 sm:border-4 border-[#795653] cursor-pointer shadow-[3px_3px_0px_#795653] select-none"
+                className="hidden lg:flex pixel-btn-press shrink-0 items-center justify-center w-14 h-14 bg-[#FFFDF7] hover:bg-[#F7DDA0] active:scale-95 text-[#795653] font-black rounded-2xl border-4 border-[#795653] cursor-pointer shadow-[3px_3px_0px_#795653] select-none z-20"
                 style={{ fontFamily: "'Tiny5', monospace" }}
+                aria-label="Khu vực kế tiếp"
               >
-                <span className="text-xl sm:text-2xl leading-none">▶</span>
+                <span className="text-2xl leading-none">▶</span>
               </button>
             </div>
 
-            {/* Bottom Keyboard Tip */}
-            <footer className="mt-2 text-center text-[10px] sm:text-xs text-[#795653]/80 font-bold bg-[#FFF9F4] px-3 py-1 rounded-lg border border-[#795653]/30" style={{ fontFamily: "'Tiny5', monospace" }}>
-              💡 Phím tắt: [ ◀ / ▶ ] hoặc [ A / D ] chuyển khu · [ ENTER ] vào chơi · [ ESC ] màn hình chính
+            {/* Bottom Keyboard & Touch Tip */}
+            <footer className="mt-2 text-center text-[10px] sm:text-xs text-[#795653]/80 font-bold bg-[#FFF9F4] px-3 py-1 rounded-lg border border-[#795653]/30 max-w-full" style={{ fontFamily: "'Tiny5', monospace" }}>
+              <span className="lg:hidden">💡 Lướt trái / phải để chọn game muốn chơi · Chạm nút để vào chơi</span>
+              <span className="hidden lg:inline">💡 Phím tắt: [ ◀ / ▶ ] hoặc [ A / D ] chuyển khu · [ ENTER ] vào chơi · [ ESC ] màn hình chính</span>
             </footer>
           </div>
         )}

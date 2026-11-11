@@ -295,7 +295,7 @@ function getInitialDatabase(): DatabaseSchema {
     ],
     user_quests: [],
     gacha_config: {
-      spinPrice: 20,
+      spinPrice: 10,
       isPaused: false,
       rates: [
         { coins: 5, rate: 40, label: 'Voucher 5 Xu Cá', rarity: 'common', capsuleType: 'strawberry_milk', capsuleName: 'Capsule 01 — Strawberry Milk' },
@@ -1359,7 +1359,7 @@ app.post('/api/gacha/spin', authMiddleware, (req, res) => {
     return;
   }
 
-  const spinPrice = db.gacha_config.spinPrice || 20;
+  const spinPrice = db.gacha_config.spinPrice || 10;
   if (user.balance < spinPrice) {
     res.status(400).json({
       error: 'Số xu cá của quý khách không đủ quay Gacha, hãy kiếm thêm xu cá nhé -`♡´- ',

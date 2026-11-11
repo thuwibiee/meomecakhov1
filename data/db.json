@@ -379,7 +379,7 @@
   ],
   "user_quests": [],
   "gacha_config": {
-    "spinPrice": 20,
+    "spinPrice": 10,
     "isPaused": false,
     "rates": [
       {

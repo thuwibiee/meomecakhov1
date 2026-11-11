@@ -341,7 +341,7 @@ const CAT_BREEDS: { breed: CatBreed; color: string; defaultName: string }[] = [
 ];
 
 export const DEFAULT_GACHA_CONFIG: GachaConfig = {
-  spinPrice: 20,
+  spinPrice: 10,
   isPaused: false,
   rates: [
     { coins: 5, rate: 40, label: 'Voucher 5 Xu Cá', rarity: 'common', capsuleType: 'strawberry_milk', capsuleName: 'Capsule 01 — Strawberry Milk' },
@@ -556,10 +556,15 @@ export async function ensureSeeded(): Promise<void> {
         await Promise.all(DEFAULT_QUESTS.map((q) => setDoc(doc(db, 'quests', q.id), q)));
       }
 
-      // 5. Seed settings if missing
+      // 5. Seed settings if missing or update default gacha price
       const gachaSnap = await getDoc(doc(db, 'settings', 'gacha_config'));
       if (!gachaSnap.exists()) {
         await setDoc(doc(db, 'settings', 'gacha_config'), DEFAULT_GACHA_CONFIG);
+      } else {
+        const currentGacha = gachaSnap.data() as any;
+        if (currentGacha && currentGacha.spinPrice === 20) {
+          await setDoc(doc(db, 'settings', 'gacha_config'), { ...currentGacha, spinPrice: 10 });
+        }
       }
 
       const loyaltySnap = await getDoc(doc(db, 'settings', 'loyalty_config'));
@@ -1959,7 +1964,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
         return makeRes(400, { error: 'Máy gacha hiện đang tạm dừng bảo trì một chút nha.' });
       }
 
-      const spinPrice = gachaConfig.spinPrice || 20;
+      const spinPrice = gachaConfig.spinPrice || 10;
       if (user.balance < spinPrice) {
         return makeRes(400, {
           error: 'Số xu cá của quý khách không đủ quay Gacha, hãy kiếm thêm xu cá nhé -`♡´- ',

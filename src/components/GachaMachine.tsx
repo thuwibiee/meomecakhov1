@@ -347,7 +347,7 @@ export const GachaMachine: React.FC<GachaMachineProps> = ({
   const [isClaimingVoucher, setIsClaimingVoucher] = useState(false);
   const [claimedSuccess, setClaimedSuccess] = useState(false);
 
-  const spinPrice = config?.spinPrice || 20;
+  const spinPrice = config?.spinPrice || 10;
 
 
   // Helper to determine capsule type from coins
@@ -752,7 +752,7 @@ export const GachaMachine: React.FC<GachaMachineProps> = ({
                   </div>
                 </div>
 
-                {/* Bottom: Price Box "20 xu cá / lượt" */}
+                {/* Bottom: Price Box "10 xu cá / lượt" */}
                 <div className="w-full flex justify-center">
                   <div className="w-full max-w-[155px] sm:max-w-[175px] px-2 py-2 rounded-xl bg-[#FFF9F4] border-[3px] border-[#795653] shadow-[3px_3px_0px_#795653] flex items-center justify-center text-center">
                     <span
