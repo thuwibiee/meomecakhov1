@@ -86,7 +86,7 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
       return;
     }
     if (turnsRemaining <= 0) {
-      setErrorMessage('Bà đã nướng hết lượt cá hôm nay rồi! Nghỉ ngơi mai nướng tiếp nhé 🔥');
+      setErrorMessage('Quý khách đã nướng hết lượt cá hôm nay rồi! Nghỉ ngơi mai nướng tiếp nhé 🔥');
       return;
     }
 
@@ -173,7 +173,7 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
           style={{ fontFamily: "'Tiny5', monospace" }}
         >
           <span>←</span>
-          <span>BẢN ĐỒ THỊ TRẤN</span>
+          <span>town-map</span>
         </button>
 
         <div className="text-center">
@@ -181,7 +181,6 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
             className="text-base sm:text-lg font-black text-[#B07D62] flex items-center gap-1.5"
             style={{ fontFamily: "'Tiny5', monospace" }}
           >
-            <span>🍢</span>
             <span>BẾP XÈO XÈO — NƯỚNG CÁ THƠM LỪNG</span>
           </h2>
           <span className="text-[11px] font-bold text-[#795653]" style={{ fontFamily: "'Tiny5', monospace" }}>
@@ -222,7 +221,7 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
               style={{ fontFamily: "'Tiny5', monospace" }}
             >
               <span className="text-3xl mb-2">🎣</span>
-              <p>Túi đồ của bà chưa có cá tươi.</p>
+              <p>Túi đồ của quý khách chưa có cá tươi.</p>
               <p className="mt-1 text-[11px] text-[#0A5EB0]">
                 Hãy ghé <strong>Hồ Bong Bóng</strong> câu vài chú cá trước nhé!
               </p>
@@ -272,7 +271,7 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
                 className="w-12 h-12 object-contain"
                 style={{ imageRendering: 'pixelated' }}
               />
-              <span className="absolute -top-1 -right-1 text-xs">👨‍🍳</span>
+              <span className="absolute -top-1 -right-1 text-xs"></span>
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
@@ -288,8 +287,8 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
                 style={{ fontFamily: "'Tiny5', monospace", fontWeight: 'bold' }}
               >
                 {isCooking
-                  ? '⚡ Canh vạch vàng 100 điểm lật cá ngay để nhận tối đa Xu Cá nha sen!'
-                  : '🐾 Chọn một chú cá béo trong giỏ bên trái rồi đặt lên vỉ nướng xèo xèo nào!'}
+                  ? 'Canh lửa đến vạch vàng 100 điểm lật cá ngay để nhận tối đa Xu Cá nha sen!'
+                  : 'Chọn một chú cá béo trong giỏ bên trái rồi đặt lên vỉ nướng xèo xèo nào!'}
               </p>
             </div>
           </div>
@@ -300,7 +299,7 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
               className="px-3 py-1 bg-white border-2 border-[#795653] rounded-xl text-xs font-black text-[#795653] shadow-[2px_2px_0px_#795653]"
               style={{ fontFamily: "'Tiny5', monospace" }}
             >
-              {isCooking ? '🔥 Đang nướng trên than hồng... Canh lấy cá đúng lúc!' : '🪵 Đặt cá lên vỉ để bắt đầu trổ tài!'}
+              {isCooking ? 'Đang nướng trên than hồng... Canh lấy cá đúng lúc!' : 'Đặt cá lên vỉ để bắt đầu trổ tài nướng cá!'}
             </span>
           </div>
 

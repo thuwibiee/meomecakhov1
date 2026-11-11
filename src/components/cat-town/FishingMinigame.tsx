@@ -298,7 +298,7 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
             style={{ fontFamily: "'Tiny5', 'Press Start 2P', monospace" }}
           >
             <span>🐟</span>
-            <span>BỂ CÁ & TỶ LỆ (11 LOÀI)</span>
+            <span>DANH MỤC CÁ (11 LOÀI)</span>
           </button>
 
           {/* Nút Admin Đổi Asset */}
@@ -631,7 +631,7 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
                       textShadow: rarityCfg.label === 'COMMON' ? '1px 1px 0px #795653' : '1px 1px 0px #000',
                     }}
                   >
-                    {rarityCfg.tagText} ({caughtFishData.fish.dropRate}%)
+                    {rarityCfg.tagText}
                   </div>
 
                   {/* CON CÁ TRONG POPUP: DÙNG THẺ IMG VỚI IMAGE-RENDERING: PIXELATED */}
@@ -750,7 +750,7 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
                 style={{ fontFamily: "'Tiny5', 'Press Start 2P', monospace" }}
               >
                 <span>🐟</span>
-                <span>BỂ CÁ HỒ BONG BÓNG — TỶ LỆ XUẤT HIỆN</span>
+                <span>DANH MỤC CÁ HỒ BONG BÓNG</span>
               </h3>
               <button
                 onClick={() => setIsCompendiumOpen(false)}
@@ -765,7 +765,7 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
               className="text-xs text-[#795653] mb-3 leading-relaxed"
               style={{ fontFamily: "'Tiny5', monospace" }}
             >
-              Dưới đây là {effectiveFishList.length} loài cá cư ngụ tại Hồ Bong Bóng. Tỷ lệ xuất hiện (Drop Rate) được tính toán theo cơ chế trọng số ngẫu nhiên (Weighted Random).
+              Dưới đây là {effectiveFishList.length} loài cá độc đáo cư ngụ tại Hồ Bong Bóng.
             </p>
 
             {/* Fish List Grid */}
@@ -790,7 +790,7 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
                       />
                     </div>
 
-                    {/* Fish info */}
+                    {/* Fish info: Chỉ hiện tên cá & độ hiếm và miêu tả của cá */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span
@@ -810,22 +810,15 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
                             fontFamily: "'Tiny5', monospace",
                           }}
                         >
-                          {rCfg.label} • {fish.dropRate}%
+                          {rCfg.label}
                         </span>
                       </div>
                       <p
-                        className="text-[11px] text-[#795653] mt-0.5 line-clamp-2"
+                        className="text-[11px] text-[#795653] mt-1 line-clamp-3 leading-relaxed"
                         style={{ fontFamily: "'Tiny5', monospace" }}
                       >
                         {fish.description}
                       </p>
-                      <div
-                        className="flex items-center gap-3 text-[10px] text-[#795653] font-bold mt-1"
-                        style={{ fontFamily: "'Tiny5', monospace" }}
-                      >
-                        <span>Cân nặng: {fish.weightMin}g - {fish.weightMax}g</span>
-                        <span className="text-[#D6336C]">Thưởng: +{fish.xuReward} Xu</span>
-                      </div>
                     </div>
                   </div>
                 );

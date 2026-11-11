@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { PixelCatSprite } from './PixelCatSprite.tsx';
 import { PixelFishSprite } from './PixelFishSprite.tsx';
 import { retroAudio } from './retroAudio.ts';
 
@@ -145,21 +144,6 @@ export const PixelGameTitle: React.FC<PixelGameTitleProps> = ({
         </div>
       )}
 
-      {/* ================= 3. ADORABLE PIXEL MASCOT ATOP TITLE ================= */}
-      {/* Tiny sleeping/happy cat perched on the letters */}
-      <div
-        className="absolute -top-6 sm:-top-8 right-8 sm:right-16 z-20 pointer-events-none flex items-center gap-1 animate-cat-peaceful"
-        title="Bé mèo cưng đang lim dim sưởi nắng"
-      >
-        {isHovered ? (
-          <span className="text-[10px] sm:text-xs animate-bounce text-[#D6336C]">💖</span>
-        ) : (
-          <span className="text-[8px] sm:text-[9px] text-[#795653]/60 font-bold tracking-tighter" style={{ fontFamily: "'Tiny5', monospace" }}>
-            zZ
-          </span>
-        )}
-        <PixelCatSprite breed="Mèo Cam" size={24} mood="sleepy" action="sleep" />
-      </div>
 
       {/* ================= 4. MAIN TITLE TEXT CONTAINER ================= */}
       <div
@@ -169,14 +153,13 @@ export const PixelGameTitle: React.FC<PixelGameTitleProps> = ({
       >
         {/* The Text Itself */}
         <h1
-          className={`relative z-10 font-black tracking-wider leading-none select-none transition-all duration-300 text-[72px] sm:text-[94px] ${
+          className={`relative z-10 font-black tracking-wider leading-[97px] sm:leading-none -mr-[12px] sm:-mr-[24px] select-none transition-all duration-300 text-[72px] sm:text-[94px] ${
             isOpening ? 'text-[#FF8FAB]' : 'text-[#FF8FAB] animate-title-neon'
           }`}
           style={{
             fontFamily: "'Tiny5', monospace",
             paddingLeft: '-4px',
             paddingRight: '-19px',
-            marginRight: '-24px',
             // Crisp pixel drop shadow + soft pastel glow
             textShadow: isHovered
               ? '0 0 16px rgba(255, 143, 171, 0.95), 0 0 28px rgba(255, 182, 193, 0.7), 3px 3px 0px #795653'

@@ -6,12 +6,10 @@ class RetroSoundFX {
   private isMuted: boolean = false;
 
   constructor() {
+    this.isMuted = false;
     try {
-      const saved = localStorage.getItem('cat_town_sound_muted');
-      this.isMuted = saved === 'true';
-    } catch {
-      this.isMuted = false;
-    }
+      localStorage.removeItem('cat_town_sound_muted');
+    } catch {}
   }
 
   private initCtx() {
@@ -27,15 +25,12 @@ class RetroSoundFX {
   }
 
   public getIsMuted(): boolean {
-    return this.isMuted;
+    return false;
   }
 
   public toggleMute(): boolean {
-    this.isMuted = !this.isMuted;
-    try {
-      localStorage.setItem('cat_town_sound_muted', String(this.isMuted));
-    } catch {}
-    return this.isMuted;
+    this.isMuted = false;
+    return false;
   }
 
   // Short 8-bit blip for button click / select

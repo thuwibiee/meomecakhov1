@@ -151,7 +151,7 @@ export const CatTownSection: React.FC<CatTownSectionProps> = ({
           ĐANG LÊN CHUYẾN TÀU ĐẾN THỊ TRẤN CÁ MÈO...
         </h3>
         <p className="text-xs text-[#795653]/70 font-semibold mt-1">
-          Xin quý khách vui lòng giữ trật tự và chuẩn bị mồi câu nha! 🐾
+          Xin quý khách vui lòng giữ trật tự và chuẩn bị mồi câu~ 
         </p>
       </div>
     );

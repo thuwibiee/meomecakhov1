@@ -64,7 +64,7 @@ export const TOWN_LOCATIONS: TownLocation[] = [
     badgeText: '#0A5EB0',
     mascotBreed: 'Mèo Cam',
     mascotTitle: 'Cần Thủ Mèo Cam',
-    mascotQuote: 'Hôm nay mặt hồ phẳng lặng, cá cắn câu lia lịa luôn sen ơi! 🎣',
+    mascotQuote: 'Hôm nay mặt hồ phẳng lặng, cá cắn câu lia lịa luôn sen ơi!',
     mascotEmoji: '🐟',
   },
   {
@@ -91,7 +91,7 @@ export const TOWN_LOCATIONS: TownLocation[] = [
     badgeText: '#B07D62',
     mascotBreed: 'Mèo Mướp',
     mascotTitle: 'Bếp Trưởng Mướp Mập',
-    mascotQuote: 'Cá nướng vàng giòn xèo xèo, canh chuẩn giờ nhận bội thu Xu Cá nha! 🔥',
+    mascotQuote: 'Cá nướng vàng giòn xèo xèo, canh chuẩn giờ nhận bội thu Xu Cá nha!',
     mascotEmoji: '🍳',
   },
   {
@@ -117,7 +117,7 @@ export const TOWN_LOCATIONS: TownLocation[] = [
     badgeText: '#D6336C',
     mascotBreed: 'Mèo Trắng',
     mascotTitle: 'Mèo Bé Ngoan',
-    mascotQuote: 'Về nhà thôi sen ơi, phòng êm nệm ấm đang đợi sen vào decor nè! 🏡',
+    mascotQuote: 'Về nhà thôi sen ơi, phòng êm nệm ấm đang đợi sen vào decor nè!',
     mascotEmoji: '💖',
   },
 
@@ -143,7 +143,7 @@ export const TOWN_LOCATIONS: TownLocation[] = [
     badgeText: '#7209B7',
     mascotBreed: 'Mèo Tam Thể',
     mascotTitle: 'Tiên Tri Meo Meo',
-    mascotQuote: 'Quả cầu pha lê báo hiệu hôm nay sen có vận đỏ như son đó! 🔮',
+    mascotQuote: 'Quả cầu pha lê báo hiệu hôm nay sen có vận đỏ như son đó!',
     mascotEmoji: '✨',
   },
 ];
@@ -167,10 +167,6 @@ export const TownMap: React.FC<TownMapProps> = ({
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   // Stage switch reveal animation
   const [isStageRevealing, setIsStageRevealing] = useState<boolean>(false);
-  // Day / Sunset / Night ambiance state
-  const [timeOfDay, setTimeOfDay] = useState<'day' | 'sunset' | 'night'>('day');
-  // Sound muted state
-  const [isMuted, setIsMuted] = useState<boolean>(() => retroAudio.getIsMuted());
 
   const activeLocation = TOWN_LOCATIONS[currentIndex];
 
@@ -274,25 +270,6 @@ export const TownMap: React.FC<TownMapProps> = ({
     onSelectLocation(activeLocation.id);
   };
 
-  // Toggle ambient day/night
-  const handleToggleTimeOfDay = () => {
-    retroAudio.playBlip(700, 0.05);
-    setTimeOfDay((prev) => {
-      if (prev === 'day') return 'sunset';
-      if (prev === 'sunset') return 'night';
-      return 'day';
-    });
-  };
-
-  // Toggle audio
-  const handleToggleAudio = () => {
-    const nextMuted = retroAudio.toggleMute();
-    setIsMuted(nextMuted);
-    if (!nextMuted) {
-      retroAudio.playBlip(600, 0.08);
-    }
-  };
-
   // Keyboard navigation support for retro console feeling
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -330,17 +307,6 @@ export const TownMap: React.FC<TownMapProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentScreen, currentIndex, activeLocation.id]);
-
-  // Ambient lighting overlay styles based on time of day
-  const getAmbianceFilter = () => {
-    if (timeOfDay === 'sunset') {
-      return 'brightness(0.95) saturate(1.15) hue-rotate(-8deg)';
-    }
-    if (timeOfDay === 'night') {
-      return 'brightness(0.82) saturate(0.9) hue-rotate(25deg)';
-    }
-    return 'none';
-  };
 
   return (
     <div
@@ -399,26 +365,8 @@ export const TownMap: React.FC<TownMapProps> = ({
           </div>
         )}
 
-        {/* Right: Sound, Day/Night toggle, Balance & Inventory/Shop Actions */}
+        {/* Right: Balance & Inventory/Shop Actions */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Audio Mute/Unmute */}
-          <button
-            onClick={handleToggleAudio}
-            title={isMuted ? 'Bật âm thanh hiệu ứng' : 'Tắt âm thanh hiệu ứng'}
-            className="pixel-btn-press px-2 py-1.5 bg-[#FFFDF7] hover:bg-[#FFE5EC] text-[#795653] font-bold text-xs rounded-xl border-2 border-[#795653] cursor-pointer"
-          >
-            <span>{isMuted ? '🔇' : '🔊'}</span>
-          </button>
-
-          {/* Time of Day Toggle */}
-          <button
-            onClick={handleToggleTimeOfDay}
-            title={`Thời gian: ${timeOfDay === 'day' ? 'Ban Ngày' : timeOfDay === 'sunset' ? 'Hoàng Hôn' : 'Ban Đêm'}`}
-            className="pixel-btn-press px-2 py-1.5 bg-[#FFFDF7] hover:bg-[#F7DDA0] text-[#795653] font-bold text-xs rounded-xl border-2 border-[#795653] cursor-pointer"
-          >
-            <span>{timeOfDay === 'day' ? '☀️' : timeOfDay === 'sunset' ? '🌅' : '🌙'}</span>
-          </button>
-
           <button
             onClick={() => {
               retroAudio.playBlip(550, 0.05);
@@ -468,7 +416,6 @@ export const TownMap: React.FC<TownMapProps> = ({
           backgroundSize: 'cover',
           backgroundPosition: 'center bottom',
           minHeight: '620px',
-          filter: getAmbianceFilter(),
         }}
       >
         {/* Pixel Scanline & Dithering Overlay for arcade vibe */}
@@ -479,41 +426,6 @@ export const TownMap: React.FC<TownMapProps> = ({
             backgroundSize: '100% 4px',
           }}
         />
-
-        {/* Ambient environmental particles (Sakura petals & sparkles) */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
-          <div
-            className="absolute top-2 left-[12%] text-sm opacity-80 animate-petal-fall"
-            style={{ animationDelay: '0s' }}
-          >
-            🌸
-          </div>
-          <div
-            className="absolute top-1 left-[38%] text-xs opacity-75 animate-petal-fall"
-            style={{ animationDelay: '2.5s' }}
-          >
-            🌸
-          </div>
-          <div
-            className="absolute top-3 right-[24%] text-sm opacity-85 animate-petal-fall"
-            style={{ animationDelay: '4.2s' }}
-          >
-            🌸
-          </div>
-          <div
-            className="absolute top-2 right-[8%] text-xs opacity-70 animate-petal-fall"
-            style={{ animationDelay: '1.2s' }}
-          >
-            🌸
-          </div>
-          {timeOfDay === 'night' && (
-            <>
-              <div className="absolute top-8 left-[22%] text-xs animate-star-twinkle">✨</div>
-              <div className="absolute top-16 right-[30%] text-xs animate-star-twinkle" style={{ animationDelay: '0.8s' }}>⭐</div>
-              <div className="absolute top-12 right-[15%] text-xs animate-star-twinkle" style={{ animationDelay: '1.5s' }}>✨</div>
-            </>
-          )}
-        </div>
 
         {/* ------------------------------------------------------------- */}
         {/* SCREEN 1: START SCREEN (MÀN HÌNH BẮT ĐẦU)                     */}
