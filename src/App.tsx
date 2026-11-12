@@ -14,6 +14,7 @@ import { QuestsAndGachaSection } from './components/QuestsAndGachaSection.tsx';
 import { SpecialOrderSection } from './components/SpecialOrderSection.tsx';
 import { CatTownSection } from './components/cat-town/CatTownSection.tsx';
 import { AdminDashboard } from './components/AdminDashboard.tsx';
+import { AdminSecretaryModal } from './components/AdminSecretaryModal.tsx';
 import { ReceiptModal } from './components/ReceiptModal.tsx';
 import { CharacterDetailModal } from './components/CharacterDetailModal.tsx';
 import { AuthModal } from './components/AuthModal.tsx';
@@ -96,6 +97,9 @@ export default function App() {
   // Cat Town Train Confirmation Modal
   const [showCatTownConfirmModal, setShowCatTownConfirmModal] = useState(false);
 
+  // Admin Secretary Report Modal (Thư Ký Mèo)
+  const [showAdminSecretaryModal, setShowAdminSecretaryModal] = useState(false);
+
   // Restore persistent or session token on mount (Auto-Login)
   useEffect(() => {
     const savedToken = localStorage.getItem('meome_token') || sessionStorage.getItem('meome_token');
@@ -109,6 +113,13 @@ export default function App() {
         if (data.user) {
           setAuthToken(savedToken);
           setUser(data.user);
+          if (data.user.role === 'admin') {
+            const alreadyReported = sessionStorage.getItem('admin_secretary_shown');
+            if (!alreadyReported) {
+              sessionStorage.setItem('admin_secretary_shown', 'true');
+              setShowAdminSecretaryModal(true);
+            }
+          }
         } else {
           // Token is invalid or expired
           localStorage.removeItem('meome_token');
@@ -222,6 +233,11 @@ export default function App() {
       sessionStorage.setItem('meome_token', token);
       localStorage.removeItem('meome_token');
     }
+
+    // TÍNH NĂNG 1: Thư ký mèo chỉ xuất hiện DUY NHẤT cho tài khoản Admin khi đăng nhập thành công
+    if (loggedUser.role === 'admin') {
+      setShowAdminSecretaryModal(true);
+    }
   };
 
   // Logout handler - clears both local and session storage, and revokes server session
@@ -236,6 +252,8 @@ export default function App() {
     setAuthToken(null);
     localStorage.removeItem('meome_token');
     sessionStorage.removeItem('meome_token');
+    sessionStorage.removeItem('admin_secretary_shown');
+    setShowAdminSecretaryModal(false);
     setShowAdmin(false);
     setActiveTab('shop');
   };
@@ -796,6 +814,7 @@ export default function App() {
               }}
               onUpdateCharacters={handleUpdateCharacters}
               initialEditingCharacter={adminEditingCharacter}
+              onOpenSecretaryReport={() => setShowAdminSecretaryModal(true)}
             />
           ) : activeTab === 'shop' ? (
             <ShopSection
@@ -1190,6 +1209,15 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* 5. Admin Secretary Report Modal (Thư Ký Mèo - Chỉ xuất hiện duy nhất cho Admin) */}
+      <AdminSecretaryModal
+        isOpen={showAdminSecretaryModal && user?.role === 'admin'}
+        onClose={() => setShowAdminSecretaryModal(false)}
+        adminUser={user}
+        previousLoginAt={user?.previousLoginAt}
+        onOpenAdminPanel={() => setShowAdmin(true)}
+      />
     </div>
   );
 }

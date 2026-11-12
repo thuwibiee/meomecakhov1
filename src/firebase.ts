@@ -16,6 +16,8 @@ import {
   deleteDoc,
   getDocFromServer,
   onSnapshot,
+  query,
+  where,
 } from 'firebase/firestore';
 import firebaseAppletConfig from '../firebase-applet-config.json';
 import initialCharactersData from '../data/characters.json';
@@ -44,6 +46,7 @@ import {
   CatTownFortune,
   CatBreed,
   Spice,
+  AdminTodo,
 } from './types.ts';
 import { FISH_DATABASE, catchFish as pickWeightedFish } from './components/cat-town/fishDatabase';
 import { DEFAULT_FURNITURE_CATALOG } from './components/cat-town/furnitureCatalog.ts';
@@ -449,10 +452,12 @@ export function normalizeCharacter(c: any): Character {
     backstory: c.backstory || c.fullStory || c.shortBio || '',
     openScene: c.openScene || '',
     price: typeof c.price === 'number' ? c.price : Number(String(c.price || 30).replace(/\D/g, '')) || 30,
-    studioUrl: c.studioUrl || 'https://aistudio.google.com/',
+    studioUrl: typeof c.studioUrl === 'string' ? c.studioUrl.trim() : '',
     avatarUrl: c.avatarUrl || 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80',
     receiptAvatarUrl: c.receiptAvatarUrl || '',
     isAvailable: c.isAvailable !== false,
+    isComingSoon: Boolean(c.isComingSoon || !c.studioUrl || !String(c.studioUrl).trim()),
+    isBestSeller: Boolean(c.isBestSeller),
     salesCount: Number(c.salesCount || 0),
     createdAt: c.createdAt || '2026-10-20T10:00:00Z',
     tags: normTags,
@@ -556,6 +561,18 @@ export async function ensureSeeded(): Promise<void> {
         await Promise.all(DEFAULT_QUESTS.map((q) => setDoc(doc(db, 'quests', q.id), q)));
       }
 
+      // 4b. Migrate legacy category 'khô hai nắng' -> 'khô cá hai nắng'
+      try {
+        const legacyCharsSnap = await getDocs(query(collection(db, 'characters'), where('category', '==', 'khô hai nắng')));
+        if (!legacyCharsSnap.empty) {
+          await Promise.all(
+            legacyCharsSnap.docs.map((d) => updateDoc(d.ref, { category: 'khô cá hai nắng' }))
+          );
+        }
+      } catch (catErr) {
+        console.warn('Category migration notice:', catErr);
+      }
+
       // 5. Seed settings if missing or update default gacha price
       const gachaSnap = await getDoc(doc(db, 'settings', 'gacha_config'));
       if (!gachaSnap.exists()) {
@@ -593,6 +610,32 @@ export async function ensureSeeded(): Promise<void> {
       const spicesSnap = await getDocs(collection(db, 'spices'));
       if (spicesSnap.empty) {
         await Promise.all(DEFAULT_SPICES.map((s) => setDoc(doc(db, 'spices', s.id), s)));
+      }
+
+      // 7. Seed admin_todos if empty
+      const todosSnap = await getDocs(collection(db, 'admin_todos'));
+      if (todosSnap.empty) {
+        const defaultTodos = [
+          {
+            id: 'todo_1',
+            content: 'Duyệt các phiếu đặt cá khô đặc biệt mới gửi',
+            isCompleted: false,
+            createdAt: new Date().toISOString(),
+          },
+          {
+            id: 'todo_2',
+            content: 'Ủ thêm plot cốt truyện cho các chàng cá sắp lên kệ',
+            isCompleted: false,
+            createdAt: new Date().toISOString(),
+          },
+          {
+            id: 'todo_3',
+            content: 'Kiểm tra hộp thư fít bách và báo lỗi từ độc giả',
+            isCompleted: true,
+            createdAt: new Date().toISOString(),
+          },
+        ];
+        await Promise.all(defaultTodos.map((t) => setDoc(doc(db, 'admin_todos', t.id), t)));
       }
     } catch (err) {
       console.warn('Firestore seed check encountered an issue (will retry on next request):', err);
@@ -659,6 +702,148 @@ export function subscribeToSpices(onUpdate: (spices: Spice[]) => void): () => vo
   }
 }
 
+export function subscribeToAdminTodos(onUpdate: (todos: AdminTodo[]) => void): () => void {
+  ensureSeeded().catch(() => {});
+  try {
+    return onSnapshot(
+      collection(db, 'admin_todos'),
+      (snapshot) => {
+        const list = snapshot.docs.map((d) => ({
+          ...d.data(),
+          id: d.id,
+        } as AdminTodo));
+        list.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+        onUpdate(list);
+      },
+      (err) => {
+        console.warn('Admin todos listener notice:', err);
+      }
+    );
+  } catch (err) {
+    console.warn('Admin todos subscription exception:', err);
+    return () => {};
+  }
+}
+
+export async function addAdminTodo(content: string): Promise<AdminTodo> {
+  const id = genId('todo');
+  const newTodo: AdminTodo = {
+    id,
+    content: content.trim(),
+    isCompleted: false,
+    createdAt: new Date().toISOString(),
+  };
+  await setDoc(doc(db, 'admin_todos', id), newTodo);
+  return newTodo;
+}
+
+export async function toggleAdminTodo(todoId: string, currentStatus: boolean): Promise<boolean> {
+  const next = !currentStatus;
+  await updateDoc(doc(db, 'admin_todos', todoId), {
+    isCompleted: next,
+  });
+  return next;
+}
+
+export async function deleteAdminTodo(todoId: string): Promise<void> {
+  await deleteDoc(doc(db, 'admin_todos', todoId));
+}
+
+export async function getAdminSecretaryStats(previousLoginAt?: string) {
+  await ensureSeeded();
+  const thresholdIso = previousLoginAt || new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+  const thresholdTime = new Date(thresholdIso).getTime();
+
+  let newUsersCount = 0;
+  let newRequestsCount = 0;
+
+  try {
+    const usersSnap = await getDocs(collection(db, 'users'));
+    newUsersCount = usersSnap.docs.filter((d) => {
+      const data = d.data();
+      if (!data.createdAt) return false;
+      return new Date(data.createdAt).getTime() > thresholdTime;
+    }).length;
+  } catch (e) {
+    console.warn('Secretary users stats warning:', e);
+  }
+
+  const soldMap = new Map<string, number>();
+
+  try {
+    const ordersSnap = await getDocs(collection(db, 'orders'));
+    ordersSnap.docs.forEach((d) => {
+      const data = d.data();
+      const time = data.createdAt || data.purchasedAt;
+      if (!time) return;
+      if (new Date(time).getTime() > thresholdTime) {
+        const charName = String(data.characterName || data.name || 'Bé cá khô').trim();
+        soldMap.set(charName, (soldMap.get(charName) || 0) + 1);
+      }
+    });
+
+    if (soldMap.size === 0) {
+      const ucSnap = await getDocs(collection(db, 'user_characters'));
+      const charsSnap = await getDocs(collection(db, 'characters'));
+      const charNameMap = new Map<string, string>();
+      charsSnap.docs.forEach((cd) => {
+        const cdData = cd.data();
+        charNameMap.set(cd.id, cdData.name || cd.id);
+      });
+
+      ucSnap.docs.forEach((d) => {
+        const data = d.data();
+        const time = data.purchasedAt || data.createdAt;
+        if (time && new Date(time).getTime() > thresholdTime) {
+          const charName = String(
+            data.characterName ||
+              (data.character && data.character.name) ||
+              charNameMap.get(data.characterId) ||
+              'Bé cá khô'
+          ).trim();
+          soldMap.set(charName, (soldMap.get(charName) || 0) + 1);
+        }
+      });
+    }
+  } catch (e) {
+    console.warn('Secretary orders stats warning:', e);
+  }
+
+  const fishSoldDetails: { characterName: string; count: number }[] = [];
+  let fishSoldCount = 0;
+  soldMap.forEach((count, characterName) => {
+    fishSoldDetails.push({ characterName, count });
+    fishSoldCount += count;
+  });
+
+  try {
+    const requestsSnap = await getDocs(collection(db, 'special_orders'));
+    const requestsCount = requestsSnap.docs.filter((d) => {
+      const data = d.data();
+      const time = data.createdAt || data.requestedAt;
+      return Boolean(time && new Date(time).getTime() > thresholdTime);
+    }).length;
+
+    const feedbacksSnap = await getDocs(collection(db, 'feedbacks'));
+    const feedbacksCount = feedbacksSnap.docs.filter((d) => {
+      const data = d.data();
+      return Boolean(data.createdAt && new Date(data.createdAt).getTime() > thresholdTime);
+    }).length;
+
+    newRequestsCount = requestsCount + feedbacksCount;
+  } catch (e) {
+    console.warn('Secretary requests stats warning:', e);
+  }
+
+  return {
+    newUsersCount,
+    fishSoldCount,
+    fishSoldDetails,
+    newRequestsCount,
+    previousLoginAt: thresholdIso,
+  };
+}
+
 
 // Resolve user from Authorization header (`Bearer <userId>.<rand>`) or localStorage
 async function resolveUser(options?: RequestInit): Promise<(User & { password_plain?: string }) | null> {
@@ -703,6 +888,8 @@ async function resolveUser(options?: RequestInit): Promise<(User & { password_pl
     role,
     createdAt: data.createdAt || new Date().toISOString(),
     password_plain: data.password_plain,
+    lastLoginAt: data.lastLoginAt,
+    previousLoginAt: data.previousLoginAt,
   };
 }
 
@@ -966,6 +1153,8 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           console.warn('Admin doc fetch notice:', e);
         }
 
+        const previousLoginAt = adminUser?.lastLoginAt || adminUser?.previousLoginAt || adminUser?.createdAt || new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+
         if (!adminUser) {
           adminUser = {
             id: uid,
@@ -974,11 +1163,24 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
             balance: 9999,
             role: 'admin',
             createdAt: nowIso,
+            lastLoginAt: nowIso,
+            previousLoginAt,
           };
           try {
             await setDoc(doc(db, 'users', uid), adminUser);
           } catch (e) {
             console.warn('Admin doc save notice:', e);
+          }
+        } else {
+          adminUser.previousLoginAt = previousLoginAt;
+          adminUser.lastLoginAt = nowIso;
+          try {
+            await updateDoc(doc(db, 'users', uid), {
+              previousLoginAt,
+              lastLoginAt: nowIso,
+            });
+          } catch (e) {
+            console.warn('Admin doc update notice:', e);
           }
         }
 
@@ -992,6 +1194,8 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
             balance: Number(adminUser.balance ?? 9999),
             role: 'admin',
             createdAt: adminUser.createdAt || nowIso,
+            lastLoginAt: nowIso,
+            previousLoginAt,
           },
         });
       }
@@ -1089,6 +1293,8 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           balance: user.balance,
           role: user.role,
           createdAt: user.createdAt,
+          lastLoginAt: user.lastLoginAt,
+          previousLoginAt: user.previousLoginAt,
         },
       });
     }
@@ -1150,7 +1356,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
       } = body;
 
       const cleanName = (name || '').trim();
-      const cleanStudioUrl = (studioUrl || 'https://aistudio.google.com/').trim();
+      const cleanStudioUrl = (studioUrl || '').trim();
       const numericPrice = Number(price);
 
       if (!cleanName) {
@@ -1170,7 +1376,8 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
         return `https://${u}`;
       };
 
-      const finalStudioUrl = normalizeUrl(cleanStudioUrl) || 'https://aistudio.google.com/';
+      const finalStudioUrl = cleanStudioUrl ? (normalizeUrl(cleanStudioUrl) || '') : '';
+      const charIsComingSoon = Boolean(body.isComingSoon || !finalStudioUrl);
       const finalAvatarUrl = normalizeUrl(avatarUrl);
       const finalReceiptAvatarUrl = receiptAvatarUrl ? normalizeUrl(receiptAvatarUrl) : '';
 
@@ -1204,9 +1411,11 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           openScene: openScene !== undefined ? openScene.trim() : existing.openScene,
           price: numericPrice,
           studioUrl: finalStudioUrl,
+          isComingSoon: charIsComingSoon,
           avatarUrl: avatarUrl !== undefined && finalAvatarUrl ? finalAvatarUrl : existing.avatarUrl,
           receiptAvatarUrl: receiptAvatarUrl !== undefined ? finalReceiptAvatarUrl : existing.receiptAvatarUrl,
           isAvailable: isAvailable !== undefined ? Boolean(isAvailable) : existing.isAvailable,
+          isBestSeller: body.isBestSeller !== undefined ? Boolean(body.isBestSeller) : Boolean(existing.isBestSeller),
           tags: tags !== undefined ? (Array.isArray(tags) ? tags : []) : (existing.tags || []),
         };
 
@@ -1235,6 +1444,8 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           openScene: openScene || '',
           price: numericPrice,
           studioUrl: finalStudioUrl,
+          isComingSoon: charIsComingSoon,
+          isBestSeller: Boolean(body.isBestSeller),
           avatarUrl: finalAvatarUrl || 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80',
           receiptAvatarUrl: finalReceiptAvatarUrl,
           isAvailable: isAvailable !== false,

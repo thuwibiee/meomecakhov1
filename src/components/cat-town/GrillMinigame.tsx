@@ -173,7 +173,7 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
           style={{ fontFamily: "'Tiny5', monospace" }}
         >
           <span>←</span>
-          <span>town-map</span>
+          <span>BẢN ĐỒ THỊ TRẤN</span>
         </button>
 
         <div className="text-center">
@@ -271,7 +271,6 @@ export const GrillMinigame: React.FC<GrillMinigameProps> = ({
                 className="w-12 h-12 object-contain"
                 style={{ imageRendering: 'pixelated' }}
               />
-              <span className="absolute -top-1 -right-1 text-xs"></span>
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">

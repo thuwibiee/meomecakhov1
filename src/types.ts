@@ -4,23 +4,46 @@ export interface User {
   balance: number;
   role: 'admin' | 'user';
   createdAt: string;
+  lastLoginAt?: string;
+  previousLoginAt?: string;
 }
+
+export interface AdminTodo {
+  id: string;
+  content: string;
+  isCompleted: boolean;
+  createdAt: string;
+}
+
+export const CHARACTER_CATEGORIES = [
+  'khô cá con',
+  'khô cá một nắng',
+  'khô cá hai nắng',
+  'khô thượng phẩm',
+  'khô gia truyền',
+  'khô cá chép',
+  'khô tẩm vị',
+] as const;
+
+export type CharacterCategory = (typeof CHARACTER_CATEGORIES)[number] | string;
 
 export interface Character {
   id: string;
   name: string;
   fishCode?: string; // Mã cá / Mã cá khô (e.g. CK-001)
   age: number;
-  category: string;
+  category: CharacterCategory;
   shortBio: string;
   fullStory?: string;
   backstory: string; // Back-story (Cốt truyện / Bối cảnh nhân vật)
   openScene: string; // Open-scene (Phân cảnh mở đầu kịch bản RP)
   price: number;
-  studioUrl: string;
+  studioUrl: string; // Có thể để trống nếu isComingSoon
   avatarUrl: string;
   receiptAvatarUrl?: string; // Ảnh đại diện riêng trên hóa đơn Receipt (nếu trống sẽ dùng avatarUrl)
   isAvailable: boolean;
+  isComingSoon?: boolean; // Trạng thái 'Sắp ra mắt' / 'Đang ấp plot'
+  isBestSeller?: boolean; // Huy hiệu Best-Seller do Admin quyết định thủ công
   salesCount: number;
   createdAt: string;
   tags?: string[];

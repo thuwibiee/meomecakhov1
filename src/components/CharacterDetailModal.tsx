@@ -23,6 +23,8 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
 }) => {
   if (!character) return null;
 
+  const isComingSoon = Boolean(character.isComingSoon || !character.studioUrl || !character.studioUrl.trim());
+
   return (
     <div
       onClick={() => {
@@ -59,6 +61,12 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
           <div className="flex-1 min-w-0 w-full flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                {character.isBestSeller && (
+                  <span className="text-xs font-black px-3 py-1 rounded-full bg-gradient-to-r from-[#FF4D6D] to-[#FF758F] text-white border border-white shadow-xs flex items-center gap-1 select-none">
+                    <span>👑</span>
+                    <span>BEST SELLER</span>
+                  </span>
+                )}
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#A9C5F2]/40 text-[#526C91] border border-[#526C91]/30">
                   {character.category}
                 </span>
@@ -169,7 +177,20 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
 
         {/* Action Button */}
         <div className="flex gap-3">
-          {character.isOwned ? (
+          {isComingSoon ? (
+            <div className="w-full flex flex-col gap-2">
+              <button
+                type="button"
+                disabled
+                className="w-full py-3.5 px-6 rounded-2xl bg-slate-200/90 text-slate-500 font-black text-base flex items-center justify-center gap-2 border border-slate-300 shadow-inner cursor-not-allowed select-none opacity-90"
+              >
+                <span>🥚 ĐANG ẤP PLOT — SẮP LÊN KỆ</span>
+              </button>
+              <p className="text-xs text-center text-[#795653]/75 font-semibold">
+                Bé cá này đang được ấp cốt truyện Google AI. Bạn vẫn có thể đọc trước tiểu sử và lore bên trên để hóng truyện!
+              </p>
+            </div>
+          ) : character.isOwned ? (
             <div className="flex flex-col sm:flex-row w-full gap-2.5">
               <div className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#A9C5F2]/40 text-[#526C91] font-bold text-sm border border-[#526C91]/30">
                 <Check className="w-4 h-4 stroke-[3]" />

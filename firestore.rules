@@ -81,6 +81,14 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    match /spices/{spiceId} {
+      allow read, write: if true;
+    }
+
+    match /admin_todos/{todoId} {
+      allow read, write: if true;
+    }
+
     match /settings/{settingId} {
       allow read, write: if true;
     }

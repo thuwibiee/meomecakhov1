@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { UserCharacterOwnership, OrderReceipt, Character } from '../types.ts';
+import { UserCharacterOwnership, OrderReceipt, Character, CHARACTER_CATEGORIES } from '../types.ts';
 import { Search, ExternalLink, ReceiptText, Sparkles, ShoppingBag, BookOpen, AlertTriangle, MessageSquareHeart, X } from 'lucide-react';
 
 interface InventorySectionProps {
@@ -25,15 +25,7 @@ export const InventorySection: React.FC<InventorySectionProps> = ({
 
   // Preset categories
   const categories = useMemo(() => {
-    return [
-      'khô cá con',
-      'khô cá một nắng',
-      'khô hai nắng',
-      'khô thượng phẩm',
-      'khô gia truyền',
-      'khô cá chép',
-      'khô tẩm vị',
-    ];
+    return [...CHARACTER_CATEGORIES];
   }, []);
 
   const filteredItems = useMemo(() => {
@@ -43,7 +35,8 @@ export const InventorySection: React.FC<InventorySectionProps> = ({
       const matchesSearch =
         char.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         char.shortBio.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === 'all' || char.category === selectedCategory;
+      const normalizedCat = char.category === 'khô hai nắng' ? 'khô cá hai nắng' : char.category;
+      const matchesCategory = selectedCategory === 'all' || normalizedCat === selectedCategory;
       return matchesSearch && matchesCategory;
     });
   }, [items, searchTerm, selectedCategory]);

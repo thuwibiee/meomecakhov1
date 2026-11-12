@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Character, RedeemCode, GachaConfig, Feedback, AdminAuditLog, Complaint, CharacterFeedback, SpecialOrder, LoyaltyCardConfig, LoyaltyCompletionLog } from '../types.ts';
+import { Character, RedeemCode, GachaConfig, Feedback, AdminAuditLog, Complaint, CharacterFeedback, SpecialOrder, LoyaltyCardConfig, LoyaltyCompletionLog, CHARACTER_CATEGORIES } from '../types.ts';
 import { firebaseApi } from '../firebase.ts';
 import { ShieldCheck, Plus, Edit, Users, Gift, Dices, MessageSquare, History, Check, AlertCircle, AlertTriangle, MessageSquareHeart, Trash2, CheckCircle2, FileText, ToggleLeft, ToggleRight, Sparkles, RefreshCw, Search } from 'lucide-react';
 import { FISH_DATABASE, FishDatabaseItem, getRarityConfig, normalizeFishCatalog } from './cat-town/fishDatabase.ts';
@@ -12,6 +12,7 @@ interface AdminDashboardProps {
   onRefreshCharacters: () => void;
   onUpdateCharacters?: (characters: Character[]) => void;
   initialEditingCharacter?: Character | null;
+  onOpenSecretaryReport?: () => void;
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -20,6 +21,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onRefreshCharacters,
   onUpdateCharacters,
   initialEditingCharacter,
+  onOpenSecretaryReport,
 }) => {
   const [tab, setTab] = useState<'characters' | 'special_orders' | 'wallet' | 'loyalty' | 'cat_town' | 'gacha' | 'complaints' | 'fitbach' | 'feedbacks' | 'logs'>('characters');
   const [stats, setStats] = useState<any>(null);
@@ -77,11 +79,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isSavingChar, setIsSavingChar] = useState<boolean>(false);
   const [deletingCharTarget, setDeletingCharTarget] = useState<{ id: string; name: string } | null>(null);
   const [isDeletingChar, setIsDeletingChar] = useState<boolean>(false);
+  const [deleteCharError, setDeleteCharError] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialEditingCharacter) {
       setTab('characters');
-      setEditingChar(initialEditingCharacter);
+      setEditingChar({
+        ...initialEditingCharacter,
+        category: initialEditingCharacter.category === 'khô hai nắng' ? 'khô cá hai nắng' : initialEditingCharacter.category,
+      });
       setCharTagsInput(Array.isArray(initialEditingCharacter.tags) ? initialEditingCharacter.tags.join(', ') : '');
       setCharError(null);
       setCharSuccess(null);
@@ -456,7 +462,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setCharSuccess(null);
 
     const charName = (editingChar?.name || '').trim();
-    const studioLink = (editingChar?.studioUrl || 'https://aistudio.google.com/').trim();
+    const rawStudioLink = (editingChar?.studioUrl || '').trim();
+    const studioLink = rawStudioLink ? (normalizeUrl(rawStudioLink) || rawStudioLink) : '';
+    // If explicitly marked as isComingSoon OR has no studioLink, set isComingSoon: true
+    const isComingSoon = editingChar?.isComingSoon !== undefined
+      ? Boolean(editingChar.isComingSoon)
+      : (!studioLink);
     const priceVal = editingChar?.price;
     const numericPrice = Number(priceVal);
 
@@ -479,7 +490,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       name: charName,
       price: numericPrice,
       tags: parsedTags,
-      studioUrl: normalizeUrl(studioLink) || 'https://aistudio.google.com/',
+      studioUrl: studioLink,
+      isComingSoon: Boolean(isComingSoon),
+      isBestSeller: Boolean(editingChar?.isBestSeller),
       avatarUrl: normalizeUrl(editingChar?.avatarUrl),
       receiptAvatarUrl: normalizeUrl(editingChar?.receiptAvatarUrl),
     };
@@ -692,12 +705,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         </div>
 
-        <button
-          onClick={onClose}
-          className="py-2 px-4 rounded-xl border border-[#795653]/30 hover:bg-[#795653]/10 text-xs font-bold self-start sm:self-auto cursor-pointer"
-        >
-          Quay lại Tiệm Cá
-        </button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {onOpenSecretaryReport && (
+            <button
+              type="button"
+              onClick={onOpenSecretaryReport}
+              className="py-2 px-3.5 rounded-xl bg-[#FFE5EC] hover:bg-[#FFCCD5] border border-[#FF8FAB]/60 text-[#A6536A] text-xs font-black flex items-center gap-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer"
+              title="Mở Báo Cáo & To-Do List của Thư Ký Mèo"
+            >
+              <span>🐾</span>
+              <span>Thư Ký Mèo</span>
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="py-2 px-4 rounded-xl border border-[#795653]/30 hover:bg-[#795653]/10 text-xs font-bold cursor-pointer"
+          >
+            Quay lại Tiệm Cá
+          </button>
+        </div>
       </div>
 
       {/* KPI Stats Strip */}
@@ -815,7 +841,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </h3>
             <button
               onClick={() => {
-                setEditingChar({ name: '', fishCode: `CK-${String(characters.length + 1).padStart(3, '0')}`, price: 30, age: 22, category: 'khô thượng phẩm', isAvailable: true, studioUrl: 'https://aistudio.google.com/prompt/', backstory: '', openScene: '', tags: ['ThơMộng', 'CáKhô'] });
+                setEditingChar({ name: '', fishCode: `CK-${String(characters.length + 1).padStart(3, '0')}`, price: 30, age: 22, category: 'khô thượng phẩm', isAvailable: true, studioUrl: 'https://aistudio.google.com/prompt/', isComingSoon: false, isBestSeller: false, backstory: '', openScene: '', tags: ['ThơMộng', 'CáKhô'] });
                 setCharTagsInput('ThơMộng, CáKhô');
                 setCharError(null);
                 setCharSuccess(null);
@@ -899,14 +925,28 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="text-[11px] font-bold text-[#795653]">Thể loại (Category)</label>
-                    <input
-                      type="text"
-                      placeholder="VD: khô thượng phẩm"
-                      value={editingChar.category || ''}
+                    <label className="text-[11px] font-bold text-[#795653]">
+                      Thể loại (Category) <span className="text-rose-500">*</span>
+                    </label>
+                    <select
+                      value={editingChar.category === 'khô hai nắng' ? 'khô cá hai nắng' : (editingChar.category || 'khô thượng phẩm')}
                       onChange={(e) => setEditingChar({ ...editingChar, category: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-lg border border-[#795653]/25 text-xs"
-                    />
+                      className="w-full px-3 py-1.5 rounded-lg border border-[#795653]/25 text-xs bg-white text-[#795653] font-semibold cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#F6A6B8]"
+                    >
+                      {CHARACTER_CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                      {/* Hiển thị thể loại tùy chỉnh nếu có nhân vật đang dùng danh mục khác */}
+                      {editingChar.category &&
+                        editingChar.category !== 'khô hai nắng' &&
+                        !CHARACTER_CATEGORIES.includes(editingChar.category as any) && (
+                          <option value={editingChar.category}>
+                            {editingChar.category} (Tùy chỉnh)
+                          </option>
+                        )}
+                    </select>
                   </div>
                   <div>
                     <label className="text-[11px] font-bold text-[#795653]">
@@ -922,18 +962,107 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold text-[#795653]">
-                      Link Google AI Studio ("Nhận Cá") <span className="text-rose-500">*</span>
+                    <label className="text-[11px] font-bold text-[#795653] flex items-center justify-between">
+                      <span>Link Google AI Studio ("Nhận Cá")</span>
+                      <span className="text-[10px] text-amber-600 font-normal">(Không bắt buộc khi Đang ấp plot)</span>
                     </label>
                     <input
                       type="text"
-                      required
-                      placeholder="https://aistudio.google.com/prompt/..."
+                      placeholder="https://aistudio.google.com/prompt/... (hoặc để trống nếu đang ấp plot)"
                       value={editingChar.studioUrl || ''}
-                      onChange={(e) => setEditingChar({ ...editingChar, studioUrl: e.target.value })}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setEditingChar({
+                          ...editingChar,
+                          studioUrl: val,
+                          ...(val.trim() && editingChar.isComingSoon ? { isComingSoon: false } : {}),
+                        });
+                      }}
                       className="w-full px-3 py-1.5 rounded-lg border border-[#795653]/25 text-xs"
                     />
                   </div>
+                </div>
+
+                {/* Trạng thái hiển thị: Hoạt động (Có link chat) vs Đang ấp plot / Sắp ra mắt (Chưa có link) */}
+                <div className="p-3.5 rounded-2xl bg-[#FFF9F4] border-2 border-[#795653]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                  <div>
+                    <div className="text-xs font-black text-[#795653] flex items-center gap-2">
+                      <span>Trạng thái hiển thị:</span>
+                      {editingChar.isComingSoon || !editingChar.studioUrl?.trim() ? (
+                        <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-300 flex items-center gap-1">
+                          <span>🥚</span>
+                          <span>Đang ấp plot / Sắp ra mắt</span>
+                        </span>
+                      ) : (
+                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[11px] font-bold border border-emerald-300 flex items-center gap-1">
+                          <span>✓</span>
+                          <span>Hoạt động (Có link chat)</span>
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-[#795653]/70 mt-1">
+                      Nếu chọn "Đang ấp plot", thẻ cá sẽ gắn nhãn <strong>COMING SOON ⏳</strong>, khách hàng được đọc lore/story nhưng không mua được cá.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setEditingChar({ ...editingChar, isComingSoon: false })}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        !editingChar.isComingSoon && Boolean(editingChar.studioUrl?.trim())
+                          ? 'bg-emerald-500 text-white shadow-xs'
+                          : 'bg-white border border-[#795653]/25 text-[#795653]/70 hover:bg-slate-50'
+                      }`}
+                    >
+                      ✓ Hoạt động
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEditingChar({ ...editingChar, isComingSoon: true })}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        editingChar.isComingSoon || !editingChar.studioUrl?.trim()
+                          ? 'bg-amber-500 text-white shadow-xs'
+                          : 'bg-white border border-[#795653]/25 text-[#795653]/70 hover:bg-slate-50'
+                      }`}
+                    >
+                      🥚 Đang ấp plot
+                    </button>
+                  </div>
+                </div>
+
+                {/* Huy hiệu Best-Seller (Điều chỉnh thủ công do Admin tự quyết) */}
+                <div className="p-3.5 rounded-2xl bg-[#FFF9F4] border-2 border-[#FF758F]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+                  <div>
+                    <div className="text-xs font-black text-[#795653] flex items-center gap-2">
+                      <span>Huy hiệu Best-Seller:</span>
+                      {editingChar.isBestSeller ? (
+                        <span className="px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#FF4D6D] to-[#FF758F] text-white text-[11px] font-black border border-white shadow-2xs flex items-center gap-1">
+                          <span>👑</span>
+                          <span>BEST SELLER (BẬT)</span>
+                        </span>
+                      ) : (
+                        <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold border border-slate-300">
+                          Chưa gắn mác
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-[#795653]/70 mt-1">
+                      Tính năng do Admin tự quyết định bằng tay (tuyệt đối không tự động tính theo lượt mua). Khi bật, thẻ cá sẽ có huy hiệu <strong>BEST SELLER</strong> nổi bật góc trên bên trái ảnh.
+                    </p>
+                  </div>
+
+                  <label className="flex items-center gap-2.5 cursor-pointer select-none bg-white px-3.5 py-2 rounded-xl border border-[#795653]/20 shadow-2xs hover:bg-[#FFE5EC]/30 transition-all shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(editingChar.isBestSeller)}
+                      onChange={(e) => setEditingChar({ ...editingChar, isBestSeller: e.target.checked })}
+                      className="w-4 h-4 rounded-md text-[#FF4D6D] focus:ring-[#FF758F] accent-[#FF4D6D] cursor-pointer"
+                    />
+                    <span className="text-xs font-extrabold text-[#795653]">
+                      Gắn mác Best-Seller
+                    </span>
+                  </label>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1125,7 +1254,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <td className="p-3 flex items-center gap-2.5">
                       <img src={c.avatarUrl} alt="" className="w-8 h-10 rounded-lg object-cover" />
                       <div>
-                        <div className="font-bold">{c.name}</div>
+                        <div className="font-bold flex items-center gap-1.5 flex-wrap">
+                          <span>{c.name}</span>
+                          {c.isBestSeller && (
+                            <span className="px-1.5 py-0.2 rounded-md bg-gradient-to-r from-[#FF4D6D] to-[#FF758F] text-white text-[9px] font-black border border-white shadow-xs">
+                              👑 Best-Seller
+                            </span>
+                          )}
+                          {(c.isComingSoon || !c.studioUrl) ? (
+                            <span className="px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-800 text-[10px] font-black border border-amber-300">
+                              Ấp plot 🥚
+                            </span>
+                          ) : (
+                            <span className="px-1.5 py-0.2 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">
+                              Hoạt động ✓
+                            </span>
+                          )}
+                        </div>
                         <div className="text-[10px] text-[#795653]/60">{c.age} tuổi</div>
                       </div>
                     </td>
@@ -1137,7 +1282,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => {
-                            setEditingChar({ ...c });
+                            const normalizedCategory = c.category === 'khô hai nắng' ? 'khô cá hai nắng' : c.category;
+                            setEditingChar({ ...c, category: normalizedCategory });
                             setCharTagsInput(Array.isArray(c.tags) ? c.tags.join(', ') : '');
                             setCharError(null);
                             setCharSuccess(null);

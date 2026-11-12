@@ -660,9 +660,9 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
                     {caughtFishData.fish.name}
                   </h4>
 
-                  {/* Độ hiếm và Cân nặng (gắn thêm chữ 'g') */}
+                  {/* Độ hiếm của cá (chỉ hiện tên cá & độ hiếm và miêu tả của cá) */}
                   <div
-                    className="flex items-center gap-2 text-xs font-black uppercase mt-1"
+                    className="flex items-center justify-center text-xs font-black uppercase mt-1"
                     style={{ fontFamily: "'Tiny5', monospace" }}
                   >
                     <span
@@ -672,10 +672,6 @@ export const FishingMinigame: React.FC<FishingMinigameProps> = ({
                       }}
                     >
                       CẤP: {caughtFishData.fish.rarity}
-                    </span>
-                    <span className="text-[#795653]">•</span>
-                    <span className="text-[#1E3A8A]">
-                      CÂN NẶNG: {caughtFishData.weight}g
                     </span>
                   </div>
 

@@ -28,6 +28,8 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
   isAdmin = false,
   isProcessing = false,
 }) => {
+  const isComingSoon = Boolean(character.isComingSoon || !character.studioUrl || !character.studioUrl.trim());
+
   return (
     <div
       onClick={() => onViewDetails(character)}
@@ -56,6 +58,19 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
           }}
         />
 
+        {/* Huy hiệu BEST SELLER thủ công (Admin tự quyết, nền gradient hồng dâu đậm, viền trắng, drop shadow) */}
+        {character.isBestSeller && (
+          <div
+            className="absolute top-2.5 left-2.5 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#FF4D6D] via-[#FF5C8A] to-[#FF758F] text-white border-2 border-white/95 shadow-[0_4px_12px_rgba(255,77,109,0.45)] select-none"
+            style={{ fontFamily: "'Cal Sans', sans-serif" }}
+          >
+            <span className="text-xs leading-none">👑</span>
+            <span className="text-[10px] font-black tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]">
+              BEST SELLER
+            </span>
+          </div>
+        )}
+
         {/* Admin Quick Edit Button right on card */}
         {isAdmin && onAdminEdit && (
           <button
@@ -64,7 +79,7 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
               e.stopPropagation();
               onAdminEdit(character);
             }}
-            className="absolute top-2.5 left-2.5 z-20 flex items-center gap-1 bg-white/95 hover:bg-white text-[#795653] px-2.5 py-1 rounded-full text-xs font-black shadow-xs border border-white/90 backdrop-blur-xs cursor-pointer active:scale-95 transition-all"
+            className={`absolute ${character.isBestSeller ? 'top-10.5' : 'top-2.5'} left-2.5 z-20 flex items-center gap-1 bg-white/95 hover:bg-white text-[#795653] px-2.5 py-1 rounded-full text-xs font-black shadow-xs border border-white/90 backdrop-blur-xs cursor-pointer active:scale-95 transition-all`}
             title="Chỉnh sửa thông tin nam chính này"
           >
             <span>✏️</span>
@@ -72,13 +87,18 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
           </button>
         )}
 
-        {/* Subtle owned badge over image if owned */}
-        {character.isOwned && (
+        {/* Coming soon ribbon badge */}
+        {isComingSoon ? (
+          <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-1 bg-[#FFE885] text-[#795653] px-2.5 py-1 rounded-full text-[11px] font-black shadow-md border-2 border-white/90">
+            <span>COMING SOON ⏳</span>
+          </div>
+        ) : character.isOwned ? (
+          /* Subtle owned badge over image if owned */
           <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-[#A9C5F2]/95 backdrop-blur-xs text-[#526C91] px-2.5 py-1 rounded-full text-xs font-bold shadow-xs border border-white/80">
             <Check className="w-3.5 h-3.5 stroke-[3]" />
             <span>ĐÃ THANH TOÁN</span>
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* (2) Họ và tên nhân vật */}
@@ -189,8 +209,18 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
           <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '13px' }}>FÍT BÁCH</span>
         </button>
 
-        {/* Nút 4: MUA CÁ 𓆜 -> VÀO KHO (sau khi mua) */}
-        {character.isOwned ? (
+        {/* Nút 4: MUA CÁ 𓆜 -> VÀO KHO (sau khi mua) HOẶC ĐANG ẤP PLOT (nếu sắp ra mắt) */}
+        {isComingSoon ? (
+          <button
+            type="button"
+            disabled
+            onClick={(e) => e.stopPropagation()}
+            className="w-full h-9 px-2 rounded-full bg-slate-200/90 text-slate-500 border border-slate-300 font-bold text-xs tracking-wide flex items-center justify-center gap-1 cursor-not-allowed whitespace-nowrap shadow-inner select-none opacity-90"
+            title="Cá đang được ấp cốt truyện, chưa mở bán"
+          >
+            <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '13px', fontWeight: 'bold' }}>ĐANG ẤP PLOT 🥚</span>
+          </button>
+        ) : character.isOwned ? (
           <button
             type="button"
             onClick={(e) => {

@@ -172,7 +172,7 @@ function getInitialDatabase(): DatabaseSchema {
       name: 'Minh Nhật',
       fishCode: 'CK-005',
       age: 21,
-      category: 'khô hai nắng',
+      category: 'khô cá hai nắng',
       shortBio: 'Đội trưởng đội bơi lội đại học, nụ cười rạng rỡ như nắng hạ. Luôn chạy bay tới tiệm cá sau giờ tập chỉ mong được bà khen ngợi.',
       fullStory: 'Thanh mai trúc mã cùng lớn lên trong ngõ nhỏ. Cậu biết rõ bà ghét ăn hành cay, thích nhâm nhi cá khô giòn khi xem phim. Dù có bao nhiêu cô gái theo đuổi, ánh mắt cậu mười năm qua chỉ hướng về một người.',
       backstory: 'Đội trưởng đội bơi lội trường đại học thể thao, thanh xuân phơi phới rực rỡ như ánh mặt trời ban trưa. Cậu là thanh mai trúc mã lớn lên cùng bạn, thích bạn từ những ngày còn chia nhau từng que kem, cây kẹo.',
@@ -440,7 +440,7 @@ function loadDatabase(): DatabaseSchema {
         'Khoa Huyễn': 'khô cá một nắng',
         'Hiện Đại': 'khô thượng phẩm',
         'Huyền Huyễn': 'khô thượng phẩm',
-        'Vườn Trường': 'khô hai nắng',
+        'Vườn Trường': 'khô cá hai nắng',
         'Cổ Đại': 'khô cá một nắng',
       };
       if (Array.isArray(parsed.characters)) {
@@ -463,7 +463,10 @@ function loadDatabase(): DatabaseSchema {
             c.tags = match?.tags || ['ThơMộng', 'CáKhô'];
             hasChanges = true;
           }
-          if (catMapping[c.category]) {
+          if (c.category === 'khô hai nắng') {
+            c.category = 'khô cá hai nắng';
+            hasChanges = true;
+          } else if (catMapping[c.category]) {
             c.category = catMapping[c.category];
             hasChanges = true;
           }
@@ -724,6 +727,11 @@ app.post('/api/auth/login', (req, res) => {
   user.failedAttempts = 0;
   user.lockedUntil = undefined;
 
+  // Save previousLoginAt before updating lastLoginAt
+  const previousLoginAt = (user as any).lastLoginAt || user.createdAt || new Date().toISOString();
+  (user as any).previousLoginAt = previousLoginAt;
+  (user as any).lastLoginAt = new Date().toISOString();
+
   const token = generateToken(user.id);
   activeSessions.set(token, user.id);
   if (!db.sessions) db.sessions = [];
@@ -738,6 +746,8 @@ app.post('/api/auth/login', (req, res) => {
       balance: user.balance,
       role: user.role,
       createdAt: user.createdAt,
+      lastLoginAt: (user as any).lastLoginAt,
+      previousLoginAt: (user as any).previousLoginAt,
     },
   });
 });
@@ -766,6 +776,8 @@ app.get('/api/auth/me', authMiddleware, (req, res) => {
       balance: user.balance,
       role: user.role,
       createdAt: user.createdAt,
+      lastLoginAt: (user as any).lastLoginAt,
+      previousLoginAt: (user as any).previousLoginAt,
     },
   });
 });
@@ -1685,10 +1697,10 @@ app.post('/api/admin/special-orders/:id/status', authMiddleware, adminMiddleware
 app.post('/api/admin/characters', authMiddleware, adminMiddleware, (req, res) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   const user = (req as any).user;
-  const { id, name, fishCode, age, category, shortBio, fullStory, backstory, openScene, price, studioUrl, avatarUrl, receiptAvatarUrl, isAvailable, tags } = req.body;
+  const { id, name, fishCode, age, category, shortBio, fullStory, backstory, openScene, price, studioUrl, avatarUrl, receiptAvatarUrl, isAvailable, tags, isComingSoon, isBestSeller } = req.body;
 
   const cleanName = (name || '').trim();
-  const cleanStudioUrl = (studioUrl || 'https://aistudio.google.com/').trim();
+  const rawStudioUrl = (studioUrl || '').trim();
   const numericPrice = Number(price);
 
   if (!cleanName) {
@@ -1710,7 +1722,8 @@ app.post('/api/admin/characters', authMiddleware, adminMiddleware, (req, res) =>
     return `https://${u}`;
   };
 
-  const finalStudioUrl = normalizeUrl(cleanStudioUrl) || 'https://aistudio.google.com/';
+  const finalStudioUrl = rawStudioUrl ? (normalizeUrl(rawStudioUrl) || rawStudioUrl) : '';
+  const finalIsComingSoon = isComingSoon !== undefined ? Boolean(isComingSoon) : (!finalStudioUrl);
   const finalAvatarUrl = normalizeUrl(avatarUrl);
   const finalReceiptAvatarUrl = receiptAvatarUrl ? normalizeUrl(receiptAvatarUrl) : '';
 
@@ -1736,6 +1749,8 @@ app.post('/api/admin/characters', authMiddleware, adminMiddleware, (req, res) =>
     if (tags !== undefined) existing.tags = Array.isArray(tags) ? tags : [];
     existing.price = numericPrice;
     existing.studioUrl = finalStudioUrl;
+    existing.isComingSoon = finalIsComingSoon;
+    if (isBestSeller !== undefined) existing.isBestSeller = Boolean(isBestSeller);
     if (avatarUrl !== undefined && finalAvatarUrl) {
       existing.avatarUrl = finalAvatarUrl;
     }
@@ -1772,6 +1787,8 @@ app.post('/api/admin/characters', authMiddleware, adminMiddleware, (req, res) =>
       openScene: openScene || '',
       price: numericPrice,
       studioUrl: finalStudioUrl,
+      isComingSoon: finalIsComingSoon,
+      isBestSeller: Boolean(isBestSeller),
       avatarUrl: finalAvatarUrl || 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80',
       receiptAvatarUrl: finalReceiptAvatarUrl,
       isAvailable: isAvailable !== false,

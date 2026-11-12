@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Character, OrderReceipt } from '../types.ts';
+import { Character, OrderReceipt, CHARACTER_CATEGORIES } from '../types.ts';
 import { CharacterCard } from './CharacterCard.tsx';
 import { Search, Filter, ArrowUpDown, Sparkles, AlertCircle } from 'lucide-react';
 
@@ -36,17 +36,9 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'fish_code' | 'newest' | 'price_asc' | 'price_desc'>('fish_code');
 
-  // Fixed categories list as requested
+  // Fixed categories list
   const categories = useMemo(() => {
-    return [
-      'khô cá con',
-      'khô cá một nắng',
-      'khô hai nắng',
-      'khô thượng phẩm',
-      'khô gia truyền',
-      'khô cá chép',
-      'khô tẩm vị',
-    ];
+    return [...CHARACTER_CATEGORIES];
   }, []);
 
   // Filter & Sort
@@ -57,7 +49,8 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
           c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           c.shortBio.toLowerCase().includes(searchTerm.toLowerCase()) ||
           (c.fishCode && c.fishCode.toLowerCase().includes(searchTerm.toLowerCase()));
-        const matchesCategory = selectedCategory === 'all' || c.category === selectedCategory;
+        const normalizedCat = c.category === 'khô hai nắng' ? 'khô cá hai nắng' : c.category;
+        const matchesCategory = selectedCategory === 'all' || normalizedCat === selectedCategory;
         return matchesSearch && matchesCategory;
       })
       .sort((a, b) => {
