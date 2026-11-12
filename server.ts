@@ -214,7 +214,7 @@ function getInitialDatabase(): DatabaseSchema {
         salt: adminSalt,
         balance: 9999,
         role: 'admin',
-        createdAt: '2026-10-20T00:00:00Z',
+        createdAt: new Date().toISOString(),
         failedAttempts: 0,
       },
       {
@@ -224,7 +224,7 @@ function getInitialDatabase(): DatabaseSchema {
         salt: adminSalt,
         balance: 100, // Pre-seeded with 100 Xu Cá so user can test immediate character purchases!
         role: 'user',
-        createdAt: '2026-10-21T00:00:00Z',
+        createdAt: new Date().toISOString(),
         failedAttempts: 0,
       },
     ],

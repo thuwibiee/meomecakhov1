@@ -54,8 +54,11 @@ export const AdminSecretaryModal: React.FC<AdminSecretaryModalProps> = ({
   useEffect(() => {
     if (!isOpen || !adminUser || adminUser.role !== 'admin') return;
 
-    setIsLoadingStats(true);
-    const prevTime = previousLoginAt || adminUser.previousLoginAt || adminUser.createdAt;
+    // Ensure we discard legacy 2026-10 hardcoded stamps in favor of real-time timestamps
+    const rawCandidate = previousLoginAt || adminUser.previousLoginAt || adminUser.createdAt;
+    const prevTime = rawCandidate && !String(rawCandidate).startsWith('2026-10-')
+      ? rawCandidate
+      : new Date(Date.now() - 24 * 3600 * 1000).toISOString();
 
     getAdminSecretaryStats(prevTime)
       .then((data) => {
@@ -82,7 +85,16 @@ export const AdminSecretaryModal: React.FC<AdminSecretaryModalProps> = ({
 
   // Format previous login timestamp
   const formatTimeStr = (isoString?: string) => {
-    if (!isoString) return 'Lần đăng nhập gần nhất';
+    if (!isoString || String(isoString).startsWith('2026-10-')) {
+      const fallback = new Date(Date.now() - 24 * 3600 * 1000);
+      return fallback.toLocaleString('vi-VN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
+    }
     try {
       const date = new Date(isoString);
       return date.toLocaleString('vi-VN', {
@@ -93,7 +105,7 @@ export const AdminSecretaryModal: React.FC<AdminSecretaryModalProps> = ({
         year: 'numeric',
       });
     } catch {
-      return isoString;
+      return 'Vừa mới đây';
     }
   };
 

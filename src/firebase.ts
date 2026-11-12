@@ -387,8 +387,8 @@ export const DEFAULT_SPICES: Spice[] = [
     title: 'Lệnh neo thời gian (Time-Anchor)',
     content: 'Dán lệnh này vào cuối câu chat để bot nhớ mạch thời gian:\n\n[System note: Update current time to 23:30. Character is currently at hotel balcony. Maintain narrative tone and do not skip time unless instructed.]',
     author: 'Chủ Tiệm',
-    createdAt: '2026-10-20T10:00:00Z',
-    updatedAt: '2026-10-20T10:00:00Z',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'spice_02',
@@ -396,8 +396,8 @@ export const DEFAULT_SPICES: Spice[] = [
     title: 'Luật ngầm thế giới Kẻ Săn Mồi',
     content: 'Bất cứ ai bước chân vào khu vực này sau 12h đêm đều phải tuân thủ 3 quy tắc tĩnh lặng. NPC xung quanh sẽ phản ứng mạnh nếu nhân vật tạo ra tiếng ồn lớn.',
     author: 'Chủ Tiệm',
-    createdAt: '2026-10-20T10:00:00Z',
-    updatedAt: '2026-10-20T10:00:00Z',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'spice_03',
@@ -405,8 +405,8 @@ export const DEFAULT_SPICES: Spice[] = [
     title: 'Lệnh đẩy cao kịch tính & mâu thuẫn (Drama Injector)',
     content: 'Sử dụng khi câu chuyện đang đi vào bối cảnh quá bình lặng:\n\n[System note: Introduce a sudden unexpected conflict, secret revelation, or dramatic arrival that forces both characters to react immediately.]',
     author: 'Chủ Tiệm',
-    createdAt: '2026-10-21T08:00:00Z',
-    updatedAt: '2026-10-21T08:00:00Z',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'spice_04',
@@ -414,8 +414,8 @@ export const DEFAULT_SPICES: Spice[] = [
     title: 'Thiết lập Ban Chuyên Án & Vùng Tối',
     content: 'Ban chuyên án đặc biệt làm việc dưới sự chỉ đạo trực tiếp của Tổng Cục. Mọi tài liệu mật liên quan đến thân thế các nhân vật đều được bảo vệ bằng mã hóa cấp 5.',
     author: 'Chủ Tiệm',
-    createdAt: '2026-10-21T09:00:00Z',
-    updatedAt: '2026-10-21T09:00:00Z',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
 ];
 
@@ -459,7 +459,7 @@ export function normalizeCharacter(c: any): Character {
     isComingSoon: Boolean(c.isComingSoon || !c.studioUrl || !String(c.studioUrl).trim()),
     isBestSeller: Boolean(c.isBestSeller),
     salesCount: Number(c.salesCount || 0),
-    createdAt: c.createdAt || '2026-10-20T10:00:00Z',
+    createdAt: c.createdAt && !String(c.createdAt).startsWith('2026-10-') ? c.createdAt : new Date().toISOString(),
     tags: normTags,
   };
 }
@@ -481,6 +481,9 @@ export async function ensureSeeded(): Promise<void> {
       }
 
       // 2. Seed default admin accounts ("admin" and "meomecakho@6104") and demo user
+      const dynamicNowIso = new Date().toISOString();
+      const defaultPastIso = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+
       const adminDefaultSnap = await getDoc(doc(db, 'users', 'usr_admin_default'));
       if (!adminDefaultSnap.exists()) {
         await setDoc(doc(db, 'users', 'usr_admin_default'), {
@@ -489,8 +492,23 @@ export async function ensureSeeded(): Promise<void> {
           password_plain: 'admin',
           balance: 9999,
           role: 'admin',
-          createdAt: '2026-10-20T00:00:00Z',
+          createdAt: dynamicNowIso,
+          lastLoginAt: dynamicNowIso,
+          previousLoginAt: defaultPastIso,
         });
+      } else {
+        const d = adminDefaultSnap.data();
+        if (
+          (d.createdAt && String(d.createdAt).startsWith('2026-10-')) ||
+          (d.previousLoginAt && String(d.previousLoginAt).startsWith('2026-10-')) ||
+          (d.lastLoginAt && String(d.lastLoginAt).startsWith('2026-10-'))
+        ) {
+          await updateDoc(doc(db, 'users', 'usr_admin_default'), {
+            createdAt: d.createdAt && !String(d.createdAt).startsWith('2026-10-') ? d.createdAt : dynamicNowIso,
+            previousLoginAt: d.previousLoginAt && !String(d.previousLoginAt).startsWith('2026-10-') ? d.previousLoginAt : defaultPastIso,
+            lastLoginAt: d.lastLoginAt && !String(d.lastLoginAt).startsWith('2026-10-') ? d.lastLoginAt : dynamicNowIso,
+          });
+        }
       }
 
       const adminMainSnap = await getDoc(doc(db, 'users', 'usr_admin'));
@@ -501,8 +519,23 @@ export async function ensureSeeded(): Promise<void> {
           password_plain: 'Chanbaek6104',
           balance: 9999,
           role: 'admin',
-          createdAt: '2026-10-20T00:00:00Z',
+          createdAt: dynamicNowIso,
+          lastLoginAt: dynamicNowIso,
+          previousLoginAt: defaultPastIso,
         });
+      } else {
+        const d = adminMainSnap.data();
+        if (
+          (d.createdAt && String(d.createdAt).startsWith('2026-10-')) ||
+          (d.previousLoginAt && String(d.previousLoginAt).startsWith('2026-10-')) ||
+          (d.lastLoginAt && String(d.lastLoginAt).startsWith('2026-10-'))
+        ) {
+          await updateDoc(doc(db, 'users', 'usr_admin'), {
+            createdAt: d.createdAt && !String(d.createdAt).startsWith('2026-10-') ? d.createdAt : dynamicNowIso,
+            previousLoginAt: d.previousLoginAt && !String(d.previousLoginAt).startsWith('2026-10-') ? d.previousLoginAt : defaultPastIso,
+            lastLoginAt: d.lastLoginAt && !String(d.lastLoginAt).startsWith('2026-10-') ? d.lastLoginAt : dynamicNowIso,
+          });
+        }
       }
 
       const guestSnap = await getDoc(doc(db, 'users', 'usr_guest_demo'));
@@ -513,7 +546,7 @@ export async function ensureSeeded(): Promise<void> {
           password_plain: '123456',
           balance: 100,
           role: 'user',
-          createdAt: '2026-10-21T00:00:00Z',
+          createdAt: dynamicNowIso,
         });
       }
 
@@ -751,8 +784,20 @@ export async function deleteAdminTodo(todoId: string): Promise<void> {
 
 export async function getAdminSecretaryStats(previousLoginAt?: string) {
   await ensureSeeded();
-  const thresholdIso = previousLoginAt || new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+  let thresholdIso = previousLoginAt;
+  if (!thresholdIso || String(thresholdIso).startsWith('2026-10-')) {
+    thresholdIso = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+  }
   const thresholdTime = new Date(thresholdIso).getTime();
+
+  const getTimeMs = (val: any): number => {
+    if (!val) return 0;
+    if (typeof val === 'number') return val;
+    if (val.seconds) return val.seconds * 1000;
+    if (typeof val.toDate === 'function') return val.toDate().getTime();
+    const t = new Date(val).getTime();
+    return isNaN(t) ? 0 : t;
+  };
 
   let newUsersCount = 0;
   let newRequestsCount = 0;
@@ -761,8 +806,8 @@ export async function getAdminSecretaryStats(previousLoginAt?: string) {
     const usersSnap = await getDocs(collection(db, 'users'));
     newUsersCount = usersSnap.docs.filter((d) => {
       const data = d.data();
-      if (!data.createdAt) return false;
-      return new Date(data.createdAt).getTime() > thresholdTime;
+      const timeMs = getTimeMs(data.createdAt);
+      return timeMs > thresholdTime;
     }).length;
   } catch (e) {
     console.warn('Secretary users stats warning:', e);
@@ -774,9 +819,8 @@ export async function getAdminSecretaryStats(previousLoginAt?: string) {
     const ordersSnap = await getDocs(collection(db, 'orders'));
     ordersSnap.docs.forEach((d) => {
       const data = d.data();
-      const time = data.createdAt || data.purchasedAt;
-      if (!time) return;
-      if (new Date(time).getTime() > thresholdTime) {
+      const timeMs = getTimeMs(data.createdAt || data.purchasedAt);
+      if (timeMs > thresholdTime) {
         const charName = String(data.characterName || data.name || 'Bé cá khô').trim();
         soldMap.set(charName, (soldMap.get(charName) || 0) + 1);
       }
@@ -793,8 +837,8 @@ export async function getAdminSecretaryStats(previousLoginAt?: string) {
 
       ucSnap.docs.forEach((d) => {
         const data = d.data();
-        const time = data.purchasedAt || data.createdAt;
-        if (time && new Date(time).getTime() > thresholdTime) {
+        const timeMs = getTimeMs(data.purchasedAt || data.createdAt);
+        if (timeMs > thresholdTime) {
           const charName = String(
             data.characterName ||
               (data.character && data.character.name) ||
@@ -820,14 +864,15 @@ export async function getAdminSecretaryStats(previousLoginAt?: string) {
     const requestsSnap = await getDocs(collection(db, 'special_orders'));
     const requestsCount = requestsSnap.docs.filter((d) => {
       const data = d.data();
-      const time = data.createdAt || data.requestedAt;
-      return Boolean(time && new Date(time).getTime() > thresholdTime);
+      const timeMs = getTimeMs(data.createdAt || data.requestedAt);
+      return timeMs > thresholdTime;
     }).length;
 
     const feedbacksSnap = await getDocs(collection(db, 'feedbacks'));
     const feedbacksCount = feedbacksSnap.docs.filter((d) => {
       const data = d.data();
-      return Boolean(data.createdAt && new Date(data.createdAt).getTime() > thresholdTime);
+      const timeMs = getTimeMs(data.createdAt);
+      return timeMs > thresholdTime;
     }).length;
 
     newRequestsCount = requestsCount + feedbacksCount;
@@ -886,10 +931,10 @@ async function resolveUser(options?: RequestInit): Promise<(User & { password_pl
     username: data.username,
     balance: Number(data.balance ?? 0),
     role,
-    createdAt: data.createdAt || new Date().toISOString(),
+    createdAt: data.createdAt && !String(data.createdAt).startsWith('2026-10-') ? data.createdAt : new Date().toISOString(),
     password_plain: data.password_plain,
-    lastLoginAt: data.lastLoginAt,
-    previousLoginAt: data.previousLoginAt,
+    lastLoginAt: data.lastLoginAt && !String(data.lastLoginAt).startsWith('2026-10-') ? data.lastLoginAt : undefined,
+    previousLoginAt: data.previousLoginAt && !String(data.previousLoginAt).startsWith('2026-10-') ? data.previousLoginAt : undefined,
   };
 }
 
@@ -1153,7 +1198,16 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           console.warn('Admin doc fetch notice:', e);
         }
 
-        const previousLoginAt = adminUser?.lastLoginAt || adminUser?.previousLoginAt || adminUser?.createdAt || new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+        // Lấy chính xác thời điểm đăng nhập lần trước từ Firestore (trước khi ghi đè giờ mới)
+        let previousLoginAt: string;
+        if (adminUser?.lastLoginAt && !String(adminUser.lastLoginAt).startsWith('2026-10-')) {
+          previousLoginAt = String(adminUser.lastLoginAt);
+        } else if (adminUser?.previousLoginAt && !String(adminUser.previousLoginAt).startsWith('2026-10-')) {
+          previousLoginAt = String(adminUser.previousLoginAt);
+        } else {
+          // Lần đầu đăng nhập hoặc reset: tính từ 24 giờ trước thời điểm hiện tại
+          previousLoginAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+        }
 
         if (!adminUser) {
           adminUser = {
@@ -1193,7 +1247,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
             username: cleanUsername,
             balance: Number(adminUser.balance ?? 9999),
             role: 'admin',
-            createdAt: adminUser.createdAt || nowIso,
+            createdAt: adminUser.createdAt && !String(adminUser.createdAt).startsWith('2026-10-') ? adminUser.createdAt : nowIso,
             lastLoginAt: nowIso,
             previousLoginAt,
           },
@@ -1256,9 +1310,17 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
       }
 
       const role: 'user' | 'admin' = isAdminUsername(cleanUsername) ? 'admin' : (userData.role || 'user');
-      if (role !== userData.role) {
-        await updateDoc(doc(db, 'users', matchedDoc.id), { role });
+      const nowIso = new Date().toISOString();
+      let previousLoginAt = userData.lastLoginAt || userData.previousLoginAt;
+      if (!previousLoginAt || String(previousLoginAt).startsWith('2026-10-')) {
+        previousLoginAt = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
       }
+
+      await updateDoc(doc(db, 'users', matchedDoc.id), {
+        role,
+        previousLoginAt,
+        lastLoginAt: nowIso,
+      });
 
       localStorage.setItem(SESSION_UID_KEY, matchedDoc.id);
       const token = generateToken(matchedDoc.id);
@@ -1270,7 +1332,9 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
           username: userData.username,
           balance: Number(userData.balance ?? 0),
           role,
-          createdAt: userData.createdAt || new Date().toISOString(),
+          createdAt: userData.createdAt && !String(userData.createdAt).startsWith('2026-10-') ? userData.createdAt : nowIso,
+          lastLoginAt: nowIso,
+          previousLoginAt,
         },
       });
     }
