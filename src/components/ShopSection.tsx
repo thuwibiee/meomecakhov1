@@ -148,12 +148,7 @@ export const ShopSection: React.FC<ShopSectionProps> = ({
               <div key={char.id} className="w-[84%] sm:w-[55%] lg:w-auto shrink-0 snap-center">
                 <CharacterCard
                   character={char}
-                  onBuy={handleBuyClick}
                   onViewDetails={onViewDetails}
-                  onGoToInventory={onGoToInventory}
-                  onOpenStory={onOpenStory}
-                  onOpenComplain={onOpenComplain}
-                  onOpenFitBach={onOpenFitBach}
                   isAdmin={isAdmin}
                   onAdminEdit={onAdminEdit}
                 />

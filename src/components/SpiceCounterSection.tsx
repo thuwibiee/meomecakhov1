@@ -208,8 +208,11 @@ export const SpiceCounterSection: React.FC<SpiceCounterSectionProps> = ({
                 </span>
               )}
             </div>
-            <p className="text-xs sm:text-sm text-[#795653]/80 mt-0.5 leading-relaxed">
-              Thêm chút mắm muối, rắc chút hành ngò cho cốt truyện roleplay của bà thêm phần đậm đà và kịch tính nha! ♡
+            <p
+              className="text-xs sm:text-sm text-[#795653]/80 mt-0.5 leading-relaxed"
+              style={{ fontFamily: "'Cal Sans', sans-serif" }}
+            >
+              𖹭 nêm thêm tí gia vị cho cá khô đậm đà hơn
             </p>
           </div>
         </div>
@@ -266,7 +269,7 @@ export const SpiceCounterSection: React.FC<SpiceCounterSectionProps> = ({
             }`}
             style={{ fontFamily: "'Cal Sans', sans-serif" }}
           >
-            <span>🧂 Lệnh Nêm Nếm</span>
+            <span>ᯓ★ LỆNH NÊM NẾM</span>
             <span className="text-[10px] opacity-90 px-1.5 py-0.2 rounded-full bg-white/30">
               {spices.filter((s) => s.type === 'command').length}
             </span>
@@ -281,7 +284,7 @@ export const SpiceCounterSection: React.FC<SpiceCounterSectionProps> = ({
             }`}
             style={{ fontFamily: "'Cal Sans', sans-serif" }}
           >
-            <span>📖 Sổ Tay Bối Cảnh</span>
+            <span>ᯓ★ TỦ ƯỚP CÁ</span>
             <span className="text-[10px] opacity-90 px-1.5 py-0.2 rounded-full bg-white/30">
               {spices.filter((s) => s.type === 'lore').length}
             </span>
@@ -582,8 +585,8 @@ export const SpiceCounterSection: React.FC<SpiceCounterSectionProps> = ({
                     onChange={(e) => setEditingSpice({ ...editingSpice, type: e.target.value as SpiceType })}
                     className="w-full px-3.5 py-2 rounded-xl border border-[#795653]/25 text-xs font-bold text-[#795653]"
                   >
-                    <option value="command">🧂 Lệnh Nêm Nếm (Commands/Prompts)</option>
-                    <option value="lore">📖 Sổ Tay Bối Cảnh (Lore/Plot Info)</option>
+                    <option value="command">ᯓ★ LỆNH NÊM NẾM (Commands/Prompts)</option>
+                    <option value="lore">ᯓ★ TỦ ƯỚP CÁ (Lore/Plot Info)</option>
                   </select>
                 </div>
 

@@ -1,32 +1,20 @@
 import React from 'react';
 import { Character } from '../types.ts';
-import { Check, BookOpen, AlertTriangle, MessageSquareHeart } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { XuCaIcon } from './XuCaIcon.tsx';
 
 interface CharacterCardProps {
   character: Character & { isOwned?: boolean };
-  onBuy: (character: Character) => void;
   onViewDetails: (character: Character) => void;
-  onGoToInventory?: () => void;
-  onOpenStory?: (character: Character) => void;
-  onOpenComplain?: (character: Character) => void;
-  onOpenFitBach?: (character: Character) => void;
   onAdminEdit?: (character: Character) => void;
   isAdmin?: boolean;
-  isProcessing?: boolean;
 }
 
 export const CharacterCard: React.FC<CharacterCardProps> = ({
   character,
-  onBuy,
   onViewDetails,
-  onGoToInventory,
-  onOpenStory,
-  onOpenComplain,
-  onOpenFitBach,
   onAdminEdit,
   isAdmin = false,
-  isProcessing = false,
 }) => {
   const isComingSoon = Boolean(character.isComingSoon || !character.studioUrl || !character.studioUrl.trim());
 
@@ -147,7 +135,7 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
       </div>
 
       {/* (6) Giá bán bằng Xu Cá (kèm icon xu cá) */}
-      <div className="relative z-10 flex items-center justify-between mt-auto pt-2 border-t border-dashed border-white/80 mb-2.5">
+      <div className="relative z-10 flex items-center justify-between mt-auto pt-2 border-t border-dashed border-white/80">
         <span style={{ fontFamily: "'Cal Sans', sans-serif", fontSize: '16px', fontWeight: 'bold', color: '#E13F7C' }}>Giá:</span>
         <div className="flex items-center gap-1.5 font-black text-base text-[#526C91]">
           <span className="tabular-nums" style={{ color: '#E13F7C' }}>{character.price}</span>
@@ -156,103 +144,6 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
             style={{ width: '26px', height: '26px', marginLeft: '-3px', marginTop: '-2px' }}
           />
         </div>
-      </div>
-
-      {/* Cụm 4 nút chức năng bố cục lưới 2:2 (STORY · COMPLAIN · FÍT BÁCH · MUA CÁ 𓆜) */}
-      <div
-        className="relative z-10 w-full mt-2"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '10px',
-        }}
-      >
-        {/* Nút 1: STORY */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenStory?.(character);
-          }}
-          className="glass-pill-btn w-full h-9 px-2 rounded-full text-[#526C91] font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap"
-          title="Xem cốt truyện & phân cảnh mở đầu"
-        >
-          <BookOpen className="w-3.5 h-3.5 text-[#526C91] shrink-0" />
-          <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '13px', fontWeight: 'bold' }}>STORY</span>
-        </button>
-
-        {/* Nút 2: COMPLAIN */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenComplain?.(character);
-          }}
-          className="glass-pill-btn w-full h-9 px-2 rounded-full text-[#D97706] font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap"
-          title="Báo lỗi nhân vật"
-        >
-          <AlertTriangle className="w-3.5 h-3.5 text-[#D97706] shrink-0" />
-          <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '13px' }}>COMPLAIN</span>
-        </button>
-
-        {/* Nút 3: FÍT BÁCH */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenFitBach?.(character);
-          }}
-          className="glass-pill-btn w-full h-9 px-2 rounded-full text-[#A6536A] font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap"
-          title="FÍT BÁCH"
-        >
-          <MessageSquareHeart className="w-3.5 h-3.5 text-[#A6536A] shrink-0" />
-          <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '13px' }}>FÍT BÁCH</span>
-        </button>
-
-        {/* Nút 4: MUA CÁ 𓆜 -> VÀO KHO (sau khi mua) HOẶC ĐANG ẤP PLOT (nếu sắp ra mắt) */}
-        {isComingSoon ? (
-          <button
-            type="button"
-            disabled
-            onClick={(e) => e.stopPropagation()}
-            className="w-full h-9 px-2 rounded-full bg-slate-200/90 text-slate-500 border border-slate-300 font-bold text-xs tracking-wide flex items-center justify-center gap-1 cursor-not-allowed whitespace-nowrap shadow-inner select-none opacity-90"
-            title="Cá đang được ấp cốt truyện, chưa mở bán"
-          >
-            <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '13px', fontWeight: 'bold' }}>ĐANG ẤP PLOT 🥚</span>
-          </button>
-        ) : character.isOwned ? (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onGoToInventory) onGoToInventory();
-            }}
-            className="w-full h-9 px-2 rounded-full bg-[#95BDFF] hover:bg-[#83b1fa] text-[#0A5EB0] font-black text-xs tracking-wide shadow-xs hover:shadow-md transition-all duration-200 border border-[#95BDFF] active:scale-95 flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap"
-            title="Đã rước về giỏ cá - Nhấn để vào Giỏ Cá"
-          >
-            <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '14px' }}>VÀO GIỎ</span>
-          </button>
-        ) : (
-          <button
-            type="button"
-            disabled={isProcessing}
-            onClick={(e) => {
-              e.stopPropagation();
-              onBuy(character);
-            }}
-            className="liquid-glass-btn relative w-full h-9 px-2 rounded-full text-[#795653] font-black text-xs tracking-wide transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap overflow-hidden"
-            title="Rước em cá về giỏ"
-          >
-            <span className="shimmer-liquid" />
-            <span className="relative z-10 flex items-center gap-1">
-              {isProcessing ? (
-                <span className="inline-block animate-pulse text-[11px]">ĐANG XỬ LÝ...</span>
-              ) : (
-                <span style={{ fontFamily: "'Quicksand', sans-serif", fontSize: '14px' }}>MUA CÁ 𓆜</span>
-              )}
-            </span>
-          </button>
-        )}
       </div>
     </div>
   );

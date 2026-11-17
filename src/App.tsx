@@ -1017,7 +1017,7 @@ export default function App() {
         onClose={() => setActiveReceipt(null)}
       />
 
-      {/* 2. Character Detail Modal */}
+      {/* 2. Character Detail Modal (Pop-up MUA CÁ KHÔ) */}
       <CharacterDetailModal
         character={inspectingCharacter}
         onClose={() => setInspectingCharacter(null)}
@@ -1025,6 +1025,13 @@ export default function App() {
           setInspectingCharacter(null);
           handleRequestBuy(char);
         }}
+        onGoToInventory={() => {
+          setInspectingCharacter(null);
+          setActiveTab('inventory');
+        }}
+        onOpenStory={(char) => setStoryChar(char)}
+        onOpenComplain={(char) => setComplainChar(char)}
+        onOpenFitBach={(char) => setFitbachChar(char)}
         isAdmin={user?.role === 'admin'}
         onAdminEdit={(char) => {
           setInspectingCharacter(null);

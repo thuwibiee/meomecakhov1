@@ -273,6 +273,44 @@
     0 3px 8px 0 rgba(246, 166, 184, 0.12);
 }
 
+/* Glassmorphism Modal Panel (for MUA CÁ KHÔ pop-up) */
+.glass-modal-panel {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 252, 253, 0.78) 0%,
+    rgba(255, 245, 248, 0.62) 48%,
+    rgba(255, 255, 255, 0.74) 100%
+  );
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  box-shadow:
+    inset 0 2px 5px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -3px 6px 0 rgba(246, 166, 184, 0.32),
+    inset 2px 0 4px 0 rgba(255, 255, 255, 0.7),
+    0 26px 56px -10px rgba(225, 63, 124, 0.24),
+    0 10px 26px -4px rgba(121, 86, 83, 0.22);
+}
+
+.glass-modal-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36%;
+  background: radial-gradient(
+    ellipse at 25% 0%,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.22) 45%,
+    rgba(255, 255, 255, 0) 75%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* Nested Glass Pill Buttons */
 .glass-pill-btn {
   position: relative;
