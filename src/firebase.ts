@@ -15,12 +15,10 @@ import {
   updateDoc,
   deleteDoc,
   getDocFromServer,
+  getDocsFromServer,
   onSnapshot,
-  query,
-  where,
 } from 'firebase/firestore';
 import firebaseAppletConfig from '../firebase-applet-config.json';
-import initialCharactersData from '../data/characters.json';
 import {
   User,
   Character,
@@ -46,6 +44,7 @@ import {
   CatTownFortune,
   CatBreed,
   Spice,
+  SpiceType,
   AdminTodo,
 } from './types.ts';
 import { FISH_DATABASE, catchFish as pickWeightedFish } from './components/cat-town/fishDatabase';
@@ -470,21 +469,31 @@ export async function ensureSeeded(): Promise<void> {
   if (seedPromise) return seedPromise;
   seedPromise = (async () => {
     try {
-      // 1. Seed Characters if Firestore characters collection is completely empty
-      const charSnap = await getDocs(collection(db, 'characters'));
-      if (charSnap.empty) {
-        const batchPromises = (initialCharactersData as any[]).map((rawChar) => {
-          const norm = normalizeCharacter(rawChar);
-          return setDoc(doc(db, 'characters', norm.id), norm);
-        });
-        await Promise.all(batchPromises);
+      // CRITICAL DATA-PROTECTION GUARD:
+      // Always verify against the live Firestore server (never local/offline cache)
+      // so an offline or cold-cache visitor browser can NEVER queue accidental setDoc overwrites.
+      const seedLockRef = doc(db, 'settings', 'system_seed_lock');
+      let seedLockSnap;
+      try {
+        seedLockSnap = await getDocFromServer(seedLockRef);
+      } catch {
+        // Offline or unreachable server -> abort immediately, never write anything!
+        seedPromise = null;
+        return;
       }
 
-      // 2. Seed default admin accounts ("admin" and "meomecakho@6104") and demo user
+      if (seedLockSnap.exists() && (seedLockSnap.data() as any)?.seededOnce === true) {
+        return;
+      }
+
+      // IMPORTANT: NEVER auto-seed or overwrite the 'characters' collection from client code.
+      // Character cards in Quầy Cá are managed exclusively by Admin via /api/admin/characters.
+
+      // 1. Ensure default admin accounts exist (server-checked, never overwrites existing docs)
       const dynamicNowIso = new Date().toISOString();
       const defaultPastIso = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
 
-      const adminDefaultSnap = await getDoc(doc(db, 'users', 'usr_admin_default'));
+      const adminDefaultSnap = await getDocFromServer(doc(db, 'users', 'usr_admin_default'));
       if (!adminDefaultSnap.exists()) {
         await setDoc(doc(db, 'users', 'usr_admin_default'), {
           id: 'usr_admin_default',
@@ -496,22 +505,9 @@ export async function ensureSeeded(): Promise<void> {
           lastLoginAt: dynamicNowIso,
           previousLoginAt: defaultPastIso,
         });
-      } else {
-        const d = adminDefaultSnap.data();
-        if (
-          (d.createdAt && String(d.createdAt).startsWith('2026-10-')) ||
-          (d.previousLoginAt && String(d.previousLoginAt).startsWith('2026-10-')) ||
-          (d.lastLoginAt && String(d.lastLoginAt).startsWith('2026-10-'))
-        ) {
-          await updateDoc(doc(db, 'users', 'usr_admin_default'), {
-            createdAt: d.createdAt && !String(d.createdAt).startsWith('2026-10-') ? d.createdAt : dynamicNowIso,
-            previousLoginAt: d.previousLoginAt && !String(d.previousLoginAt).startsWith('2026-10-') ? d.previousLoginAt : defaultPastIso,
-            lastLoginAt: d.lastLoginAt && !String(d.lastLoginAt).startsWith('2026-10-') ? d.lastLoginAt : dynamicNowIso,
-          });
-        }
       }
 
-      const adminMainSnap = await getDoc(doc(db, 'users', 'usr_admin'));
+      const adminMainSnap = await getDocFromServer(doc(db, 'users', 'usr_admin'));
       if (!adminMainSnap.exists()) {
         await setDoc(doc(db, 'users', 'usr_admin'), {
           id: 'usr_admin',
@@ -523,22 +519,9 @@ export async function ensureSeeded(): Promise<void> {
           lastLoginAt: dynamicNowIso,
           previousLoginAt: defaultPastIso,
         });
-      } else {
-        const d = adminMainSnap.data();
-        if (
-          (d.createdAt && String(d.createdAt).startsWith('2026-10-')) ||
-          (d.previousLoginAt && String(d.previousLoginAt).startsWith('2026-10-')) ||
-          (d.lastLoginAt && String(d.lastLoginAt).startsWith('2026-10-'))
-        ) {
-          await updateDoc(doc(db, 'users', 'usr_admin'), {
-            createdAt: d.createdAt && !String(d.createdAt).startsWith('2026-10-') ? d.createdAt : dynamicNowIso,
-            previousLoginAt: d.previousLoginAt && !String(d.previousLoginAt).startsWith('2026-10-') ? d.previousLoginAt : defaultPastIso,
-            lastLoginAt: d.lastLoginAt && !String(d.lastLoginAt).startsWith('2026-10-') ? d.lastLoginAt : dynamicNowIso,
-          });
-        }
       }
 
-      const guestSnap = await getDoc(doc(db, 'users', 'usr_guest_demo'));
+      const guestSnap = await getDocFromServer(doc(db, 'users', 'usr_guest_demo'));
       if (!guestSnap.exists()) {
         await setDoc(doc(db, 'users', 'usr_guest_demo'), {
           id: 'usr_guest_demo',
@@ -550,8 +533,8 @@ export async function ensureSeeded(): Promise<void> {
         });
       }
 
-      // 3. Seed redeem_codes if empty
-      const codesSnap = await getDocs(collection(db, 'redeem_codes'));
+      // 2. Seed redeem_codes ONLY if truly empty on server
+      const codesSnap = await getDocsFromServer(collection(db, 'redeem_codes'));
       if (codesSnap.empty) {
         const defaultCodes: RedeemCode[] = [
           {
@@ -588,90 +571,81 @@ export async function ensureSeeded(): Promise<void> {
         await Promise.all(defaultCodes.map((c) => setDoc(doc(db, 'redeem_codes', c.id), c)));
       }
 
-      // 4. Seed quests if empty
-      const questsSnap = await getDocs(collection(db, 'quests'));
+      // 3. Seed quests ONLY if truly empty on server
+      const questsSnap = await getDocsFromServer(collection(db, 'quests'));
       if (questsSnap.empty) {
         await Promise.all(DEFAULT_QUESTS.map((q) => setDoc(doc(db, 'quests', q.id), q)));
       }
 
-      // 4b. Migrate legacy category 'khô hai nắng' -> 'khô cá hai nắng'
-      try {
-        const legacyCharsSnap = await getDocs(query(collection(db, 'characters'), where('category', '==', 'khô hai nắng')));
-        if (!legacyCharsSnap.empty) {
-          await Promise.all(
-            legacyCharsSnap.docs.map((d) => updateDoc(d.ref, { category: 'khô cá hai nắng' }))
-          );
-        }
-      } catch (catErr) {
-        console.warn('Category migration notice:', catErr);
-      }
-
-      // 5. Seed settings if missing or update default gacha price
-      const gachaSnap = await getDoc(doc(db, 'settings', 'gacha_config'));
+      // 4. Seed settings ONLY if missing on server (never overwrite existing admin config)
+      const gachaSnap = await getDocFromServer(doc(db, 'settings', 'gacha_config'));
       if (!gachaSnap.exists()) {
         await setDoc(doc(db, 'settings', 'gacha_config'), DEFAULT_GACHA_CONFIG);
-      } else {
-        const currentGacha = gachaSnap.data() as any;
-        if (currentGacha && currentGacha.spinPrice === 20) {
-          await setDoc(doc(db, 'settings', 'gacha_config'), { ...currentGacha, spinPrice: 10 });
-        }
       }
 
-      const loyaltySnap = await getDoc(doc(db, 'settings', 'loyalty_config'));
+      const loyaltySnap = await getDocFromServer(doc(db, 'settings', 'loyalty_config'));
       if (!loyaltySnap.exists()) {
         await setDoc(doc(db, 'settings', 'loyalty_config'), DEFAULT_LOYALTY_CONFIG);
       }
 
-      const catTownSnap = await getDoc(doc(db, 'settings', 'cat_town_config'));
+      const catTownSnap = await getDocFromServer(doc(db, 'settings', 'cat_town_config'));
       if (!catTownSnap.exists()) {
         await setDoc(doc(db, 'settings', 'cat_town_config'), getDefaultCatTownConfig());
-      } else {
-        const existingData = catTownSnap.data() as any;
-        const savedCatalog = existingData.furnitureCatalog || [];
-        const hasLegacy = savedCatalog.some((s: any) => s.id && (s.id.startsWith('furn_') || !s.imageUrl));
-        if (hasLegacy) {
-          const cleanConfig = getDefaultCatTownConfig();
-          await setDoc(doc(db, 'settings', 'cat_town_config'), {
-            ...cleanConfig,
-            ...existingData,
-            furnitureCatalog: cleanConfig.furnitureCatalog,
-          });
+      }
+
+      // 5. Ensure spice_counter_config exists without overwriting existing spices
+      const spiceConfigRef = doc(db, 'settings', 'spice_counter_config');
+      const spiceConfigSnap = await getDocFromServer(spiceConfigRef);
+      if (!spiceConfigSnap.exists()) {
+        const spicesSnap = await getDocsFromServer(collection(db, 'spices'));
+        if (spicesSnap.empty) {
+          await Promise.all(DEFAULT_SPICES.map((s) => setDoc(doc(db, 'spices', s.id), s)));
         }
+        await setDoc(spiceConfigRef, {
+          isLocked: true,
+          seededOnce: true,
+          updatedAt: dynamicNowIso,
+        });
       }
 
-      // 6. Seed spices if empty
-      const spicesSnap = await getDocs(collection(db, 'spices'));
-      if (spicesSnap.empty) {
-        await Promise.all(DEFAULT_SPICES.map((s) => setDoc(doc(db, 'spices', s.id), s)));
-      }
-
-      // 7. Seed admin_todos if empty
-      const todosSnap = await getDocs(collection(db, 'admin_todos'));
+      // 6. Seed admin_todos ONLY if truly empty on server
+      const todosSnap = await getDocsFromServer(collection(db, 'admin_todos'));
       if (todosSnap.empty) {
         const defaultTodos = [
           {
             id: 'todo_1',
             content: 'Duyệt các phiếu đặt cá khô đặc biệt mới gửi',
             isCompleted: false,
-            createdAt: new Date().toISOString(),
+            createdAt: dynamicNowIso,
           },
           {
             id: 'todo_2',
             content: 'Ủ thêm plot cốt truyện cho các chàng cá sắp lên kệ',
             isCompleted: false,
-            createdAt: new Date().toISOString(),
+            createdAt: dynamicNowIso,
           },
           {
             id: 'todo_3',
             content: 'Kiểm tra hộp thư fít bách và báo lỗi từ độc giả',
             isCompleted: true,
-            createdAt: new Date().toISOString(),
+            createdAt: dynamicNowIso,
           },
         ];
         await Promise.all(defaultTodos.map((t) => setDoc(doc(db, 'admin_todos', t.id), t)));
       }
+
+      // Permanently lock seeding so no client browser can ever re-seed or overwrite collections
+      await setDoc(
+        seedLockRef,
+        {
+          seededOnce: true,
+          charactersAutoSeedDisabled: true,
+          lockedAt: dynamicNowIso,
+        },
+        { merge: true }
+      );
     } catch (err) {
-      console.warn('Firestore seed check encountered an issue (will retry on next request):', err);
+      console.warn('Firestore seed check skipped:', err);
       seedPromise = null;
     }
   })();
@@ -679,58 +653,74 @@ export async function ensureSeeded(): Promise<void> {
 }
 
 export function subscribeToCharacters(onUpdate: (chars: Character[]) => void): () => void {
-  ensureSeeded().catch(() => {});
   try {
     return onSnapshot(
       collection(db, 'characters'),
       (snapshot) => {
-        if (!snapshot.empty) {
-          const list = snapshot.docs.map((d) => normalizeCharacter({ ...d.data(), id: d.id }));
-          list.sort((a, b) => String(a.fishCode || '').localeCompare(String(b.fishCode || '')));
-          onUpdate(list);
-        } else {
-          ensureSeeded().catch(() => {});
-          const fallback = (initialCharactersData as any[]).map(normalizeCharacter);
-          onUpdate(fallback);
+        // Ignore transient empty snapshots coming from cold local cache while awaiting server data
+        if (snapshot.metadata.fromCache && snapshot.empty) {
+          return;
         }
+        const list = snapshot.docs.map((d) => normalizeCharacter({ ...d.data(), id: d.id }));
+        list.sort((a, b) => String(a.fishCode || '').localeCompare(String(b.fishCode || '')));
+        onUpdate(list);
       },
       (error) => {
+        // Never overwrite real character data with dummy fallback cards on transient errors
         console.warn('Characters subscription notice:', error);
-        const fallback = (initialCharactersData as any[]).map(normalizeCharacter);
-        onUpdate(fallback);
       }
     );
   } catch (err) {
     console.warn('Characters subscription exception:', err);
-    const fallback = (initialCharactersData as any[]).map(normalizeCharacter);
-    onUpdate(fallback);
     return () => {};
   }
 }
 
 export function subscribeToSpices(onUpdate: (spices: Spice[]) => void): () => void {
-  ensureSeeded().catch(() => {});
   try {
     return onSnapshot(
       collection(db, 'spices'),
-      (snapshot) => {
+      async (snapshot) => {
+        if (snapshot.metadata.fromCache && snapshot.empty) {
+          return;
+        }
         if (!snapshot.empty) {
           const list = snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as Spice));
           list.sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime());
           onUpdate(list);
         } else {
-          ensureSeeded().catch(() => {});
-          onUpdate(DEFAULT_SPICES);
+          onUpdate([]);
         }
       },
       (error) => {
         console.warn('Spices subscription notice:', error);
-        onUpdate(DEFAULT_SPICES);
       }
     );
   } catch (err) {
     console.warn('Spices subscription exception:', err);
-    onUpdate(DEFAULT_SPICES);
+    return () => {};
+  }
+}
+
+export function subscribeToSpiceConfig(onUpdate: (config: { isLocked: boolean }) => void): () => void {
+  ensureSeeded().catch(() => {});
+  try {
+    return onSnapshot(
+      doc(db, 'settings', 'spice_counter_config'),
+      (snap) => {
+        if (snap.exists()) {
+          const data = snap.data() as any;
+          onUpdate({ isLocked: data.isLocked !== false });
+        } else {
+          onUpdate({ isLocked: true });
+        }
+      },
+      (error) => {
+        console.warn('Spice config subscription notice:', error);
+      }
+    );
+  } catch (err) {
+    console.warn('Spice config subscription exception:', err);
     return () => {};
   }
 }
@@ -1369,7 +1359,7 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
     if (url === '/api/characters' && method === 'GET') {
       const user = await resolveUser(options);
       const [charSnap, ucSnap] = await Promise.all([
-        getDocs(collection(db, 'characters')),
+        getDocsFromServer(collection(db, 'characters')).catch(() => getDocs(collection(db, 'characters'))),
         user ? getDocs(collection(db, 'user_characters')) : Promise.resolve(null),
       ]);
 
@@ -1604,11 +1594,37 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
     // 2b. SPICES (Quầy Gia Vị)
     // ==========================================
     if (url === '/api/spices' && method === 'GET') {
-      const snap = await getDocs(collection(db, 'spices'));
+      const [snap, cfgSnap] = await Promise.all([
+        getDocs(collection(db, 'spices')),
+        getDoc(doc(db, 'settings', 'spice_counter_config')),
+      ]);
+      const seededOnce = cfgSnap.exists() && Boolean((cfgSnap.data() as any)?.seededOnce);
+      const isLocked = cfgSnap.exists() ? (cfgSnap.data() as any)?.isLocked !== false : true;
       let list = snap.docs.map((d) => ({ ...d.data(), id: d.id } as Spice));
-      if (list.length === 0) list = DEFAULT_SPICES;
+      if (list.length === 0 && !seededOnce) list = DEFAULT_SPICES;
       list.sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime());
-      return makeRes(200, { spices: list });
+      return makeRes(200, { spices: list, isLocked });
+    }
+
+    if (url === '/api/admin/spices/lock' && method === 'POST') {
+      const user = await resolveUser(options);
+      if (!user || user.role !== 'admin') {
+        return makeRes(403, { error: 'Bạn không có quyền truy cập trang quản trị.' });
+      }
+
+      const nextLocked = Boolean(body.isLocked);
+      await setDoc(
+        doc(db, 'settings', 'spice_counter_config'),
+        {
+          isLocked: nextLocked,
+          seededOnce: true,
+          updatedAt: new Date().toISOString(),
+          updatedBy: user.username,
+        },
+        { merge: true }
+      );
+
+      return makeRes(200, { success: true, isLocked: nextLocked });
     }
 
     if (url === '/api/admin/spices' && method === 'POST') {
@@ -1617,34 +1633,68 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
         return makeRes(403, { error: 'Bạn không có quyền truy cập trang quản trị.' });
       }
 
-      const { id, type, title, content, author } = body;
+      const { id, type, title, content, docsUrl, author } = body;
+      const typeVal: SpiceType = type === 'lore' ? 'lore' : 'command';
       const cleanTitle = (title || '').trim();
       const cleanContent = (content || '').trim();
+      const rawDocsUrl = (docsUrl || '').trim();
+      const cleanDocsUrl = rawDocsUrl
+        ? (rawDocsUrl.startsWith('http://') || rawDocsUrl.startsWith('https://') ? rawDocsUrl : `https://${rawDocsUrl}`)
+        : '';
 
-      if (!cleanTitle || !cleanContent) {
-        return makeRes(400, { error: 'Vui lòng nhập tiêu đề và nội dung gia vị.' });
+      if (!cleanTitle) {
+        return makeRes(400, { error: 'Vui lòng nhập tiêu đề gia vị.' });
+      }
+      if (typeVal === 'command') {
+        if (!cleanContent && !cleanDocsUrl) {
+          return makeRes(400, { error: 'Vui lòng nhập Lệnh để sao chép hoặc Link GG Docs của lệnh.' });
+        }
+      } else if (!cleanContent) {
+        return makeRes(400, { error: 'Vui lòng nhập nội dung chi tiết cho Tủ Ướp Cá.' });
       }
 
       const nowIso = new Date().toISOString();
-      const spiceId = id || `spice_${Date.now()}`;
+      const spiceId = id ? String(id).trim() : `spice_${Date.now()}`;
+      const spiceRef = doc(db, 'spices', spiceId);
+      const existingSnap = id ? await getDoc(spiceRef) : null;
+      const existingData = existingSnap && existingSnap.exists() ? existingSnap.data() : null;
+      const isUpdate = Boolean(existingData);
+      const preservedCreatedAt = existingData?.createdAt || body.createdAt || nowIso;
+
       const spiceData: Spice = {
         id: spiceId,
-        type: type === 'lore' ? 'lore' : 'command',
+        type: typeVal,
         title: cleanTitle,
         content: cleanContent,
-        author: (author || 'Chủ Tiệm').trim(),
-        createdAt: nowIso,
+        docsUrl: typeVal === 'command' ? cleanDocsUrl : '',
+        author: (author || '').trim() || 'Chủ Tiệm',
+        createdAt: preservedCreatedAt,
         updatedAt: nowIso,
       };
 
-      await setDoc(doc(db, 'spices', spiceId), spiceData);
+      await setDoc(spiceRef, spiceData);
+      await setDoc(
+        doc(db, 'settings', 'spice_counter_config'),
+        { seededOnce: true },
+        { merge: true }
+      );
+
+      const logId = genId('log');
+      await setDoc(doc(db, 'admin_audit_logs', logId), {
+        id: logId,
+        adminUsername: user.username,
+        action: isUpdate ? 'UPDATE_SPICE' : 'CREATE_SPICE',
+        target: spiceData.title,
+        details: `${isUpdate ? 'Cập nhật' : 'Thêm mới'} ${spiceData.type === 'lore' ? 'Tủ Ướp Cá' : 'Lệnh Nêm Nếm'}: ${spiceData.title}`,
+        timestamp: nowIso,
+      });
 
       const allSnap = await getDocs(collection(db, 'spices'));
       const spices = allSnap.docs
         .map((d) => ({ ...d.data(), id: d.id } as Spice))
         .sort((a, b) => new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime());
 
-      return makeRes(200, { success: true, spices });
+      return makeRes(200, { success: true, spice: spiceData, spices });
     }
 
     if (url.startsWith('/api/admin/spices/') && method === 'DELETE') {
@@ -1655,7 +1705,24 @@ export async function firebaseApi(rawUrl: string, options: RequestInit = {}): Pr
 
       const spiceId = url.replace('/api/admin/spices/', '').trim();
       if (spiceId) {
-        await deleteDoc(doc(db, 'spices', spiceId));
+        const spiceRef = doc(db, 'spices', spiceId);
+        const spiceSnap = await getDoc(spiceRef);
+        const spiceTitle = spiceSnap.exists() ? (spiceSnap.data() as any).title || spiceId : spiceId;
+        await deleteDoc(spiceRef);
+        await setDoc(
+          doc(db, 'settings', 'spice_counter_config'),
+          { seededOnce: true },
+          { merge: true }
+        );
+        const logId = genId('log');
+        await setDoc(doc(db, 'admin_audit_logs', logId), {
+          id: logId,
+          adminUsername: user.username,
+          action: 'DELETE_SPICE',
+          target: spiceTitle,
+          details: `Xóa gia vị: ${spiceTitle}`,
+          timestamp: new Date().toISOString(),
+        });
       }
 
       const allSnap = await getDocs(collection(db, 'spices'));

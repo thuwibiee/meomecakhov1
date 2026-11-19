@@ -102,6 +102,32 @@
         "exp": { "type": "number" }
       },
       "required": ["user_id"]
+    },
+    "Spice": {
+      "title": "Spice",
+      "description": "Spice Counter entries for Lệnh Nêm Nếm (command) and Tủ Ướp Cá (lore)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["command", "lore"] },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "docsUrl": { "type": "string" },
+        "author": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "type", "title", "content"]
+    },
+    "AppSetting": {
+      "title": "AppSetting",
+      "description": "Application configuration documents (gacha, loyalty, cat town, spice counter lock)",
+      "type": "object",
+      "properties": {
+        "isLocked": { "type": "boolean" },
+        "seededOnce": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      }
     }
   },
   "firestore": {
@@ -132,6 +158,14 @@
     "/cat_town_profiles/{userId}": {
       "schema": { "$ref": "#/entities/CatTownProfile" },
       "description": "Thị Trấn Cá Mèo player profiles"
+    },
+    "/spices/{spiceId}": {
+      "schema": { "$ref": "#/entities/Spice" },
+      "description": "Quầy Gia Vị entries (Lệnh Nêm Nếm & Tủ Ướp Cá)"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/AppSetting" },
+      "description": "Global shop & feature configuration documents"
     }
   }
 }

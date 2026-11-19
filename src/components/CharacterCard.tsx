@@ -1,6 +1,5 @@
 import React from 'react';
 import { Character } from '../types.ts';
-import { Check } from 'lucide-react';
 import { XuCaIcon } from './XuCaIcon.tsx';
 
 interface CharacterCardProps {
@@ -53,7 +52,10 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
             style={{ fontFamily: "'Cal Sans', sans-serif" }}
           >
             <span className="text-xs leading-none">👑</span>
-            <span className="text-[10px] font-black tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]">
+            <span
+              className="text-[10px] font-black tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)]"
+              style={{ fontFamily: "'Cal Sans', sans-serif" }}
+            >
               BEST SELLER
             </span>
           </div>
@@ -76,17 +78,11 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
         )}
 
         {/* Coming soon ribbon badge */}
-        {isComingSoon ? (
+        {isComingSoon && (
           <div className="absolute top-2.5 right-2.5 z-20 flex items-center gap-1 bg-[#FFE885] text-[#795653] px-2.5 py-1 rounded-full text-[11px] font-black shadow-md border-2 border-white/90">
             <span>COMING SOON ⏳</span>
           </div>
-        ) : character.isOwned ? (
-          /* Subtle owned badge over image if owned */
-          <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-[#A9C5F2]/95 backdrop-blur-xs text-[#526C91] px-2.5 py-1 rounded-full text-xs font-bold shadow-xs border border-white/80">
-            <Check className="w-3.5 h-3.5 stroke-[3]" />
-            <span>ĐÃ THANH TOÁN</span>
-          </div>
-        ) : null}
+        )}
       </div>
 
       {/* (2) Họ và tên nhân vật */}

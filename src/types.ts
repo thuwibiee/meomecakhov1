@@ -56,6 +56,7 @@ export interface Spice {
   type: SpiceType;
   title: string;
   content: string;
+  docsUrl?: string;
   author: string;
   createdAt: string;
   updatedAt: string;

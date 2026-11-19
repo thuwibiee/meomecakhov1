@@ -2147,20 +2147,43 @@ app.delete('/api/admin/character-comments/:id', authMiddleware, adminMiddleware,
 // 1. Get all spices (Public)
 app.get('/api/spices', (req, res) => {
   db.spices = db.spices || [];
-  res.json({ spices: db.spices });
+  res.json({ spices: db.spices, isLocked: (db as any).spiceLocked !== false });
+});
+
+// 1b. Toggle Spice Counter Lock Status (Admin)
+app.post('/api/admin/spices/lock', authMiddleware, adminMiddleware, (req, res) => {
+  (db as any).spiceLocked = Boolean(req.body?.isLocked);
+  saveDatabase();
+  res.json({ success: true, isLocked: (db as any).spiceLocked });
 });
 
 // 2. Add or Edit spice (Admin)
 app.post('/api/admin/spices', authMiddleware, adminMiddleware, (req, res) => {
-  const adminUser = (req as any).user;
-  const { id, type, title, content, author } = req.body;
+  const { id, type, title, content, docsUrl, author } = req.body;
+  const typeVal = type === 'lore' ? 'lore' : 'command';
+  const cleanTitle = (title || '').trim();
+  const cleanContent = (content || '').trim();
+  const rawDocsUrl = (docsUrl || '').trim();
+  const cleanDocsUrl = rawDocsUrl
+    ? (rawDocsUrl.startsWith('http://') || rawDocsUrl.startsWith('https://') ? rawDocsUrl : `https://${rawDocsUrl}`)
+    : '';
 
-  if (!title || !content) {
-    res.status(400).json({ error: 'Vui lòng nhập tiêu đề và nội dung gia vị.' });
+  if (!cleanTitle) {
+    res.status(400).json({ error: 'Vui lòng nhập tiêu đề gia vị.' });
+    return;
+  }
+  if (typeVal === 'command') {
+    if (!cleanContent && !cleanDocsUrl) {
+      res.status(400).json({ error: 'Vui lòng nhập Lệnh để sao chép hoặc Link GG Docs của lệnh.' });
+      return;
+    }
+  } else if (!cleanContent) {
+    res.status(400).json({ error: 'Vui lòng nhập nội dung gia vị.' });
     return;
   }
 
   db.spices = db.spices || [];
+  let savedSpice: Spice;
 
   if (id) {
     const existing = db.spices.find((s) => s.id === id);
@@ -2168,26 +2191,29 @@ app.post('/api/admin/spices', authMiddleware, adminMiddleware, (req, res) => {
       res.status(404).json({ error: 'Không tìm thấy bài viết gia vị.' });
       return;
     }
-    existing.title = title.trim();
-    existing.content = content.trim();
+    existing.title = cleanTitle;
+    existing.content = cleanContent;
+    existing.docsUrl = typeVal === 'command' ? cleanDocsUrl : '';
     existing.author = author ? author.trim() : existing.author;
-    existing.type = type === 'lore' ? 'lore' : 'command';
+    existing.type = typeVal;
     existing.updatedAt = new Date().toISOString();
+    savedSpice = existing;
   } else {
-    const newSpice: Spice = {
+    savedSpice = {
       id: `spice_${Date.now()}`,
-      type: type === 'lore' ? 'lore' : 'command',
-      title: title.trim(),
-      content: content.trim(),
+      type: typeVal,
+      title: cleanTitle,
+      content: cleanContent,
+      docsUrl: typeVal === 'command' ? cleanDocsUrl : '',
       author: author ? author.trim() : 'Chủ Tiệm',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    db.spices.unshift(newSpice);
+    db.spices.unshift(savedSpice);
   }
 
   saveDatabase();
-  res.json({ success: true, spices: db.spices });
+  res.json({ success: true, spice: savedSpice, spices: db.spices });
 });
 
 // 3. Delete spice (Admin)
